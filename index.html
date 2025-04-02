@@ -926,22 +926,21 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // ერთჯერადად წინასწარ ჩავტვირთოთ სიტყვების სია
     // თქვენი ორიგინალური ფუნქციის შეცვლა
-async function loadWordsFromTXT(filePath) {
+async function loadData() {
     try {
-        // ფარდობითი მისამართი GitHub Pages-ზე
-        const response = await fetch('wordsChunk_0.txt');
-        
+        const response = await fetch('https://pub-54d4124b429946238e2f3201ea6af4ca.r2.dev/wordsChunk_0.txt');
         if (!response.ok) {
-            throw new Error(`ფაილის ჩატვირთვის შეცდომა: ${response.status}`);
+            throw new Error('Failed to fetch data');
         }
-        
-        const text = await response.text();
-        return text.split('\n').map(word => word.trim()).filter(word => word);
+        const data = await response.text();
+        console.log(data); // txt ფაილის შიგთავსი
+        // თქვენი ლოგიკა აქ
     } catch (error) {
-        console.error('სიტყვების ჩატვირთვისას დაფიქსირდა შეცდომა:', error);
-        throw error;
+        console.error('Error:', error);
     }
 }
+
+loadData();
         
     // ივენთ ლისენერები
     document.getElementById('word-input').addEventListener('input', debounce(calculateGematria, 300));
