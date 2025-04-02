@@ -1109,10 +1109,24 @@ function findAnagrams() {
     anagramMessage.textContent = 'ანაგრამების ძიება...';
     anagramTable.style.display = 'none';
     anagramResults.innerHTML = '';
-    
-    requestAnimationFrame(() => {
-        findAnagramsAsync(input, anagramResults, anagramLoader, anagramTable);
-    });
+
+    fetch(`https://sparkling-truth-24bb.tsotne-kverselava.workers.dev?word=${encodeURIComponent(input)}`)
+        .then(response => response.json())
+        .then(results => {
+            anagramLoader.style.display = 'none';
+            displayFoundAnagrams(results, anagramResults);
+            anagramTable.style.display = 'table';
+            anagramMessage.textContent = 'ანაგრამები ნაპოვნია!';
+            anagramMessage.classList.add('success');
+            setTimeout(() => filterAnagrams('all'), 100);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            anagramLoader.style.display = 'none';
+            anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა</td></tr>';
+            anagramTable.style.display = 'table';
+            anagramMessage.textContent = 'შეცდომა ანაგრამების ძიებისას';
+        });
 }
 
 async function findAnagramsAsync(inputWord, anagramResults, anagramLoader, anagramTable) {
