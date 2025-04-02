@@ -928,10 +928,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // თქვენი ორიგინალური ფუნქციის შეცვლა
 async function loadWordsFromTXT(filePath) {
     try {
-        // თქვენი GitHub Raw URL
-        const githubUrl = 'https://raw.githubusercontent.com/თქვენი-სახელი/georgian-gematria/main/wordsChunk_0.txt';
-        
-        const response = await fetch(githubUrl);
+        // ფარდობითი მისამართი GitHub Pages-ზე
+        const response = await fetch('wordsChunk_0.txt');
         
         if (!response.ok) {
             throw new Error(`ფაილის ჩატვირთვის შეცდომა: ${response.status}`);
