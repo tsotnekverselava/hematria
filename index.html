@@ -1111,7 +1111,12 @@ function findAnagrams() {
     anagramResults.innerHTML = '';
 
     fetch(`https://sparkling-truth-24bb.tsotne-kverselava.workers.dev?word=${encodeURIComponent(input)}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Worker returned an error: ' + response.status);
+            }
+            return response.json();
+        })
         .then(results => {
             anagramLoader.style.display = 'none';
             displayFoundAnagrams(results, anagramResults);
@@ -1121,9 +1126,9 @@ function findAnagrams() {
             setTimeout(() => filterAnagrams('all'), 100);
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error fetching anagrams:', error);
             anagramLoader.style.display = 'none';
-            anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა</td></tr>';
+            anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა ანაგრამების ძიებისას</td></tr>';
             anagramTable.style.display = 'table';
             anagramMessage.textContent = 'შეცდომა ანაგრამების ძიებისას';
         });
