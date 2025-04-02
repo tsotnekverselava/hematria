@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ტექსტის სიხშირული ანალიზი</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #121212, #1f1f1f);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Test Mode Banner */
+        .test-mode-banner {
+            background: linear-gradient(90deg, #ffcc00, #ff9900);
+            color: #121212;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        header {
+            background: #1a1a1a;
+            padding: 20px;
+            border-bottom: 2px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #4a90e2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-image {
+            max-width: 100px;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .header-image:hover {
+            transform: scale(1.05);
+        }
+
+        .header-text {
+            font-size: 16px;
+            color: #ff4d4d;
+            text-align: center;
+            flex-grow: 1;
+            padding: 0 20px;
+            font-style: italic;
+        }
+
+        .nav-container {
+            background: #2a2a2a;
+            border-bottom: 1px solid #444;
+            padding: 10px 0;
+        }
+
+        .nav-menu {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 25px;
+            display: block;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .nav-menu a:hover {
+            background: #3a3a3a;
+            border-radius: 5px;
+        }
+
+        .nav-menu a.active {
+            background: #4a90e2;
+            color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 204, 204, 0.5);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: #2a2a2a;
+            min-width: 180px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            top: 100%;
+            left: 0;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a {
+            color: #ffffff;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background: #3a3a3a;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: #4a90e2;
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+        }
+
+        .input-section {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        #file-input {
+            display: block;
+            margin: 15px auto;
+            width: 100%;
+            max-width: 320px;
+            padding: 8px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #ffffff;
+        }
+
+        #text-input {
+            width: 100%;
+            max-width: 600px;
+            height: 120px;
+            margin: 15px auto;
+            display: block;
+            background: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            resize: vertical;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .warning {
+            color: #ffcc00;
+            font-size: 14px;
+            margin: 15px 0;
+            background: #332200;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ffcc00;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: #ffffff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
+        }
+
+        .analyze-btn:hover {
+            background: linear-gradient(135deg, #3a7bc8, #2a639e);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.6);
+        }
+
+        .results-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .analysis-box {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s;
+        }
+
+        .analysis-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .analysis-box h2 {
+            color: #4dff4d;
+            margin-top: 0;
+            font-size: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(11, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 10px;
+            border: 1px solid #444;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .letter-box {
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            color: #ffffff;
+        }
+
+        .letter-box:hover {
+            background: #444;
+            transform: scale(1.1);
+        }
+
+        .letter-box.selected {
+            background: #4dff4d;
+            color: #121212;
+            border-color: #3acc3a;
+            box-shadow: 0 0 10px rgba(77, 255, 77, 0.7);
+        }
+
+        .filter-btn {
+            background: linear-gradient(135deg, #ff4d4d, #cc4040);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.4);
+        }
+
+        .filter-btn:hover {
+            background: linear-gradient(135deg, #cc4040, #a33333);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 77, 77, 0.6);
+        }
+
+        .filter-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            margin-top: 15px;
+            background: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid #444;
+            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .cipher-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            font-size: 14px;
+            border: 1px solid #444;
+            color: #cccccc;
+        }
+
+        .stats-section {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .stats-section h2 {
+            color: #4dff4d;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stats-options {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .stats-options select {
+            padding: 10px;
+            background: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid #444;
+            border-radius: 8px;
+            margin-right: 15px;
+            font-size: 16px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats-btn {
+            background: linear-gradient(135deg, #ff4d4d, #cc4040);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.4);
+        }
+
+        .stats-btn:hover {
+            background: linear-gradient(135deg, #cc4040, #a33333);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 77, 77, 0.6);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        .stat-label {
+            color: #4a90e2;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 8px;
+            color: #ffffff;
+        }
+
+        .loader {
+            display: none;
+            border: 4px solid #1a1a1a;
+            border-top: 4px solid #4a90e2;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Refined Footer */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            padding: 40px 0;
+            text-align: center;
+            border-top: 3px solid #4a90e2;
+            margin-top: 50px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1), transparent);
+            z-index: 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-text {
+            font-size: 18px;
+            color: #cccccc;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-contact {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            color: #ffffff;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .contact-item:hover {
+            background: rgba(74, 144, 226, 0.2);
+            color: #4a90e2;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            fill: #4a90e2;
+            transition: fill 0.3s ease;
+        }
+
+        .contact-item:hover .contact-icon {
+            fill: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .test-mode-banner {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+
+            .header-text {
+                font-size: 12px;
+                padding: 0 10px;
+                margin-bottom: 10px;
+            }
+
+            .header-image {
+                max-width: 80px;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-menu a {
+                padding: 12px 20px;
+                width: 100%;
+            }
+
+            .dropdown-content {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+            }
+
+            .results-section {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 220px;
+            }
+
+            .alphabet-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .analysis-box h2, .stats-section h2 {
+                font-size: 18px;
+            }
+
+            .footer-contact {
+                flex-direction: column;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 18px;
+            }
+
+            .header-text {
+                font-size: 10px;
+            }
+
+            .header-image {
+                max-width: 60px;
+            }
+
+            .input-section, .analysis-box, .stats-section {
+                padding: 15px;
+            }
+
+            #text-input {
+                height: 100px;
+                font-size: 14px;
+            }
+
+            .analyze-btn, .filter-btn, .stats-btn {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .stat-value {
+                font-size: 16px;
+            }
+
+            .alphabet-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .footer-text {
+                font-size: 16px;
+            }
+
+            .contact-item {
+                font-size: 16px;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-mode-banner">საიტი მუშაობს სატესტო რეჟიმში</div>
+
+    <header>
+        <div class="logo">ქართული ჰემატრია</div>
+        <div class="header-text">"დამარხულ არც ენაი ქართული დღედმდე მეორედ მოსვლისა მესიისა საწამებლად, რაითა ყოველსა ენასა ღმერთმან ამხილოს ამით ენითა"</div>
+        <img src="https://bolnisi.gov.ge/files/uploads/Flag_of_Bolnisi_Municipality.svg.png" alt="Orthodox Symbol" class="header-image">
+    </header>
+
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="index.html">კალკულატორი</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">ხელსაწყოები</a>
+                <div class="dropdown-content">
+                    <a href="ricxviti-tvisebebi.html">რიცხვითი თვისებები</a>
+                    <a href="text-frequency-analysis.html" class="active">ტექსტის სიხშირული ანალიზი</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h1>ტექსტის სიხშირული ანალიზი</h1>
+
+        <div class="input-section">
+            <input type="file" id="file-input" accept=".pdf,.docx">
+            <textarea id="text-input" placeholder="ან ჩაწერეთ ტექსტი აქ..."></textarea>
+            <div class="warning"><h3>გაფრთხილება!!!</h3> უმჯობესია პატარა-პატარა დოკუმენტებად ატვირთოთ, ან თავებად, რომ ანალიზი სწრაფად მოხდეს. დიდი დოკუმენტის ატვირთვისას შესაძლოა შეცდომები დაუშვას პროგრამულმა კოდმა</div>
+            <button class="analyze-btn" onclick="analyzeText()">ანალიზის დაწყება</button>
+            <div id="loader" class="loader"></div>
+        </div>
+
+        <div class="results-section">
+            <div class="analysis-box">
+                <h2>ასოების სიხშირე</h2>
+                <div class="chart-container">
+                    <canvas id="letterChart"></canvas>
+                </div>
+                <div id="letter-grid" class="alphabet-grid"></div>
+                <button class="filter-btn" onclick="filterLetters()">ფილტრი</button>
+            </div>
+
+            <div class="analysis-box">
+                <h2>სიტყვების სიხშირე</h2>
+                <div class="chart-container">
+                    <canvas id="wordChart"></canvas>
+                </div>
+                <input type="text" id="word-filter" class="filter-input" placeholder="ჩაწერეთ სიტყვა">
+                <button class="filter-btn" onclick="filterWords()">ფილტრი</button>
+            </div>
+
+            <div class="analysis-box">
+                <h2>N-გრამები (2-3 ასო)</h2>
+                <div class="chart-container">
+                    <canvas id="ngramChart"></canvas>
+                </div>
+                <div id="cipher-result" class="cipher-result"></div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h2>სტატისტიკური მაჩვენებლები</h2>
+            <div class="stats-options">
+                <select id="stats-type">
+                    <option value="all">ყველა ასო</option>
+                    <option value="vowels">ხმოვნები</option>
+                    <option value="consonants">თანხმოვნები</option>
+                </select>
+                <button class="stats-btn" onclick="calculateSelectedStats()">გამოთვლა</button>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">დისპერსია</div>
+                    <div id="variance" class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">საშ. კვადრატული გადახრა</div>
+                    <div id="std-dev" class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">სამი სიგმა (±3σ)</div>
+                    <div id="three-sigma" class="stat-value">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 ქართული ჰემატრიის კალკულატორი</p>
+            <div class="footer-contact">
+                <a href="mailto:info@gematria.ge" class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2l-8 5-8-5V6l8 5 8-5z"/>
+                    </svg>
+                    <span>info@nextgen</span>
+                </a>
+                <a href="tel:+995555123456" class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/>
+                    </svg>
+                    <span>+995 599 09 82 79</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let letterChart, wordChart, ngramChart;
+        let currentLetterFreq = new Map();
+        let currentWordFreq = new Map();
+        let currentWordForms = new Map();
+        const georgianAlphabet = 'აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ';
+        const vowels = 'აეიოუ';
+        const caseEndings = ['მა', 'ს', 'ის', 'ით', 'ში', 'ად', 'ზე', 'თვის'];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            populateLetterGrid();
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                if (href === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        function populateLetterGrid() {
+            const grid = document.getElementById('letter-grid');
+            georgianAlphabet.split('').forEach(letter => {
+                const letterBox = document.createElement('div');
+                letterBox.className = 'letter-box';
+                letterBox.textContent = letter;
+                letterBox.dataset.letter = letter;
+                letterBox.addEventListener('click', () => {
+                    letterBox.classList.toggle('selected');
+                });
+                grid.appendChild(letterBox);
+            });
+        }
+
+        async function analyzeText() {
+            const fileInput = document.getElementById('file-input');
+            const textInput = document.getElementById('text-input');
+            const loader = document.getElementById('loader');
+            
+            loader.style.display = 'block';
+            let text = '';
+
+            if (textInput.value.trim()) {
+                text = textInput.value;
+            } else if (fileInput.files.length) {
+                const file = fileInput.files[0];
+                const fileType = file.name.split('.').pop().toLowerCase();
+                const arrayBuffer = await file.arrayBuffer();
+
+                if (fileType === 'pdf') {
+                    text = await extractTextFromPDF(arrayBuffer);
+                } else if (fileType === 'docx') {
+                    text = await extractTextFromDocx(arrayBuffer);
+                } else {
+                    alert('გთხოვთ აირჩიოთ PDF ან DOCX ფაილი');
+                    loader.style.display = 'none';
+                    return;
+                }
+            } else {
+                alert('გთხოვთ აირჩიოთ ფაილი ან შეიყვანოთ ტექსტი');
+                loader.style.display = 'none';
+                return;
+            }
+
+            await processTextInChunks(text);
+            loader.style.display = 'none';
+        }
+
+        async function extractTextFromPDF(arrayBuffer) {
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let fullText = '';
+            for (let i = 1; i <= Math.min(pdf.numPages, 10); i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                fullText += textContent.items.map(item => item.str).join(' ') + ' ';
+            }
+            return fullText;
+        }
+
+        async function extractTextFromDocx(arrayBuffer) {
+            const result = await mammoth.extractRawText({ arrayBuffer });
+            return result.value;
+        }
+
+        function getBaseForm(word) {
+            let base = word.toLowerCase();
+            for (let ending of caseEndings) {
+                if (base.endsWith(ending)) {
+                    base = base.slice(0, -ending.length);
+                    if (!vowels.includes(base[base.length - 1])) {
+                        base += 'ი';
+                    }
+                    return base;
+                }
+            }
+            return base;
+        }
+
+        async function processTextInChunks(text) {
+            const chunkSize = 10000;
+            currentLetterFreq = new Map();
+            currentWordFreq = new Map();
+            currentWordForms = new Map();
+            const ngramFreq = new Map();
+
+            text = text.toLowerCase().replace(/[^ა-ჰ\s]/g, '');
+            const words = text.split(/\s+/).filter(word => word.length > 0);
+            const cleanText = text.replace(/\s+/g, '');
+
+            for (let i = 0; i < text.length; i += chunkSize) {
+                const chunk = text.slice(i, i + chunkSize);
+                for (let char of chunk) {
+                    if (char !== ' ') {
+                        currentLetterFreq.set(char, (currentLetterFreq.get(char) || 0) + 1);
+                    }
+                }
+            }
+
+            for (let i = 0; i < words.length; i += 100) {
+                const wordChunk = words.slice(i, i + 100);
+                for (let word of wordChunk) {
+                    const baseForm = getBaseForm(word);
+                    currentWordFreq.set(baseForm, (currentWordFreq.get(baseForm) || 0) + 1);
+                    if (!currentWordForms.has(baseForm)) {
+                        currentWordForms.set(baseForm, new Set());
+                    }
+                    currentWordForms.get(baseForm).add(word);
+                }
+            }
+
+            for (let i = 0; i < cleanText.length - 2; i += chunkSize) {
+                const ngramChunk = cleanText.slice(i, i + chunkSize);
+                for (let j = 0; j < ngramChunk.length - 1; j++) {
+                    const bigram = ngramChunk.slice(j, j + 2);
+                    ngramFreq.set(bigram, (ngramFreq.get(bigram) || 0) + 1);
+                    if (j < ngramChunk.length - 2) {
+                        const trigram = ngramChunk.slice(j, j + 3);
+                        ngramFreq.set(trigram, (ngramFreq.get(trigram) || 0) + 1);
+                    }
+                }
+            }
+
+            const letterObj = Object.fromEntries(currentLetterFreq);
+            const wordObj = Object.fromEntries(currentWordFreq);
+            const ngramObj = Object.fromEntries(ngramFreq);
+
+            createChart('letterChart', 'ასოები', letterObj, '#4dff4d');
+            createChart('wordChart', 'სიტყვები', wordObj, '#4a90e2');
+            createChart('ngramChart', 'N-გრამები', ngramObj, '#ff4d4d');
+
+            checkCaesarCipher(text, currentLetterFreq);
+        }
+
+        function createChart(canvasId, label, dataObj, color) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const sortedData = Object.entries(dataObj)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+
+            const labels = sortedData.map(item => item[0]);
+            const values = sortedData.map(item => item[1]);
+
+            if (canvasId === 'letterChart' && letterChart) letterChart.destroy();
+            if (canvasId === 'wordChart' && wordChart) wordChart.destroy();
+            if (canvasId === 'ngramChart' && ngramChart) ngramChart.destroy();
+
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: values,
+                        backgroundColor: color,
+                        borderColor: color,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true, ticks: { color: '#ffffff' }, grid: { color: '#333' } },
+                        x: { ticks: { color: '#ffffff' }, grid: { display: false } }
+                    },
+                    plugins: { legend: { labels: { color: '#ffffff' } } },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            if (canvasId === 'letterChart') letterChart = chart;
+            if (canvasId === 'wordChart') wordChart = chart;
+            if (canvasId === 'ngramChart') ngramChart = chart;
+        }
+
+        function filterLetters() {
+            const selectedLetters = Array.from(document.querySelectorAll('.letter-box.selected')).map(box => box.dataset.letter);
+
+            if (selectedLetters.length === 0) {
+                createChart('letterChart', 'ასოები', Object.fromEntries(currentLetterFreq), '#4dff4d');
+                return;
+            }
+
+            const filteredFreq = new Map();
+            selectedLetters.forEach(letter => {
+                if (currentLetterFreq.has(letter)) {
+                    filteredFreq.set(letter, currentLetterFreq.get(letter));
+                }
+            });
+
+            if (filteredFreq.size === 0) {
+                alert('არჩეული ასო(ები) ტექსტში არ მოიძებნა');
+                return;
+            }
+
+            createChart('letterChart', 'არჩეული ასოების სიხშირე', Object.fromEntries(filteredFreq), '#4dff4d');
+        }
+
+        function filterWords() {
+            const filterInput = document.getElementById('word-filter').value.trim();
+            if (!filterInput) {
+                createChart('wordChart', 'სიტყვები', Object.fromEntries(currentWordFreq), '#4a90e2');
+                return;
+            }
+
+            const baseForm = getBaseForm(filterInput);
+            const filteredFreq = new Map();
+            if (currentWordFreq.has(baseForm)) {
+                filteredFreq.set(baseForm, currentWordFreq.get(baseForm));
+            }
+
+            if (filteredFreq.size === 0) {
+                alert('არჩეული სიტყვა ტექსტში არ მოიძებნა');
+                return;
+            }
+
+            createChart('wordChart', `სიტყვა: ${baseForm}`, Object.fromEntries(filteredFreq), '#4a90e2');
+        }
+
+        function checkCaesarCipher(text, letterFreq) {
+            const cipherResult = document.getElementById('cipher-result');
+            const totalLetters = Array.from(letterFreq.values()).reduce((a, b) => a + b, 0);
+            
+            const expectedFreq = { 'ა': 0.12, 'ე': 0.10, 'ი': 0.09, 'ო': 0.07, 'ს': 0.06 };
+            const actualFreq = {};
+            for (let [letter, count] of letterFreq) {
+                actualFreq[letter] = count / totalLetters;
+            }
+
+            let bestShift = 0;
+            let minDifference = Infinity;
+
+            for (let shift = 0; shift < georgianAlphabet.length; shift++) {
+                let totalDiff = 0;
+                for (let letter in expectedFreq) {
+                    const shiftedIndex = (georgianAlphabet.indexOf(letter) + shift) % georgianAlphabet.length;
+                    const shiftedLetter = georgianAlphabet[shiftedIndex];
+                    const actual = actualFreq[shiftedLetter] || 0;
+                    totalDiff += Math.abs(expectedFreq[letter] - actual);
+                }
+                if (totalDiff < minDifference) {
+                    minDifference = totalDiff;
+                    bestShift = shift;
+                }
+            }
+
+            const decrypted = decryptCaesar(text, bestShift);
+            const isGibberish = checkGibberish(decrypted);
+
+            if (minDifference < 0.2 && !isGibberish) {
+                cipherResult.innerHTML = `შესაძლოა ცეზარის შიფრი (ძვრა: ${bestShift}).<br>გაშიფრული ნაწილი: ${decrypted.slice(0, 100)}...`;
+            } else {
+                cipherResult.textContent = 'ცეზარის შიფრი არ აღმოჩნდა.';
+            }
+        }
+
+        function decryptCaesar(text, shift) {
+            return text.split('').map(char => {
+                const index = georgianAlphabet.indexOf(char);
+                if (index === -1) return char;
+                const newIndex = (index - shift + georgianAlphabet.length) % georgianAlphabet.length;
+                return georgianAlphabet[newIndex];
+            }).join('');
+        }
+
+        function checkGibberish(text) {
+            const vowels = 'აეიოუ';
+            let vowelCount = 0;
+            let totalLetters = 0;
+            
+            for (let char of text) {
+                if (georgianAlphabet.includes(char)) {
+                    totalLetters++;
+                    if (vowels.includes(char)) vowelCount++;
+                }
+            }
+            
+            const vowelRatio = vowelCount / totalLetters;
+            return vowelRatio < 0.2 || vowelRatio > 0.8;
+        }
+
+        function calculateSelectedStats() {
+            if (currentLetterFreq.size === 0) {
+                alert('ჯერ გააკეთეთ სიხშირული ანალიზი!');
+                return;
+            }
+
+            const statsType = document.getElementById('stats-type').value;
+            let selectedLetters;
+
+            if (statsType === 'all') {
+                selectedLetters = georgianAlphabet.split('');
+            } else if (statsType === 'vowels') {
+                selectedLetters = vowels.split('');
+            } else {
+                selectedLetters = georgianAlphabet.split('').filter(letter => !vowels.includes(letter));
+            }
+
+            const values = selectedLetters.map(letter => currentLetterFreq.get(letter) || 0);
+            const n = values.length;
+            if (n === 0) return;
+
+            const mean = values.reduce((a, b) => a + b, 0) / n;
+            const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / n;
+            const stdDev = Math.sqrt(variance);
+            const threeSigmaLower = mean - 3 * stdDev;
+            const threeSigmaUpper = mean + 3 * stdDev;
+
+            document.getElementById('variance').textContent = variance.toFixed(2);
+            document.getElementById('std-dev').textContent = stdDev.toFixed(2);
+            document.getElementById('three-sigma').textContent = `${threeSigmaLower.toFixed(2)} - ${threeSigmaUpper.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>

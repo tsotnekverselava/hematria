@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>რიცხვითი თვისებები - ქართული ჰემატრია</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #121212, #1f1f1f);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Test Mode Banner */
+        .test-mode-banner {
+            background: linear-gradient(90deg, #ffcc00, #ff9900);
+            color: #121212;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        header {
+            background: #1a1a1a;
+            padding: 15px 20px;
+            border-bottom: 2px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #4a90e2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-image {
+            max-width: 100px;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .header-image:hover {
+            transform: scale(1.05);
+        }
+
+        .header-text {
+            font-size: 16px;
+            color: #ff4d4d;
+            text-align: center;
+            flex-grow: 1;
+            padding: 0 20px;
+            font-style: italic;
+        }
+
+        .nav-container {
+            background: #2a2a2a;
+            border-bottom: 1px solid #444;
+            padding: 10px 0;
+        }
+
+        .nav-menu {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 25px;
+            display: block;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .nav-menu a:hover {
+            background: #3a3a3a;
+            border-radius: 5px;
+        }
+
+        .nav-menu a.active {
+            background: #4a90e2;
+            color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 204, 204, 0.5);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: #2a2a2a;
+            min-width: 180px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            top: 100%;
+            left: 0;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a {
+            color: #ffffff;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background: #3a3a3a;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .number-header {
+            color: #4a90e2;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+        }
+
+        .number-display {
+            font-size: 120px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .number-nav {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px auto;
+            max-width: 300px;
+        }
+
+        .number-nav a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .number-nav a:hover {
+            color: #357abd;
+        }
+
+        .number-factorization {
+            font-size: 22px;
+            margin: 20px 0;
+            color: #4dff4d;
+        }
+
+        .number-properties {
+            color: #4dff4d;
+            font-size: 18px;
+            margin: 10px 0;
+            text-transform: uppercase;
+        }
+
+        .divisors-section {
+            margin: 40px 0;
+        }
+
+        .divisors-header {
+            color: #4a90e2;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divisors-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .divisors-box {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s;
+        }
+
+        .divisors-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .divisors-label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #aaaaaa;
+            text-transform: uppercase;
+        }
+
+        .divisors-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4dff4d;
+        }
+
+        .divisors-list {
+            color: #4a90e2;
+            font-size: 18px;
+            word-wrap: break-word;
+        }
+
+        .number-type {
+            color: #aaaaaa;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .conversions-section {
+            margin: 40px 0;
+        }
+
+        .conversions-header {
+            color: #4a90e2;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .conversions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 20px auto;
+            max-width: 800px;
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .conversions-grid div {
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .sequence-section {
+            margin: 40px 0;
+        }
+
+        .sequence-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4a90e2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sequence-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .sequence-item {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s;
+        }
+
+        .sequence-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .sequence-label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #aaaaaa;
+        }
+
+        .sequence-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4a90e2;
+        }
+
+        .input-section {
+            margin: 40px 0;
+        }
+
+        .input-box {
+            padding: 12px;
+            font-size: 18px;
+            background: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid #444;
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+            margin-bottom: 15px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #3a7bc8, #2a639e);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.6);
+        }
+
+        /* Refined Footer */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            padding: 40px 0;
+            text-align: center;
+            border-top: 3px solid #4a90e2;
+            margin-top: 50px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1), transparent);
+            z-index: 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-text {
+            font-size: 18px;
+            color: #cccccc;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-contact {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            color: #ffffff;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .contact-item:hover {
+            background: rgba(74, 144, 226, 0.2);
+            color: #4a90e2;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            fill: #4a90e2;
+            transition: fill 0.3s ease;
+        }
+
+        .contact-item:hover .contact-icon {
+            fill: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .test-mode-banner {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            header {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .logo {
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+
+            .header-text {
+                font-size: 12px;
+                padding: 0 10px;
+                margin-bottom: 10px;
+            }
+
+            .header-image {
+                max-width: 80px;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-menu a {
+                padding: 12px 20px;
+                width: 100%;
+            }
+
+            .dropdown-content {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+            }
+
+            .number-display {
+                font-size: 80px;
+            }
+
+            .divisors-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .conversions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sequence-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-contact {
+                flex-direction: column;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 18px;
+            }
+
+            .header-text {
+                font-size: 10px;
+            }
+
+            .header-image {
+                max-width: 60px;
+            }
+
+            .number-header {
+                font-size: 24px;
+            }
+
+            .number-display {
+                font-size: 60px;
+            }
+
+            .input-box {
+                width: 150px;
+                font-size: 16px;
+            }
+
+            .action-btn {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .footer-text {
+                font-size: 16px;
+            }
+
+            .contact-item {
+                font-size: 16px;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-mode-banner">საიტი მუშაობს სატესტო რეჟიმში</div>
+
+    <header>
+        <div class="logo">ქართული ჰემატრია</div>
+        <div class="header-text">"დამარხულ არც ენაი ქართული დღედმდე მეორედ მოსვლისა მესიისა საწამებლად, რაითა ყოველსა ენასა ღმერთმან ამხილოს ამით ენითა"</div>
+        <img src="https://bolnisi.gov.ge/files/uploads/Flag_of_Bolnisi_Municipality.svg.png" alt="Orthodox Symbol" class="header-image">
+    </header>
+
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="index.html">კალკულატორი</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">ინსტრუმენტები</a>
+                <div class="dropdown-content">
+                    <a href="ricxviti-tvisebebi.html" class="active">რიცხვითი თვისებები</a>
+                    <a href="text-frequency-analysis.html">ტექსტის სიხშირული ანალიზი</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="input-section">
+            <div class="number-header">რიცხვის თვისებები:</div>
+            <input type="text" id="number-input" class="input-box" placeholder="შეიყვანეთ რიცხვი">
+            <button id="get-properties-btn" class="action-btn">თვისებების ნახვა</button>
+        </div>
+
+        <div id="number-properties" style="display: none;">
+            <div class="number-nav">
+                <a href="#" id="prev-number"></a>
+                <div id="current-number" class="number-display"></div>
+                <a href="#" id="next-number"></a>
+            </div>
+
+            <div id="number-factorization" class="number-factorization"></div>
+            <div id="number-property-1" class="number-properties" style="display: none;"></div>
+            <div id="number-property-2" class="number-properties" style="display: none;"></div>
+            <div id="number-property-3" class="number-properties" style="display: none;"></div>
+
+            <div class="divisors-section">
+                <div class="divisors-header">გამყოფები</div>
+                <div class="divisors-grid">
+                    <div class="divisors-box">
+                        <div class="divisors-label">რაოდენობა:</div>
+                        <div id="divisors-count" class="divisors-value"></div>
+                    </div>
+                    <div class="divisors-box">
+                        <div class="divisors-label">სია:</div>
+                        <div id="divisors-list" class="divisors-value divisors-list"></div>
+                        <div id="number-type" class="number-type"></div>
+                    </div>
+                    <div class="divisors-box">
+                        <div class="divisors-label">ჯამი:</div>
+                        <div id="divisors-sum" class="divisors-value"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sequence-section">
+                <div id="sequence-title" class="sequence-title"></div>
+                <div class="sequence-grid">
+                    <div class="sequence-item">
+                        <div class="sequence-label">Prime #:</div>
+                        <div id="nth-prime" class="sequence-value"></div>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-label">შედგენილი #:</div>
+                        <div id="nth-composite" class="sequence-value"></div>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-label">ტრიანგულარი #:</div>
+                        <div id="nth-triangular" class="sequence-value"></div>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-label">კვადრატული რიცხვი #:</div>
+                        <div id="nth-square" class="sequence-value"></div>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-label">კუბური რიცხვი #:</div>
+                        <div id="nth-cube" class="sequence-value"></div>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-label">ტეტრაჰედრალური რიცხვი #:</div>
+                        <div id="nth-tetrahedral" class="sequence-value"></div>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-label">კვადრატული პირამიდის რიცხვი #:</div>
+                        <div id="nth-square-pyramidal" class="sequence-value"></div>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-label">ვარსკვლავის რიცხვი #:</div>
+                        <div id="nth-star" class="sequence-value"></div>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-label">პენტაგონალური რიცხვი #:</div>
+                        <div id="nth-pentagonal" class="sequence-value"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="conversions-section">
+                <div class="conversions-header">გარდაქმნები</div>
+                <div class="conversions-grid">
+                    <div>რიცხვითი სისტემა:</div>
+                    <div></div>
+                    <div></div>
+                    <div>საიდან:</div>
+                    <div></div>
+                    <div>სად:</div>
+                    <div>ათობითი</div>
+                    <div id="decimal-prev"></div>
+                    <div id="decimal-next"></div>
+                    <div>ოქტალური</div>
+                    <div id="octal"></div>
+                    <div id="octal-prev"></div>
+                    <div>დუოდეცინალური</div>
+                    <div id="duodecimal"></div>
+                    <div id="duodecimal-prev"></div>
+                    <div>ჰექსადეცინალური</div>
+                    <div id="hex"></div>
+                    <div id="binary"></div>
+                    <div>ბინარული</div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 ქართული ჰემატრიის კალკულატორი</p>
+            <div class="footer-contact">
+                <a href="mailto:info@gematria.ge" class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2l-8 5-8-5V6l8 5 8-5z"/>
+                    </svg>
+                    <span>info@nextgen.ge</span>
+                </a>
+                <a href="tel:+995555123456" class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/>
+                    </svg>
+                    <span>+995 599 09 82 79</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownBtn = document.querySelector('.dropbtn');
+            const dropdownItems = document.querySelectorAll('.dropdown-content a');
+            
+            dropdownItems.forEach(item => {
+                if (item.classList.contains('active')) {
+                    dropdownBtn.classList.add('active');
+                }
+            });
+
+            let currentNumber = null;
+
+            document.getElementById('get-properties-btn').addEventListener('click', function() {
+                const input = document.getElementById('number-input').value.trim();
+                const number = parseInt(input);
+
+                if (!isNaN(number) && number > 0) {
+                    currentNumber = number;
+                    updateNumberProperties(currentNumber);
+                    document.getElementById('number-properties').style.display = 'block';
+                } else {
+                    alert('გთხოვთ შეიყვანოთ დადებითი რიცხვი');
+                }
+            });
+
+            document.getElementById('prev-number').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (currentNumber > 1) {
+                    currentNumber--;
+                    updateNumberProperties(currentNumber);
+                }
+            });
+
+            document.getElementById('next-number').addEventListener('click', function(e) {
+                e.preventDefault();
+                currentNumber++;
+                updateNumberProperties(currentNumber);
+            });
+
+            function updateNumberProperties(number) {
+                document.getElementById('current-number').textContent = number;
+                document.getElementById('prev-number').textContent = number - 1;
+                document.getElementById('next-number').textContent = number + 1;
+                if (number === 1) {
+                    document.getElementById('prev-number').style.display = 'none';
+                } else {
+                    document.getElementById('prev-number').style.display = 'inline';
+                }
+
+                const factors = findFactors(number);
+                document.getElementById('divisors-count').textContent = factors.length;
+                document.getElementById('divisors-list').textContent = factors.join(', ');
+                const divisorsSum = factors.reduce((sum, factor) => sum + factor, 0);
+                document.getElementById('divisors-sum').textContent = divisorsSum;
+
+                const factorization = getPrimeFactorization(number);
+                document.getElementById('number-factorization').textContent = 
+                    factorization.length > 0 ? factorization.join(' × ') : number;
+
+                updateSpecialNumberProperties(number);
+                updateNumberConversions(number);
+                updateSequenceInformation(number);
+
+                let compositeCount = 0;
+                for (let i = 1; i <= number; i++) {
+                    if (!isPrime(i)) compositeCount++;
+                }
+                document.getElementById('number-type').textContent = `${compositeCount}-ე შედგენილი #`;
+            }
+
+            function findFactors(number) {
+                const factors = [];
+                for (let i = 1; i <= number; i++) {
+                    if (number % i === 0) {
+                        factors.push(i);
+                    }
+                }
+                return factors;
+            }
+
+            function getPrimeFactorization(number) {
+                if (number === 1) return [1];
+                const factorization = [];
+                let n = number;
+                for (let i = 2; i <= n;) {
+                    if (n % i === 0) {
+                        factorization.push(i);
+                        n /= i;
+                    } else {
+                        i++;
+                    }
+                }
+                return factorization;
+            }
+
+            function isPrime(number) {
+                if (number <= 1) return false;
+                if (number <= 3) return true;
+                if (number % 2 === 0 || number % 3 === 0) return false;
+                for (let i = 5; i * i <= number; i += 6) {
+                    if (number % i === 0 || number % (i + 2) === 0) return false;
+                }
+                return true;
+            }
+
+            function updateSpecialNumberProperties(number) {
+                const properties = [
+                    document.getElementById('number-property-1'),
+                    document.getElementById('number-property-2'),
+                    document.getElementById('number-property-3')
+                ];
+
+                properties.forEach(prop => {
+                    prop.textContent = '';
+                    prop.style.display = 'none';
+                });
+
+                if (isFibonacciNumber(number)) {
+                    const index = getFibonacciIndex(number);
+                    properties[0].textContent = `მე-${index} ფიბონაჩი!`;
+                    properties[0].style.display = 'block';
+                }
+
+                if (isTriangularNumber(number)) {
+                    const index = getTriangularIndex(number);
+                    properties[1].textContent = `მე-${index} ტრიანგულარი!`;
+                    properties[1].style.display = 'block';
+                }
+
+                if (isSquarePyramidalNumber(number)) {
+                    const index = getSquarePyramidalIndex(number);
+                    properties[2].textContent = `მე-${index} კვადრატული პირამიდალი!`;
+                    properties[2].style.display = 'block';
+                }
+            }
+
+            function isFibonacciNumber(number) {
+                const test1 = 5 * number * number + 4;
+                const test2 = 5 * number * number - 4;
+                const root1 = Math.sqrt(test1);
+                const root2 = Math.sqrt(test2);
+                return Number.isInteger(root1) || Number.isInteger(root2);
+            }
+
+            function getFibonacciIndex(number) {
+                if (number === 0) return 0;
+                if (number === 1) return 1;
+                let a = 0, b = 1, c, index = 1;
+                while (b < number) {
+                    c = a + b;
+                    a = b;
+                    b = c;
+                    index++;
+                }
+                return index;
+            }
+
+            function isTriangularNumber(number) {
+                const test = 8 * number + 1;
+                const root = Math.sqrt(test);
+                return Number.isInteger(root);
+            }
+
+            function getTriangularIndex(number) {
+                return Math.floor((Math.sqrt(8 * number + 1) - 1) / 2);
+            }
+
+            function isSquarePyramidalNumber(number) {
+                for (let i = 1; i <= 100; i++) {
+                    const pyramidal = (i * (i + 1) * (2 * i + 1)) / 6;
+                    if (pyramidal === number) return true;
+                    if (pyramidal > number) break;
+                }
+                return false;
+            }
+
+            function getSquarePyramidalIndex(number) {
+                for (let i = 1; i <= 100; i++) {
+                    const pyramidal = (i * (i + 1) * (2 * i + 1)) / 6;
+                    if (pyramidal === number) return i;
+                    if (pyramidal > number) break;
+                }
+                return 0;
+            }
+
+            function updateNumberConversions(number) {
+                const binary = number.toString(2);
+                const octal = number.toString(8);
+                const hex = number.toString(16).toUpperCase();
+                const duodecimal = convertToBase(number, 12);
+
+                document.getElementById('decimal-prev').textContent = Math.max(number - 10, 1);
+                document.getElementById('decimal-next').textContent = number + 12;
+                document.getElementById('octal').textContent = octal;
+                document.getElementById('octal-prev').textContent = (number - 8).toString(8);
+                document.getElementById('duodecimal').textContent = duodecimal;
+                document.getElementById('duodecimal-prev').textContent = (number - 18).toString(16).toUpperCase();
+                document.getElementById('hex').textContent = hex;
+                document.getElementById('binary').textContent = binary;
+            }
+
+            function convertToBase(number, base) {
+                const digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                let result = '';
+                while (number > 0) {
+                    result = digits[number % base] + result;
+                    number = Math.floor(number / base);
+                }
+                return result || '0';
+            }
+
+            function updateSequenceInformation(number) {
+                let primeCount = 0;
+                let nthPrime = 0;
+                for (let i = 2; primeCount < number; i++) {
+                    if (isPrime(i)) {
+                        primeCount++;
+                        nthPrime = i;
+                    }
+                }
+
+                let compositeCount = 0;
+                let nthComposite = 0;
+                for (let i = 4; compositeCount < number; i++) {
+                    if (!isPrime(i)) {
+                        compositeCount++;
+                        nthComposite = i;
+                    }
+                }
+
+                document.getElementById('sequence-title').textContent = `${number}-ე...`;
+                document.getElementById('nth-prime').textContent = nthPrime;
+                document.getElementById('nth-composite').textContent = nthComposite;
+                document.getElementById('nth-triangular').textContent = Math.floor(number * (number + 1) / 2);
+                document.getElementById('nth-square').textContent = number * number;
+                document.getElementById('nth-cube').textContent = number * number * number;
+                document.getElementById('nth-tetrahedral').textContent = Math.floor(number * (number + 1) * (number + 2) / 6);
+                document.getElementById('nth-square-pyramidal').textContent = Math.floor(number * (number + 1) * (2 * number + 1) / 6);
+                document.getElementById('nth-star').textContent = 6 * number * (number - 1) + 1;
+                document.getElementById('nth-pentagonal').textContent = Math.floor(number * (3 * number - 1) / 2);
+            }
+        });
+    </script>
+</body>
+</html>
