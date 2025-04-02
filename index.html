@@ -872,6 +872,7 @@
     <script>
        // გლობალური ცვლადები
 // გლობალური ცვლადები
+// გლობალური ცვლადები
 let wordListCache = null;
 
 const georgianAlphabet = [
@@ -896,26 +897,26 @@ const georgianAlphabet = [
     { letter: 'რ', ordinal: 19, value: 100 },
     { letter: 'ს', ordinal: 20, value: 200 },
     { letter: 'ტ', ordinal: 21, value: 300 },
-    { letter: 'Ⴣ', ordinal: 22, value: 400 }, 
-    { letter: 'უ', ordinal: 22, value: 400 },
-    { letter: 'ფ', ordinal: 23, value: 500 }, 
-    { letter: 'ქ', ordinal: 24, value: 600 },
-    { letter: 'ღ', ordinal: 25, value: 700 },
-    { letter: 'ყ', ordinal: 26, value: 800 },
-    { letter: 'შ', ordinal: 27, value: 900 },
-    { letter: 'ჩ', ordinal: 28, value: 1000 },
-    { letter: 'ც', ordinal: 29, value: 2000 },
-    { letter: 'ძ', ordinal: 30, value: 3000 },
-    { letter: 'წ', ordinal: 31, value: 4000 },
-    { letter: 'ჭ', ordinal: 32, value: 5000 },
-    { letter: 'ხ', ordinal: 33, value: 6000 },
-    { letter: 'Ⴤ', ordinal: 34, value: 7000 },
-    { letter: 'ჯ', ordinal: 35, value: 8000 },
-    { letter: 'ჰ', ordinal: 36, value: 9000 },
-    { letter: 'Ⴥ', ordinal: 37, value: 10000 }
+    { letter: 'Ⴣ', ordinal: 22, value: 400 },
+    { letter: 'უ', ordinal: 23, value: 400 },
+    { letter: 'ფ', ordinal: 24, value: 500 },
+    { letter: 'ქ', ordinal: 25, value: 600 },
+    { letter: 'ღ', ordinal: 26, value: 700 },
+    { letter: 'ყ', ordinal: 27, value: 800 },
+    { letter: 'შ', ordinal: 28, value: 900 },
+    { letter: 'ჩ', ordinal: 29, value: 1000 },
+    { letter: 'ც', ordinal: 30, value: 2000 },
+    { letter: 'ძ', ordinal: 31, value: 3000 },
+    { letter: 'წ', ordinal: 32, value: 4000 },
+    { letter: 'ჭ', ordinal: 33, value: 5000 },
+    { letter: 'ხ', ordinal: 34, value: 6000 },
+    { letter: 'Ⴤ', ordinal: 35, value: 7000 },
+    { letter: 'ჯ', ordinal: 36, value: 8000 },
+    { letter: 'ჰ', ordinal: 37, value: 9000 },
+    { letter: 'Ⴥ', ordinal: 38, value: 10000 }
 ];
 
-// ასოების სწრაფი ძიებისთვის შევქმნათ lookup ობიექტი
+// ასოების სწრაფი ძიებისთვის lookup ობიექტი
 const letterLookup = {};
 georgianAlphabet.forEach(item => {
     letterLookup[item.letter] = item;
@@ -923,25 +924,7 @@ georgianAlphabet.forEach(item => {
 
 document.addEventListener('DOMContentLoaded', function () {
     generateAlphabetDisplay();
-    
-    // ერთჯერადად წინასწარ ჩავტვირთოთ სიტყვების სია
-    // თქვენი ორიგინალური ფუნქციის შეცვლა
-async function loadData() {
-    try {
-        const response = await fetch('https://pub-54d4124b429946238e2f3201ea6af4ca.r2.dev/wordsChunk_0.txt');
-        if (!response.ok) {
-            throw new Error('Failed to fetch data');
-        }
-        const data = await response.text();
-        console.log(data); // txt ფაილის შიგთავსი
-        // თქვენი ლოგიკა აქ
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
 
-loadData();
-        
     // ივენთ ლისენერები
     document.getElementById('word-input').addEventListener('input', debounce(calculateGematria, 300));
     document.getElementById('find-anagrams-btn').addEventListener('click', findAnagrams);
@@ -1135,7 +1118,7 @@ function findAnagrams() {
 async function findAnagramsAsync(inputWord, anagramResults, anagramLoader, anagramTable) {
     try {
         if (!wordListCache) {
-            const wordList = await loadWordsFromTXT('wordsChunk_0.txt');
+            const wordList = await loadWordsFromTXT('https://pub-54d4124b429946238e2f3201ea6af4ca.r2.dev/wordsChunk_0.txt');
             wordListCache = new Set(wordList);
         }
         
@@ -1182,7 +1165,7 @@ async function findAnagramsAsync(inputWord, anagramResults, anagramLoader, anagr
         document.getElementById('anagram-message').classList.add('success');
 
         // ნაგულისხმევად "ყველა" ფილტრის გააქტიურება
-        filterAnagrams('all');
+        setTimeout(() => filterAnagrams('all'), 100);
     } catch (error) {
         console.error('ანაგრამების ძიებისას დაფიქსირდა შეცდომა:', error);
         anagramLoader.style.display = 'none';
@@ -1206,6 +1189,7 @@ function displayFoundAnagrams(results, anagramResults) {
     
     results.forEach(result => {
         const row = document.createElement('tr');
+        row.dataset.type = result.type === 'შეყვანილი სიტყვის ზუსტი ანაგრამა' ? 'exact' : 'partial';
         
         const wordCell = document.createElement('td');
         wordCell.textContent = result.word;
@@ -1221,73 +1205,29 @@ function displayFoundAnagrams(results, anagramResults) {
     anagramResults.appendChild(fragment);
 }
 
-async function findAnagramsAsync(inputWord, anagramResults, anagramLoader, anagramTable) {
-    try {
-        if (!wordListCache) {
-            const wordList = await loadWordsFromTXT('wordsChunk_0.txt');
-            wordListCache = new Set(wordList);
+function filterAnagrams(filterType) {
+    const rows = document.querySelectorAll('#anagram-results tr');
+    rows.forEach(row => {
+        const rowType = row.dataset.type;
+        if (filterType === 'all') {
+            row.classList.remove('hidden');
+        } else if (filterType === 'exact' && rowType === 'exact') {
+            row.classList.remove('hidden');
+        } else if (filterType === 'partial' && rowType === 'partial') {
+            row.classList.remove('hidden');
+        } else {
+            row.classList.add('hidden');
         }
-        
-        const inputSorted = sortWord(inputWord);
-        const foundWords = new Set();
-        const results = [];
-        
-        wordListCache.forEach(word => {
-            if (word !== inputWord && word.length === inputWord.length) {
-                const sortedWord = sortWord(word);
-                if (sortedWord === inputSorted) {
-                    foundWords.add(word);
-                    results.push({
-                        word: word, 
-                        type: 'შეყვანილი სიტყვის ზუსტი ანაგრამა'
-                    });
-                }
-            }
-        });
-        
-        wordListCache.forEach(word => {
-            if (word.length > inputWord.length) {
-                const startPart = word.substring(0, inputWord.length);
-                const startSorted = sortWord(startPart);
-                
-                if (startSorted === inputSorted && !foundWords.has(word)) {
-                    const restPart = word.substring(inputWord.length);
-                    const displayWord = startPart + '-' + restPart;
-                    
-                    foundWords.add(word);
-                    results.push({
-                        word: displayWord, 
-                        type: 'შეიცავს ანაგრამას დასაწყისში'
-                    });
-                }
-            }
-        });
-        
-        displayFoundAnagrams(results, anagramResults);
-        
-        anagramLoader.style.display = 'none';
-        anagramTable.style.display = 'table';
-        document.getElementById('anagram-message').textContent = 'ანაგრამები ნაპოვნია!';
-        document.getElementById('anagram-message').classList.add('success');
+    });
 
-        // ნაგულისხმევად "ყველა" ფილტრის გააქტიურება - დავამატოთ მცირე დაყოვნება
-        setTimeout(() => {
-            try {
-                const allFilterBtn = document.querySelector('.filter-btn[data-filter="all"]');
-                if (allFilterBtn) {
-                    allFilterBtn.click(); // Programmatically click the "all" button
-                } else {
-                    filterAnagrams('all'); // Fallback if button not found
-                }
-            } catch (error) {
-                console.error('Error activating all filter:', error);
-            }
-        }, 100); // 100ms delay to ensure DOM is updated
-    } catch (error) {
-        console.error('ანაგრამების ძიებისას დაფიქსირდა შეცდომა:', error);
-        anagramLoader.style.display = 'none';
-        anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა ანაგრამების ძიებისას</td></tr>';
-        anagramTable.style.display = 'table';
+    const visibleRows = Array.from(rows).some(row => !row.classList.contains('hidden'));
+    const message = document.getElementById('anagram-message');
+    if (!visibleRows) {
+        message.textContent = 'არჩეული ფილტრით ანაგრამები არ მოიძებნა';
+        message.classList.remove('success');
+    } else {
+        message.textContent = 'ანაგრამები ნაპოვნია!';
+        message.classList.add('success');
     }
 }
 
@@ -1298,11 +1238,9 @@ function sortWord(word) {
 async function loadWordsFromTXT(filePath) {
     try {
         const response = await fetch(filePath);
-        
         if (!response.ok) {
             throw new Error(`ფაილის ჩატვირთვის შეცდომა: ${response.status}`);
         }
-        
         const text = await response.text();
         return text.split('\n').map(word => word.trim()).filter(word => word);
     } catch (error) {
