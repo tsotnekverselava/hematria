@@ -1,1 +1,1332 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ქართული ჰემატრიის კალკულატორი</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #121212, #1f1f1f);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
 
+        .test-mode-banner {
+            background: #ffcc00;
+            color: #121212;
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            background: #1a1a1a;
+            padding: 20px;
+            border-bottom: 2px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #4a90e2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-image {
+            max-width: 100px;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .header-image:hover {
+            transform: scale(1.05);
+        }
+
+        .header-text {
+            font-size: 16px;
+            color: #ff4d4d;
+            text-align: center;
+            flex-grow: 1;
+            padding: 0 20px;
+            font-style: italic;
+        }
+
+        .nav-container {
+            background: #2a2a2a;
+            border-bottom: 1px solid #444;
+            padding: 10px 0;
+        }
+
+        .nav-menu {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 25px;
+            display: block;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .nav-menu a:hover {
+            background: #3a3a3a;
+            border-radius: 5px;
+        }
+
+        .nav-menu a.active {
+            background: #4a90e2;
+            color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 204, 204, 0.5);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: #2a2a2a;
+            min-width: 180px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            top: 100%;
+            left: 0;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a {
+            color: #ffffff;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background: #3a3a3a;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .title {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .title h2 {
+            color: #4a90e2;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+        }
+
+        .input-area {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #word-input {
+            width: 90%;
+            max-width: 450px;
+            padding: 12px;
+            font-size: 18px;
+            background: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid #444;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-buttons {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin: 0 10px 10px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
+            flex-grow: 1;
+            max-width: 200px;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #3a7bc8, #2a639e);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.6);
+        }
+
+        .results-box {
+            display: inline-block;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .result-label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #aaaaaa;
+        }
+
+        .value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .ordinal-value { color: #4dff4d; }
+        .reduction-value { color: #4a90e2; }
+        .reverse-value { color: #4dff4d; }
+        .reverse-reduction-value { color: #00cccc; }
+        .hidden-value { color: #ff9900; }
+        .hidden-reduction-value { color: #ff6600; }
+
+        .word-breakdown {
+            margin: 20px auto;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .breakdown-word {
+            letter-spacing: 12px;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .breakdown-numbers {
+            letter-spacing: 12px;
+            font-size: 18px;
+            color: #4dff4d;
+        }
+
+        .calculation-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .calculation-column {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .calculation-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #4dff4d;
+            text-transform: uppercase;
+        }
+
+        .calculation-subtitle {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #4a90e2;
+        }
+
+        .calculation-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .anagram-section {
+            margin: 30px auto;
+            padding: 25px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            max-width: 900px;
+        }
+
+        .anagram-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #4a90e2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .anagram-loader {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid #1a1a1a;
+            border-top: 4px solid #4a90e2;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .anagram-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .anagram-table th, .anagram-table td {
+            border: 1px solid #444;
+            padding: 12px;
+            font-size: 16px;
+            background: #252525;
+        }
+
+        .anagram-table th {
+            background: #333;
+            color: #4a90e2;
+            text-transform: uppercase;
+        }
+
+        .anagram-message {
+            margin: 20px 0;
+            font-style: italic;
+            color: #aaaaaa;
+            text-align: center;
+        }
+
+        .warning-message {
+            background: #332200;
+            color: #ffcc00;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+            border: 1px solid #ffcc00;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .alphabet-section {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .alphabet-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #4a90e2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .alphabet-container {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 12px;
+            text-align: center;
+        }
+
+        .letter-box {
+            padding: 10px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .letter-box:hover {
+            background: #333;
+            transform: scale(1.05);
+        }
+
+        .letter-ordinal {
+            font-size: 12px;
+            color: #4dff4d;
+            margin-bottom: 5px;
+        }
+
+        .letter {
+            font-size: 20px;
+        }
+
+        .letter-value {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a1a1a, #252525);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 2px solid #333;
+            margin-top: 40px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 16px;
+            color: #aaaaaa;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .footer-contact {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: #4a90e2;
+            transform: translateY(-2px);
+        }
+
+        .contact-icon {
+            width: 20px;
+            height: 20px;
+            fill: #4a90e2;
+        }
+
+        /* Anagram Filter Styles */
+.anagram-filter {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.filter-btn:hover {
+    background: linear-gradient(135deg, #3a7bc8, #2a639e);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.5);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, #00cccc, #009999);
+    box-shadow: 0 0 15px rgba(0, 204, 204, 0.5);
+}
+
+/* Anagram Table Animation */
+.anagram-table tr {
+    transition: all 0.3s ease;
+}
+
+.anagram-table tr.hidden {
+    display: none;
+}
+
+/* Success Message Style */
+.anagram-message.success {
+    color: #4dff4d;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+        /* Mobile Optimizations */
+        @media (max-width: 1024px) {
+            .results-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .calculation-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .alphabet-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .test-mode-banner {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            header {
+                flex-direction: column;
+                padding: 15px;
+                text-align: center;
+            }
+
+            .logo {
+                font-size: 22px;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .header-text {
+                font-size: 12px;
+                padding: 0 10px;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .header-image {
+                max-width: 80px;
+                margin: 0 auto;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-menu a {
+                padding: 12px 20px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .dropdown-content {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+            }
+
+            .container {
+                padding: 0 15px;
+                text-align: center;
+            }
+
+            #word-input {
+                width: 100%;
+                font-size: 16px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                padding: 10px 15px;
+                margin: 5px auto;
+                width: 80%;
+                max-width: none;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .value {
+                font-size: 28px;
+            }
+
+            .result-label {
+                font-size: 12px;
+            }
+
+            .calculation-details {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .calculation-value {
+                font-size: 24px;
+            }
+
+            .anagram-table th, .anagram-table td {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .alphabet-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+
+            .letter {
+                font-size: 18px;
+            }
+
+            .footer-contact {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .contact-item {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 18px;
+            }
+
+            .header-text {
+                font-size: 10px;
+            }
+
+            .header-image {
+                max-width: 60px;
+            }
+
+            .nav-menu a {
+                font-size: 14px;
+            }
+
+            .title h2 {
+                font-size: 22px;
+            }
+
+            #word-input {
+                font-size: 14px;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .value {
+                font-size: 24px;
+            }
+
+            .calculation-value {
+                font-size: 20px;
+            }
+
+            .anagram-title {
+                font-size: 18px;
+            }
+
+            .anagram-table th, .anagram-table td {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            .alphabet-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .letter {
+                font-size: 16px;
+            }
+
+            .footer-text {
+                font-size: 14px;
+            }
+
+            .contact-item {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-mode-banner">საიტი მუშაობს სატესტო რეჟიმში</div>
+
+    <header>
+        <div class="logo">ქართული ჰემატრია</div>
+        <div class="header-text">"დამარხულ არც ენაი ქართული დღედმდე მეორედ მოსვლისა მესიისა საწამებლად, რაითა ყოველსა ენასა ღმერთმან ამხილოს ამით ენითა"</div>
+        <img src="https://bolnisi.gov.ge/files/uploads/Flag_of_Bolnisi_Municipality.svg.png" alt="Orthodox Symbol" class="header-image">
+    </header>
+
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="index.html" class="active">კალკულატორი</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">ხელსაწყოები</a>
+                <div class="dropdown-content">
+                    <a href="ricxviti-tvisebebi.html">რიცხვითი თვისებები</a>
+                    <a href="text-frequency-analysis.html">ტექსტის სიხშირული ანალიზი</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="title">
+            <h2>ქართული ჰემატრიის კალკულატორი</h2>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="word-input" placeholder="შეიყვანეთ სიტყვა..." oninput="calculateGematria()">
+            <div class="action-buttons">
+                <button id="find-anagrams-btn" class="action-btn">ანაგრამების ძიება</button>
+                <button id="clear-btn" class="action-btn">გასუფთავება</button>
+            </div>
+        </div>
+
+        <div class="results-box">
+            <div class="results-grid">
+                <div>
+                    <div class="result-label">რიგითი მნიშვნელობების ჯამი</div>
+                    <p id="ordinal-value" class="value ordinal-value">0</p>
+                </div>
+                <div>
+                    <div class="result-label">1 ციფრამდე დაყვანა</div>
+                    <p id="reduction-value" class="value reduction-value">0</p>
+                </div>
+                <div>
+                    <div class="result-label">რიცხვითი მნიშვნელობების ჯამი</div>
+                    <p id="reverse-value" class="value reverse-value">0</p>
+                </div>
+                <div>
+                    <div class="result-label">1 ციფრამდე დაყვანა</div>
+                    <p id="reverse-reduction-value" class="value reverse-reduction-value">0</p>
+                </div>
+                <div>
+                    <div class="result-label">ფარული ჰემატრია</div>
+                    <p id="hidden-value" class="value hidden-value">0</p>
+                </div>
+                <div>
+                    <div class="result-label">1 ციფრამდე დაყვანა</div>
+                    <p id="hidden-reduction-value" class="value hidden-reduction-value">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="word-breakdown" id="word-breakdown">
+            <p id="input-word" class="breakdown-word"></p>
+            <p id="ordinal-breakdown" class="breakdown-numbers"></p>
+        </div>
+
+        <div class="calculation-details">
+            <div class="calculation-column">
+                <div class="calculation-title">რიგითი ჯამი</div>
+                <div id="ordinal-calculation" class="calculation-value">0</div>
+                <div class="calculation-subtitle">1 ციფრამდე დაყვანა</div>
+                <div id="ordinal-reduction" class="calculation-value">0</div>
+            </div>
+            <div class="calculation-column">
+                <div class="calculation-title">რიცხვითი ჯამი</div>
+                <div id="numeric-calculation" class="calculation-value">0</div>
+                <div class="calculation-subtitle">1 ციფრამდე დაყვანა</div>
+                <div id="numeric-reduction" class="calculation-value">0</div>
+            </div>
+            <div class="calculation-column">
+                <div class="calculation-title">ფარული ჰემატრია</div>
+                <div id="hidden-calculation" class="calculation-value">0</div>
+                <div class="calculation-subtitle">1 ციფრამდე დაყვანა</div>
+                <div id="hidden-reduction" class="calculation-value hidden-value">0</div>
+            </div>
+        </div>
+
+        <div class="anagram-section" id="anagram-section" style="display: none;">
+            <div class="anagram-title">ანაგრამები</div>
+            <div id="anagram-warning" class="warning-message">
+                <strong>ყურადღება:</strong> აქ ნაჩვენებია ყველა შესაძლო ანაგრამა - ასოების ყველა შესაძლო კომბინაცია. 
+                მიბმულია ქართული სიტყვების ბაზა, რომელშიც ამოწმებს ანაგრამის სიტყვებს, ამიტომ ზოგიერთი სიტყვა შეიძლება არ იყოს დახვეწილი. მიმდინარეობს ბაზაზე მუშაობა. თუ ვინმეს აქვს უკეთესი ვარიანტი, შეგიძლიათ შემეხმიანოთ.
+            </div>
+            <div id="anagram-loader" class="anagram-loader"></div>
+            <div id="anagram-message" class="anagram-message"></div>
+            <div class="anagram-filter">
+                <button class="filter-btn active" data-filter="all">ყველა</button>
+                <button class="filter-btn" data-filter="exact">ზუსტი ანაგრამები</button>
+                <button class="filter-btn" data-filter="partial">დასაწყისში ანაგრამა</button>
+            </div>
+            <table id="anagram-table" class="anagram-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>ანაგრამა</th>
+                        <th>ტიპი</th>
+                    </tr>
+                </thead>
+                <tbody id="anagram-results"></tbody>
+            </table>
+        </div>
+
+        <div class="alphabet-section">
+            <div class="alphabet-title">ქართული ანბანი</div>
+            <div class="alphabet-container">
+                <div class="alphabet-grid" id="alphabet-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 ქართული ჰემატრიის კალკულატორი</p>
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2l-8 5-8-5V6l8 5 8-5z"/>
+                    </svg>
+                    <span>info@nextgen.ge</span>
+                </div>
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/>
+                    </svg>
+                    <span>+995 599 09 82 79</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+       // გლობალური ცვლადები
+// გლობალური ცვლადები
+let wordListCache = null;
+
+const georgianAlphabet = [
+    { letter: 'ა', ordinal: 1, value: 1 },
+    { letter: 'ბ', ordinal: 2, value: 2 },
+    { letter: 'გ', ordinal: 3, value: 3 },
+    { letter: 'დ', ordinal: 4, value: 4 },
+    { letter: 'ე', ordinal: 5, value: 5 },
+    { letter: 'ვ', ordinal: 6, value: 6 },
+    { letter: 'ზ', ordinal: 7, value: 7 },
+    { letter: 'Ⴡ', ordinal: 8, value: 8 },
+    { letter: 'თ', ordinal: 9, value: 9 },
+    { letter: 'ი', ordinal: 10, value: 10 },
+    { letter: 'კ', ordinal: 11, value: 20 },
+    { letter: 'ლ', ordinal: 12, value: 30 },
+    { letter: 'მ', ordinal: 13, value: 40 },
+    { letter: 'ნ', ordinal: 14, value: 50 },
+    { letter: 'ჲ', ordinal: 15, value: 60 },
+    { letter: 'ო', ordinal: 16, value: 70 },
+    { letter: 'პ', ordinal: 17, value: 80 },
+    { letter: 'ჟ', ordinal: 18, value: 90 },
+    { letter: 'რ', ordinal: 19, value: 100 },
+    { letter: 'ს', ordinal: 20, value: 200 },
+    { letter: 'ტ', ordinal: 21, value: 300 },
+    { letter: 'Ⴣ', ordinal: 22, value: 400 }, 
+    { letter: 'უ', ordinal: 22, value: 400 },
+    { letter: 'ფ', ordinal: 23, value: 500 }, 
+    { letter: 'ქ', ordinal: 24, value: 600 },
+    { letter: 'ღ', ordinal: 25, value: 700 },
+    { letter: 'ყ', ordinal: 26, value: 800 },
+    { letter: 'შ', ordinal: 27, value: 900 },
+    { letter: 'ჩ', ordinal: 28, value: 1000 },
+    { letter: 'ც', ordinal: 29, value: 2000 },
+    { letter: 'ძ', ordinal: 30, value: 3000 },
+    { letter: 'წ', ordinal: 31, value: 4000 },
+    { letter: 'ჭ', ordinal: 32, value: 5000 },
+    { letter: 'ხ', ordinal: 33, value: 6000 },
+    { letter: 'Ⴤ', ordinal: 34, value: 7000 },
+    { letter: 'ჯ', ordinal: 35, value: 8000 },
+    { letter: 'ჰ', ordinal: 36, value: 9000 },
+    { letter: 'Ⴥ', ordinal: 37, value: 10000 }
+];
+
+// ასოების სწრაფი ძიებისთვის შევქმნათ lookup ობიექტი
+const letterLookup = {};
+georgianAlphabet.forEach(item => {
+    letterLookup[item.letter] = item;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    generateAlphabetDisplay();
+    
+    // ერთჯერადად წინასწარ ჩავტვირთოთ სიტყვების სია
+    // თქვენი ორიგინალური ფუნქციის შეცვლა
+async function loadWordsFromTXT(filePath) {
+    try {
+        // ფარდობითი მისამართი GitHub Pages-ზე
+        const response = await fetch('wordsChunk_0.txt');
+        
+        if (!response.ok) {
+            throw new Error(`ფაილის ჩატვირთვის შეცდომა: ${response.status}`);
+        }
+        
+        const text = await response.text();
+        return text.split('\n').map(word => word.trim()).filter(word => word);
+    } catch (error) {
+        console.error('სიტყვების ჩატვირთვისას დაფიქსირდა შეცდომა:', error);
+        throw error;
+    }
+}
+        
+    // ივენთ ლისენერები
+    document.getElementById('word-input').addEventListener('input', debounce(calculateGematria, 300));
+    document.getElementById('find-anagrams-btn').addEventListener('click', findAnagrams);
+    document.getElementById('clear-btn').addEventListener('click', resetAll);
+
+    // ფილტრის ღილაკების მართვა
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            const filterType = this.getAttribute('data-filter');
+            filterAnagrams(filterType);
+        });
+    });
+
+    // ნავიგაციის აქტიური ლინკის გამოყოფა
+    highlightActiveNavLink();
+});
+
+function highlightActiveNavLink() {
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        const href = link.getAttribute('href');
+        if (href === currentPath) {
+            link.classList.add('active');
+        }
+    });
+}
+
+function generateAlphabetDisplay() {
+    const alphabetGrid = document.getElementById('alphabet-grid');
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < georgianAlphabet.length; i++) {
+        const letterBox = document.createElement('div');
+        letterBox.className = 'letter-box';
+
+        const ordinalElem = document.createElement('div');
+        ordinalElem.className = 'letter-ordinal';
+        ordinalElem.textContent = georgianAlphabet[i].ordinal;
+
+        const letterElem = document.createElement('div');
+        letterElem.className = 'letter';
+        letterElem.textContent = georgianAlphabet[i].letter;
+
+        const valueElem = document.createElement('div');
+        valueElem.className = 'letter-value';
+        valueElem.textContent = georgianAlphabet[i].value;
+
+        letterBox.appendChild(ordinalElem);
+        letterBox.appendChild(letterElem);
+        letterBox.appendChild(valueElem);
+        fragment.appendChild(letterBox);
+    }
+    
+    alphabetGrid.appendChild(fragment);
+}
+
+function calculateGematria() {
+    const input = document.getElementById('word-input').value;
+    if (input.trim() === '') {
+        resetResults();
+        return;
+    }
+
+    let ordinalSum = 0;
+    let numericalSum = 0;
+    let hiddenSum = 0;
+
+    const ordinalValues = [];
+    const numericalValues = [];
+    const hiddenValues = [];
+
+    for (let i = 0; i < input.length; i++) {
+        const char = input[i];
+        const letterInfo = letterLookup[char];
+
+        if (letterInfo) {
+            const ordinal = letterInfo.ordinal;
+            const numerical = letterInfo.value;
+            const triangularValue = (ordinal * (ordinal + 1)) / 2;
+            
+            ordinalSum += ordinal;
+            numericalSum += numerical;
+            hiddenSum += triangularValue;
+
+            ordinalValues.push(ordinal);
+            numericalValues.push(numerical);
+            hiddenValues.push(triangularValue);
+        }
+    }
+
+    updateGematriaDisplay(
+        input, 
+        ordinalSum, 
+        numericalSum, 
+        hiddenSum, 
+        reduceToSingleDigit(ordinalSum), 
+        reduceToSingleDigit(numericalSum), 
+        reduceToSingleDigit(hiddenSum),
+        ordinalValues,
+        numericalValues,
+        hiddenValues
+    );
+}
+
+function updateGematriaDisplay(
+    word, 
+    ordinalSum, 
+    numericalSum, 
+    hiddenSum, 
+    ordinalReduction, 
+    numericalReduction, 
+    hiddenReduction,
+    ordinalValues,
+    numericalValues,
+    hiddenValues
+) {
+    document.getElementById('ordinal-value').textContent = ordinalSum;
+    document.getElementById('reduction-value').textContent = ordinalReduction;
+    document.getElementById('reverse-value').textContent = numericalSum;
+    document.getElementById('reverse-reduction-value').textContent = numericalReduction;
+    document.getElementById('hidden-value').textContent = hiddenSum;
+    document.getElementById('hidden-reduction-value').textContent = hiddenReduction;
+    
+    document.getElementById('ordinal-calculation').textContent = 
+        ordinalValues.join(' + ') + ' = ' + ordinalSum;
+    document.getElementById('numeric-calculation').textContent = 
+        numericalValues.join(' + ') + ' = ' + numericalSum;
+    document.getElementById('hidden-calculation').textContent = 
+        hiddenValues.join(' + ') + ' = ' + hiddenSum;
+    document.getElementById('ordinal-reduction').textContent = ordinalReduction;
+    document.getElementById('numeric-reduction').textContent = numericalReduction;
+    document.getElementById('hidden-reduction').textContent = hiddenReduction;
+    
+    document.getElementById('input-word').textContent = word;
+    document.getElementById('ordinal-breakdown').textContent = ordinalValues.join(' ');
+}
+
+function reduceToSingleDigit(num) {
+    if (num < 10) return num;
+    return 1 + ((num - 1) % 9);
+}
+
+function resetResults() {
+    const elementsToReset = [
+        'ordinal-value', 'reduction-value', 'reverse-value', 'reverse-reduction-value',
+        'hidden-value', 'hidden-reduction-value', 'input-word', 'ordinal-breakdown',
+        'ordinal-calculation', 'numeric-calculation', 'hidden-calculation',
+        'ordinal-reduction', 'numeric-reduction', 'hidden-reduction'
+    ];
+    
+    elementsToReset.forEach(id => {
+        document.getElementById(id).textContent = id.includes('word') ? '' : '0';
+    });
+}
+
+function resetAll() {
+    document.getElementById('word-input').value = '';
+    resetResults();
+    hideAnagramSection();
+}
+
+function findAnagrams() {
+    const input = document.getElementById('word-input').value.trim();
+    if (!input) {
+        alert('გთხოვთ შეიყვანოთ სიტყვა ანაგრამების მოსაძებნად.');
+        return;
+    }
+
+    const anagramSection = document.getElementById('anagram-section');
+    const anagramLoader = document.getElementById('anagram-loader');
+    const anagramMessage = document.getElementById('anagram-message');
+    const anagramTable = document.getElementById('anagram-table');
+    const anagramResults = document.getElementById('anagram-results');
+
+    anagramSection.style.display = 'block';
+    anagramLoader.style.display = 'block';
+    anagramMessage.textContent = 'ანაგრამების ძიება...';
+    anagramTable.style.display = 'none';
+    anagramResults.innerHTML = '';
+    
+    requestAnimationFrame(() => {
+        findAnagramsAsync(input, anagramResults, anagramLoader, anagramTable);
+    });
+}
+
+async function findAnagramsAsync(inputWord, anagramResults, anagramLoader, anagramTable) {
+    try {
+        if (!wordListCache) {
+            const wordList = await loadWordsFromTXT('wordsChunk_0.txt');
+            wordListCache = new Set(wordList);
+        }
+        
+        const inputSorted = sortWord(inputWord);
+        const foundWords = new Set();
+        const results = [];
+        
+        wordListCache.forEach(word => {
+            if (word !== inputWord && word.length === inputWord.length) {
+                const sortedWord = sortWord(word);
+                if (sortedWord === inputSorted) {
+                    foundWords.add(word);
+                    results.push({
+                        word: word, 
+                        type: 'შეყვანილი სიტყვის ზუსტი ანაგრამა'
+                    });
+                }
+            }
+        });
+        
+        wordListCache.forEach(word => {
+            if (word.length > inputWord.length) {
+                const startPart = word.substring(0, inputWord.length);
+                const startSorted = sortWord(startPart);
+                
+                if (startSorted === inputSorted && !foundWords.has(word)) {
+                    const restPart = word.substring(inputWord.length);
+                    const displayWord = startPart + '-' + restPart;
+                    
+                    foundWords.add(word);
+                    results.push({
+                        word: displayWord, 
+                        type: 'შეიცავს ანაგრამას დასაწყისში'
+                    });
+                }
+            }
+        });
+        
+        displayFoundAnagrams(results, anagramResults);
+        
+        anagramLoader.style.display = 'none';
+        anagramTable.style.display = 'table';
+        document.getElementById('anagram-message').textContent = 'ანაგრამები ნაპოვნია!';
+        document.getElementById('anagram-message').classList.add('success');
+
+        // ნაგულისხმევად "ყველა" ფილტრის გააქტიურება
+        filterAnagrams('all');
+    } catch (error) {
+        console.error('ანაგრამების ძიებისას დაფიქსირდა შეცდომა:', error);
+        anagramLoader.style.display = 'none';
+        anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა ანაგრამების ძიებისას</td></tr>';
+        anagramTable.style.display = 'table';
+    }
+}
+
+function displayFoundAnagrams(results, anagramResults) {
+    if (results.length === 0) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 2;
+        cell.textContent = 'ანაგრამები არ მოიძებნა';
+        row.appendChild(cell);
+        anagramResults.appendChild(row);
+        return;
+    }
+    
+    const fragment = document.createDocumentFragment();
+    
+    results.forEach(result => {
+        const row = document.createElement('tr');
+        
+        const wordCell = document.createElement('td');
+        wordCell.textContent = result.word;
+        
+        const typeCell = document.createElement('td');
+        typeCell.textContent = result.type;
+        
+        row.appendChild(wordCell);
+        row.appendChild(typeCell);
+        fragment.appendChild(row);
+    });
+    
+    anagramResults.appendChild(fragment);
+}
+
+async function findAnagramsAsync(inputWord, anagramResults, anagramLoader, anagramTable) {
+    try {
+        if (!wordListCache) {
+            const wordList = await loadWordsFromTXT('wordsChunk_0.txt');
+            wordListCache = new Set(wordList);
+        }
+        
+        const inputSorted = sortWord(inputWord);
+        const foundWords = new Set();
+        const results = [];
+        
+        wordListCache.forEach(word => {
+            if (word !== inputWord && word.length === inputWord.length) {
+                const sortedWord = sortWord(word);
+                if (sortedWord === inputSorted) {
+                    foundWords.add(word);
+                    results.push({
+                        word: word, 
+                        type: 'შეყვანილი სიტყვის ზუსტი ანაგრამა'
+                    });
+                }
+            }
+        });
+        
+        wordListCache.forEach(word => {
+            if (word.length > inputWord.length) {
+                const startPart = word.substring(0, inputWord.length);
+                const startSorted = sortWord(startPart);
+                
+                if (startSorted === inputSorted && !foundWords.has(word)) {
+                    const restPart = word.substring(inputWord.length);
+                    const displayWord = startPart + '-' + restPart;
+                    
+                    foundWords.add(word);
+                    results.push({
+                        word: displayWord, 
+                        type: 'შეიცავს ანაგრამას დასაწყისში'
+                    });
+                }
+            }
+        });
+        
+        displayFoundAnagrams(results, anagramResults);
+        
+        anagramLoader.style.display = 'none';
+        anagramTable.style.display = 'table';
+        document.getElementById('anagram-message').textContent = 'ანაგრამები ნაპოვნია!';
+        document.getElementById('anagram-message').classList.add('success');
+
+        // ნაგულისხმევად "ყველა" ფილტრის გააქტიურება - დავამატოთ მცირე დაყოვნება
+        setTimeout(() => {
+            try {
+                const allFilterBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if (allFilterBtn) {
+                    allFilterBtn.click(); // Programmatically click the "all" button
+                } else {
+                    filterAnagrams('all'); // Fallback if button not found
+                }
+            } catch (error) {
+                console.error('Error activating all filter:', error);
+            }
+        }, 100); // 100ms delay to ensure DOM is updated
+    } catch (error) {
+        console.error('ანაგრამების ძიებისას დაფიქსირდა შეცდომა:', error);
+        anagramLoader.style.display = 'none';
+        anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა ანაგრამების ძიებისას</td></tr>';
+        anagramTable.style.display = 'table';
+    }
+}
+
+function sortWord(word) {
+    return word.split('').sort().join('');
+}
+
+async function loadWordsFromTXT(filePath) {
+    try {
+        const response = await fetch(filePath);
+        
+        if (!response.ok) {
+            throw new Error(`ფაილის ჩატვირთვის შეცდომა: ${response.status}`);
+        }
+        
+        const text = await response.text();
+        return text.split('\n').map(word => word.trim()).filter(word => word);
+    } catch (error) {
+        console.error('სიტყვების ჩატვირთვისას დაფიქსირდა შეცდომა:', error);
+        throw error;
+    }
+}
+
+function hideAnagramSection() {
+    document.getElementById('anagram-section').style.display = 'none';
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func.apply(context, args);
+        }, wait);
+    };
+}
+    </script>
+</body>
+</html>
