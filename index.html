@@ -959,6 +959,8 @@ function highlightActiveNavLink() {
 
 function generateAlphabetDisplay() {
     const alphabetGrid = document.getElementById('alphabet-grid');
+    if (!alphabetGrid) return; // უსაფრთხოების შემოწმება
+    
     const fragment = document.createDocumentFragment();
 
     for (let i = 0; i < georgianAlphabet.length; i++) {
@@ -1046,25 +1048,27 @@ function updateGematriaDisplay(
     numericalValues,
     hiddenValues
 ) {
-    document.getElementById('ordinal-value').textContent = ordinalSum;
-    document.getElementById('reduction-value').textContent = ordinalReduction;
-    document.getElementById('reverse-value').textContent = numericalSum;
-    document.getElementById('reverse-reduction-value').textContent = numericalReduction;
-    document.getElementById('hidden-value').textContent = hiddenSum;
-    document.getElementById('hidden-reduction-value').textContent = hiddenReduction;
+    const updateElement = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value;
+    };
+
+    updateElement('ordinal-value', ordinalSum);
+    updateElement('reduction-value', ordinalReduction);
+    updateElement('reverse-value', numericalSum);
+    updateElement('reverse-reduction-value', numericalReduction);
+    updateElement('hidden-value', hiddenSum);
+    updateElement('hidden-reduction-value', hiddenReduction);
     
-    document.getElementById('ordinal-calculation').textContent = 
-        ordinalValues.join(' + ') + ' = ' + ordinalSum;
-    document.getElementById('numeric-calculation').textContent = 
-        numericalValues.join(' + ') + ' = ' + numericalSum;
-    document.getElementById('hidden-calculation').textContent = 
-        hiddenValues.join(' + ') + ' = ' + hiddenSum;
-    document.getElementById('ordinal-reduction').textContent = ordinalReduction;
-    document.getElementById('numeric-reduction').textContent = numericalReduction;
-    document.getElementById('hidden-reduction').textContent = hiddenReduction;
+    updateElement('ordinal-calculation', ordinalValues.join(' + ') + ' = ' + ordinalSum);
+    updateElement('numeric-calculation', numericalValues.join(' + ') + ' = ' + numericalSum);
+    updateElement('hidden-calculation', hiddenValues.join(' + ') + ' = ' + hiddenSum);
+    updateElement('ordinal-reduction', ordinalReduction);
+    updateElement('numeric-reduction', numericalReduction);
+    updateElement('hidden-reduction', hiddenReduction);
     
-    document.getElementById('input-word').textContent = word;
-    document.getElementById('ordinal-breakdown').textContent = ordinalValues.join(' ');
+    updateElement('input-word', word);
+    updateElement('ordinal-breakdown', ordinalValues.join(' '));
 }
 
 function reduceToSingleDigit(num) {
@@ -1081,16 +1085,26 @@ function resetResults() {
     ];
     
     elementsToReset.forEach(id => {
-        document.getElementById(id).textContent = id.includes('word') ? '' : '0';
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = id.includes('word') ? '' : '0';
+        }
     });
 }
 
 function resetAll() {
-    document.getElementById('word-input').value = '';
+    const inputElement = document.getElementById('word-input');
+    if (inputElement) inputElement.value = '';
     resetResults();
     hideAnagramSection();
 }
 
+// სიტყვების დახარისხების ფუნქცია (მხოლოდ ერთხელ განსაზღვრული)
+function sortWord(word) {
+    return word.split('').sort().join('');
+}
+
+// გაუმჯობესებული ანაგრამების მოძიების ფუნქცია
 async function findAnagrams() {
     const input = document.getElementById('word-input').value.trim();
     if (!input) {
@@ -1104,124 +1118,96 @@ async function findAnagrams() {
     const anagramTable = document.getElementById('anagram-table');
     const anagramResults = document.getElementById('anagram-results');
 
+    if (!anagramSection || !anagramLoader || !anagramMessage || !anagramTable || !anagramResults) {
+        console.error('ანაგრამების ელემენტები ვერ მოიძებნა');
+        return;
+    }
+
     anagramSection.style.display = 'block';
     anagramLoader.style.display = 'block';
     anagramMessage.textContent = 'ანაგრამების ძიება...';
+    anagramMessage.classList.remove('success');
     anagramTable.style.display = 'none';
     anagramResults.innerHTML = '';
 
     const inputSorted = sortWord(input);
     const resultsSet = new Set();
-    const parts = [
+    
+    // ფაილების ურლები - უმჯობესია მცირე რაოდენობით, გაერთიანებული ფაილები
+    const wordListUrls = [
         'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part1',
         'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part2',
-        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part3',
-        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part4',
-        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part5',
-        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part6',
-        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part7'
+        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part3'
     ];
 
     try {
-        for (const part of parts) {
-            const response = await fetch(part);
-            if (!response.ok) {
-                console.error(`Failed to fetch ${part}: ${response.status}`);
-                continue;
-            }
-
-            const text = await response.text();
-            const wordList = text.split('\n').map(word => word.trim()).filter(word => word);
-
-            for (const word of wordList) {
-                if (word !== input && word.length === input.length) {
-                    if (sortWord(word) === inputSorted) {
-                        resultsSet.add(JSON.stringify({ word, type: "exact" }));
+        // თუ ქეში არ გვაქვს, ჩავტვირთოთ სიტყვები
+        if (!wordListCache) {
+            wordListCache = new Set();
+            
+            for (const url of wordListUrls) {
+                try {
+                    const response = await fetch(url, { cache: 'force-cache' });
+                    if (!response.ok) {
+                        console.warn(`ფაილის ჩატვირთვის პრობლემა ${url}: ${response.status}`);
+                        continue;
                     }
+                    
+                    const text = await response.text();
+                    text.split('\n')
+                        .map(word => word.trim())
+                        .filter(word => word)
+                        .forEach(word => wordListCache.add(word));
+                    
+                } catch (error) {
+                    console.warn(`ფაილის ჩატვირთვის შეცდომა ${url}:`, error);
                 }
             }
+            
+            console.log(`ჩაიტვირთა ${wordListCache.size} სიტყვა ლექსიკონიდან`);
         }
+
+        // ანაგრამების ძიება
+        wordListCache.forEach(word => {
+            if (word !== input && word.length === input.length) {
+                if (sortWord(word) === inputSorted) {
+                    resultsSet.add(JSON.stringify({ 
+                        word: word, 
+                        type: "exact" 
+                    }));
+                }
+            }
+        });
 
         const results = Array.from(resultsSet).map(item => JSON.parse(item));
+        
+        // შედეგების ჩვენება
         anagramLoader.style.display = 'none';
         displayFoundAnagrams(results, anagramResults);
         anagramTable.style.display = 'table';
-        anagramMessage.textContent = 'ანაგრამები ნაპოვნია!';
-        anagramMessage.classList.add('success');
-        setTimeout(() => filterAnagrams('all'), 100);
-    } catch (error) {
-        console.error('Error fetching anagrams:', error);
-        anagramLoader.style.display = 'none';
-        anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა ანაგრამების ძიებისას</td></tr>';
-        anagramTable.style.display = 'table';
-        anagramMessage.textContent = 'შეცდომა ანაგრამების ძიებისას';
-    }
-}
-
-function sortWord(word) {
-    return word.split('').sort().join('');
-}
-
-async function findAnagramsAsync(inputWord, anagramResults, anagramLoader, anagramTable) {
-    try {
-        if (!wordListCache) {
-            const wordList = await loadWordsFromTXT('https://pub-54d4124b429946238e2f3201ea6af4ca.r2.dev/wordsChunk_0.txt');
-            wordListCache = new Set(wordList);
+        
+        if (results.length > 0) {
+            anagramMessage.textContent = 'ანაგრამები ნაპოვნია!';
+            anagramMessage.classList.add('success');
+        } else {
+            anagramMessage.textContent = 'ანაგრამები არ მოიძებნა';
+            anagramMessage.classList.remove('success');
         }
         
-        const inputSorted = sortWord(inputWord);
-        const foundWords = new Set();
-        const results = [];
-        
-        wordListCache.forEach(word => {
-            if (word !== inputWord && word.length === inputWord.length) {
-                const sortedWord = sortWord(word);
-                if (sortedWord === inputSorted) {
-                    foundWords.add(word);
-                    results.push({
-                        word: word, 
-                        type: 'შეყვანილი სიტყვის ზუსტი ანაგრამა'
-                    });
-                }
-            }
-        });
-        
-        wordListCache.forEach(word => {
-            if (word.length > inputWord.length) {
-                const startPart = word.substring(0, inputWord.length);
-                const startSorted = sortWord(startPart);
-                
-                if (startSorted === inputSorted && !foundWords.has(word)) {
-                    const restPart = word.substring(inputWord.length);
-                    const displayWord = startPart + '-' + restPart;
-                    
-                    foundWords.add(word);
-                    results.push({
-                        word: displayWord, 
-                        type: 'შეიცავს ანაგრამას დასაწყისში'
-                    });
-                }
-            }
-        });
-        
-        displayFoundAnagrams(results, anagramResults);
-        
-        anagramLoader.style.display = 'none';
-        anagramTable.style.display = 'table';
-        document.getElementById('anagram-message').textContent = 'ანაგრამები ნაპოვნია!';
-        document.getElementById('anagram-message').classList.add('success');
-
-        // ნაგულისხმევად "ყველა" ფილტრის გააქტიურება
         setTimeout(() => filterAnagrams('all'), 100);
     } catch (error) {
         console.error('ანაგრამების ძიებისას დაფიქსირდა შეცდომა:', error);
         anagramLoader.style.display = 'none';
         anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა ანაგრამების ძიებისას</td></tr>';
         anagramTable.style.display = 'table';
+        anagramMessage.textContent = 'შეცდომა ანაგრამების ძიებისას';
+        anagramMessage.classList.remove('success');
     }
 }
 
 function displayFoundAnagrams(results, anagramResults) {
+    if (!anagramResults) return;
+    
     if (results.length === 0) {
         const row = document.createElement('tr');
         const cell = document.createElement('td');
@@ -1236,13 +1222,15 @@ function displayFoundAnagrams(results, anagramResults) {
     
     results.forEach(result => {
         const row = document.createElement('tr');
-        row.dataset.type = result.type === 'შეყვანილი სიტყვის ზუსტი ანაგრამა' ? 'exact' : 'partial';
+        row.dataset.type = result.type;
         
         const wordCell = document.createElement('td');
         wordCell.textContent = result.word;
         
         const typeCell = document.createElement('td');
-        typeCell.textContent = result.type;
+        typeCell.textContent = result.type === 'exact' ? 
+            'შეყვანილი სიტყვის ზუსტი ანაგრამა' : 
+            'შეიცავს ანაგრამას დასაწყისში';
         
         row.appendChild(wordCell);
         row.appendChild(typeCell);
@@ -1254,22 +1242,22 @@ function displayFoundAnagrams(results, anagramResults) {
 
 function filterAnagrams(filterType) {
     const rows = document.querySelectorAll('#anagram-results tr');
+    let visibleCount = 0;
+    
     rows.forEach(row => {
         const rowType = row.dataset.type;
-        if (filterType === 'all') {
+        if (filterType === 'all' || filterType === rowType) {
             row.classList.remove('hidden');
-        } else if (filterType === 'exact' && rowType === 'exact') {
-            row.classList.remove('hidden');
-        } else if (filterType === 'partial' && rowType === 'partial') {
-            row.classList.remove('hidden');
+            visibleCount++;
         } else {
             row.classList.add('hidden');
         }
     });
 
-    const visibleRows = Array.from(rows).some(row => !row.classList.contains('hidden'));
     const message = document.getElementById('anagram-message');
-    if (!visibleRows) {
+    if (!message) return;
+    
+    if (visibleCount === 0) {
         message.textContent = 'არჩეული ფილტრით ანაგრამები არ მოიძებნა';
         message.classList.remove('success');
     } else {
@@ -1278,26 +1266,9 @@ function filterAnagrams(filterType) {
     }
 }
 
-function sortWord(word) {
-    return word.split('').sort().join('');
-}
-
-async function loadWordsFromTXT(filePath) {
-    try {
-        const response = await fetch(filePath);
-        if (!response.ok) {
-            throw new Error(`ფაილის ჩატვირთვის შეცდომა: ${response.status}`);
-        }
-        const text = await response.text();
-        return text.split('\n').map(word => word.trim()).filter(word => word);
-    } catch (error) {
-        console.error('სიტყვების ჩატვირთვისას დაფიქსირდა შეცდომა:', error);
-        throw error;
-    }
-}
-
 function hideAnagramSection() {
-    document.getElementById('anagram-section').style.display = 'none';
+    const anagramSection = document.getElementById('anagram-section');
+    if (anagramSection) anagramSection.style.display = 'none';
 }
 
 function debounce(func, wait) {
