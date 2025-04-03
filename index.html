@@ -1107,6 +1107,33 @@ function sortWord(word) {
 // გაუმჯობესებული ანაგრამების მოძიების ფუნქცია
 // შეცვლა გვინდა findAnagrams ფუნქციაში
 // განახლებული findAnagrams ფუნქცია
+// გამოსწორებული ფრონტენდ სკრიპტი
+document.addEventListener('DOMContentLoaded', function () {
+    generateAlphabetDisplay();
+
+    // ივენთ ლისენერები
+    document.getElementById('word-input').addEventListener('input', debounce(calculateGematria, 300));
+    document.getElementById('find-anagrams-btn').addEventListener('click', findAnagrams);
+    document.getElementById('clear-btn').addEventListener('click', resetAll);
+
+    // ფილტრის ღილაკების მართვა
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            const filterType = this.getAttribute('data-filter');
+            filterAnagrams(filterType);
+        });
+    });
+
+    // ნავიგაციის აქტიური ლინკის გამოყოფა
+    highlightActiveNavLink();
+});
+
+// თქვენი არსებული ფუნქციები...
+
+// განახლებული ანაგრამების მოძიების ფუნქცია
 async function findAnagrams() {
     const input = document.getElementById('word-input').value.trim();
     if (!input) {
@@ -1133,8 +1160,8 @@ async function findAnagrams() {
     anagramResults.innerHTML = '';
 
     try {
-        // ჩაანაცვლეთ ეს URL თქვენი რეალური Render.com სერვისის URL-ით
-        const apiUrl = 'https://anagram-service.onrender.com';
+        // სწორი API URL, სრული მისამართით
+        const apiUrl = 'https://anagram-service.onrender.com/api/find-anagrams';
         
         const response = await fetch(apiUrl, {
             method: 'POST',
@@ -1142,7 +1169,7 @@ async function findAnagrams() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ word: input }),
-            credentials: 'omit'
+            // credentials: 'omit' არ არის საჭირო თუ სერვერი არ იყენებს cookies
         });
         
         if (!response.ok) {
@@ -1175,6 +1202,8 @@ async function findAnagrams() {
         anagramMessage.classList.remove('success');
     }
 }
+
+// თქვენი დანარჩენი ფუნქციები...
 
 function displayFoundAnagrams(results, anagramResults) {
     if (!anagramResults) return;
