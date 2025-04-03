@@ -1135,6 +1135,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // თქვენი არსებული ფუნქციები...
 
 // განახლებული ანაგრამების მოძიების ფუნქცია
+// კლიენტის სკრიპტის გამოსწორება - findAnagrams ფუნქცია
 async function findAnagrams() {
     const input = document.getElementById('word-input').value.trim();
     if (!input) {
@@ -1161,8 +1162,10 @@ async function findAnagrams() {
     anagramResults.innerHTML = '';
 
     try {
-        // სწორი API URL, სრული მისამართით
+        // გავასწოროთ API URL - გამოვიყენოთ აბსოლუტური URL
         const apiUrl = 'https://anagram-service.onrender.com/api/find-anagrams';
+        
+        console.log('მოთხოვნა იგზავნება:', apiUrl, 'სიტყვა:', input);
         
         const response = await fetch(apiUrl, {
             method: 'POST',
@@ -1170,25 +1173,38 @@ async function findAnagrams() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ word: input }),
-            // credentials: 'omit' არ არის საჭირო თუ სერვერი არ იყენებს cookies
+            // მნიშვნელოვანია CORS-ისთვის
+            mode: 'cors'
         });
         
+        console.log('მიღებულია პასუხი, სტატუსი:', response.status);
+        
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ error: 'სერვერის შეცდომა' }));
-            throw new Error(errorData.error || 'სერვერის შეცდომა');
+            // მოვსინჯოთ შეცდომის წაკითხვა
+            let errorText;
+            try {
+                const errorData = await response.json();
+                errorText = errorData.error || 'სერვერის შეცდომა';
+            } catch (e) {
+                errorText = `სერვერის შეცდომა (${response.status})`;
+            }
+            throw new Error(errorText);
         }
         
         const data = await response.json();
+        console.log('მიღებული მონაცემები:', data);
         
         // შედეგების ჩვენება
         anagramLoader.style.display = 'none';
-        displayFoundAnagrams(data.anagrams, anagramResults);
-        anagramTable.style.display = 'table';
         
-        if (data.anagrams.length > 0) {
+        if (data.anagrams && data.anagrams.length > 0) {
+            displayFoundAnagrams(data.anagrams, anagramResults);
+            anagramTable.style.display = 'table';
             anagramMessage.textContent = 'ანაგრამები ნაპოვნია!';
             anagramMessage.classList.add('success');
         } else {
+            anagramTable.style.display = 'table';
+            anagramResults.innerHTML = '<tr><td colspan="2">ანაგრამები არ მოიძებნა</td></tr>';
             anagramMessage.textContent = 'ანაგრამები არ მოიძებნა';
             anagramMessage.classList.remove('success');
         }
@@ -1204,6 +1220,113 @@ async function findAnagrams() {
     }
 }
 
+// ალტერნატიული ფუნქცია პრობლემების შემთხვევაში - GET მეთოდით მოთხოვნა
+async function findAnagramsAlternative() {
+    const input = document.getElementById('word-input').value.trim();
+    if (!input) {
+        alert('გთხოვთ შეიყვანოთ სიტყვა ანაგრამების მოსაძებნად.');
+        return;
+    }
+
+    const anagramSection = document.getElementById('anagram-section');
+    const anagramLoader = document.getElementById('anagram-loader');
+    const anagramMessage = document.getElementById('anagram-message');
+    const anagramTable = document.getElementById('anagram-table');
+    const anagramResults = document.getElementById('anagram-results');
+
+    anagramSection.style.display = 'block';
+    anagramLoader.style.display = 'block';
+    anagramMessage.textContent = 'ანაგრამების ძიება (GET მეთოდით)...';
+    anagramMessage.classList.remove('success');
+    anagramTable.style.display = 'none';
+    anagramResults.innerHTML = '';
+
+    try {
+        // GET მეთოდით მოთხოვნა
+        const apiUrl = `https://anagram-service.onrender.com/api/find-anagrams?word=${encodeURIComponent(input)}`;
+        
+        console.log('GET მოთხოვნა იგზავნება:', apiUrl);
+        
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            mode: 'cors'
+        });
+        
+        if (!response.ok) {
+            let errorText;
+            try {
+                const errorData = await response.json();
+                errorText = errorData.error || 'სერვერის შეცდომა';
+            } catch (e) {
+                errorText = `სერვერის შეცდომა (${response.status})`;
+            }
+            throw new Error(errorText);
+        }
+        
+        const data = await response.json();
+        console.log('მიღებული მონაცემები (GET):', data);
+        
+        anagramLoader.style.display = 'none';
+        
+        if (data.anagrams && data.anagrams.length > 0) {
+            displayFoundAnagrams(data.anagrams, anagramResults);
+            anagramTable.style.display = 'table';
+            anagramMessage.textContent = 'ანაგრამები ნაპოვნია!';
+            anagramMessage.classList.add('success');
+        } else {
+            anagramTable.style.display = 'table';
+            anagramResults.innerHTML = '<tr><td colspan="2">ანაგრამები არ მოიძებნა</td></tr>';
+            anagramMessage.textContent = 'ანაგრამები არ მოიძებნა';
+            anagramMessage.classList.remove('success');
+        }
+        
+        setTimeout(() => filterAnagrams('all'), 100);
+    } catch (error) {
+        console.error('GET მეთოდით ანაგრამების ძიებისას დაფიქსირდა შეცდომა:', error);
+        anagramLoader.style.display = 'none';
+        anagramResults.innerHTML = `<tr><td colspan="2">დაფიქსირდა შეცდომა: ${error.message}</td></tr>`;
+        anagramTable.style.display = 'table';
+        anagramMessage.textContent = 'შეცდომა ანაგრამების ძიებისას';
+        anagramMessage.classList.remove('success');
+    }
+}
+// დოკუმენტის ჩატვირთვისას დავამატოთ GET მეთოდის ღილაკი
+document.addEventListener('DOMContentLoaded', function() {
+    const anagramButtonsContainer = document.querySelector('.anagram-buttons');
+    
+    if (anagramButtonsContainer) {
+        // დავამატოთ ალტერნატიული GET მეთოდის ღილაკი
+        const getMethodBtn = document.createElement('button');
+        getMethodBtn.id = 'find-anagrams-get-btn';
+        getMethodBtn.className = 'btn secondary';
+        getMethodBtn.textContent = 'ანაგრამების ძიება (GET)';
+        getMethodBtn.addEventListener('click', findAnagramsAlternative);
+        
+        anagramButtonsContainer.appendChild(getMethodBtn);
+    }
+    
+    // დავამატოთ სტატუსის შემოწმების ღილაკი
+    const checkStatusBtn = document.createElement('button');
+    checkStatusBtn.id = 'check-status-btn';
+    checkStatusBtn.className = 'btn info';
+    checkStatusBtn.textContent = 'სერვერის სტატუსი';
+    checkStatusBtn.style.marginLeft = '10px';
+    
+    checkStatusBtn.addEventListener('click', async function() {
+        try {
+            const response = await fetch('https://anagram-service.onrender.com/api/status');
+            const data = await response.json();
+            alert(`სერვერის სტატუსი: ${data.status}\nლექსიკონი ჩატვირთულია: ${data.dictionaryLoaded ? 'კი' : 'არა'}\nსიტყვების რაოდენობა: ${data.wordCount}`);
+        } catch(error) {
+            alert('სერვერთან დაკავშირების შეცდომა: ' + error.message);
+        }
+    });
+    
+    if (anagramButtonsContainer) {
+        anagramButtonsContainer.appendChild(checkStatusBtn);
+    }
+});
+        
 // თქვენი დანარჩენი ფუნქციები...
 
 function displayFoundAnagrams(results, anagramResults) {
