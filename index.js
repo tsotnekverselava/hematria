@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const fetch = require('node-fetch'); // Ensure node-fetch is properly imported
+const fetch = require('node-fetch');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
@@ -33,11 +33,12 @@ async function loadWordList() {
     console.log('დაიწყო სიტყვების ბაზის ჩატვირთვა...');
 
     try {
-        console.log('ჩაიტვირთება GitHub-იდან wordsChunk_0.txt');
-        
-        // Using node-fetch explicitly
-        const response = await fetch('https://github.com/tsotnekverselava/hematria/raw/refs/heads/anagram-service/data/wordsChunk_0.txt.txt');
-        
+        // GitHub-ის raw URL-ის გამოსწორება
+        const url = 'https://raw.githubusercontent.com/tsotnekverselava/hematria/refs/heads/anagram-service/data/wordsChunk_0.txt.txt';
+        console.log('ჩაიტვირთება GitHub-იდან:', url);
+
+        const response = await fetch(url);
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -45,7 +46,7 @@ async function loadWordList() {
         const data = await response.text();
         const words = data.split('\n')
             .map(word => word.trim())
-            .filter(word => word && word.length > 1); // დავტოვოთ მხოლოდ ვალიდური სიტყვები
+            .filter(word => word && word.length > 1); // მხოლოდ ვალიდური სიტყვები
 
         words.forEach(word => wordList.add(word));
 
@@ -60,7 +61,8 @@ async function loadWordList() {
             'წყალი', 'ლიწყა', 'ყალიწ',
             'მთვარე', 'რემთვა', 'თვარემ',
             'მზე', 'ზემ',
-            'ქართული', 'თულიქარ', 'ლიქართუ'
+            'ქართული', 'თულიქარ', 'ლიქართუ',
+            'კილა', 'ლიკა', 'კილანა' // დავამატე ტესტირებისთვის
         ];
 
         sampleWords.forEach(word => wordList.add(word));
@@ -112,27 +114,22 @@ app.route('/api/find-anagrams')
             const results = [];
 
             wordList.forEach(dictWord => {
-                // ზუსტი ანაგრამების შემოწმება
+                // ზუსტი ანაგრამა
                 if (dictWord !== cleanWord && dictWord.length === cleanWord.length) {
                     if (sortWord(dictWord) === inputSorted) {
                         results.push({
                             word: dictWord,
-                            type: "exact"
+                            type: 'exact'
                         });
                     }
                 }
-                // ანაგრამა დასაწყისში
-                else if (dictWord !== cleanWord && dictWord.length > cleanWord.length) {
-                    // მოვძებნოთ სიტყვის დასაწყისი, რომელიც შეყვანილი სიტყვის სიგრძისაა
-                    const prefix = dictWord.substring(0, cleanWord.length);
-                    
-                    // შევამოწმოთ, არის თუ არა პრეფიქსი ჩვენი სიტყვის ანაგრამა
+                // დასაწყისში ანაგრამა
+                else if (dictWord.length > cleanWord.length) {
+                    const prefix = dictWord.slice(0, cleanWord.length);
                     if (sortWord(prefix) === inputSorted) {
-                        const suffix = dictWord.substring(cleanWord.length);
                         results.push({
-                            word: dictWord,
-                            match: `${prefix}-${suffix}`,
-                            type: "prefix"
+                            word: `${prefix}-${dictWord.slice(cleanWord.length)}`,
+                            type: 'partial'
                         });
                     }
                 }
@@ -142,7 +139,6 @@ app.route('/api/find-anagrams')
                 original: cleanWord,
                 anagrams: results
             });
-
         } catch (error) {
             console.error('შეცდომა ანაგრამების ძიებისას:', error);
             res.status(500).json({
@@ -151,63 +147,50 @@ app.route('/api/find-anagrams')
         }
     })
     .get((req, res) => {
-    const word = req.query.word;
+        const word = req.query.word;
 
-    if (!word) {
-        return res.status(400).json({
-            error: 'გთხოვთ მიუთითოთ word პარამეტრი'
-        });
-    }
+        if (!word) {
+            return res.status(400).json({
+                error: 'გთხოვთ მიუთითოთ word პარამეტრი'
+            });
+        }
 
-    if (!wordListLoaded) {
-        return res.status(503).json({
-            error: 'სერვისი ჯერ მზად არ არის. სიტყვების ბაზა იტვირთება.'
-        });
-    }
+        if (!wordListLoaded) {
+            return res.status(503).json({
+                error: 'სერვისი ჯერ მზად არ არის. სიტყვების ბაზა იტვირთება.'
+            });
+        }
 
-    try {
-        const inputSorted = sortWord(word);
-        const results = [];
+        try {
+            const inputSorted = sortWord(word);
+            const results = [];
 
-        wordList.forEach(dictWord => {
-            // ზუსტი ანაგრამა
-            if (dictWord !== word && dictWord.length === word.length) {
-                if (sortWord(dictWord) === inputSorted) {
-                    results.push({
-                        word: dictWord,
-                        type: "exact"
-                    });
+            wordList.forEach(dictWord => {
+                // ზუსტი ანაგრამა
+                if (dictWord !== word && dictWord.length === word.length) {
+                    if (sortWord(dictWord) === inputSorted) {
+                        results.push({
+                            word: dictWord,
+                            type: 'exact'
+                        });
+                    }
                 }
-            }
-            // დასაწყისში ანაგრამა
-            else if (dictWord.length > word.length) {
-                const prefix = dictWord.slice(0, word.length);
-                if (sortWord(prefix) === inputSorted) {
-                    results.push({
-                        word: `${prefix}-${dictWord.slice(word.length)}`,
-                        type: "partial"
-                    });
+                // დასაწყისში ანაგრამა
+                else if (dictWord.length > word.length) {
+                    const prefix = dictWord.slice(0, word.length);
+                    if (sortWord(prefix) === inputSorted) {
+                        results.push({
+                            word: `${prefix}-${dictWord.slice(word.length)}`,
+                            type: 'partial'
+                        });
+                    }
                 }
-            }
-        });
+            });
 
-        res.json({
-            original: word,
-            anagrams: results
-        });
-
-    } catch (error) {
-        console.error('შეცდომა ანაგრამების ძიებისას:', error);
-        res.status(500).json({
-            error: 'შეცდომა ანაგრამების ძიებისას'
-        });
-    }
-});
             res.json({
                 original: word,
                 anagrams: results
             });
-
         } catch (error) {
             console.error('შეცდომა ანაგრამების ძიებისას:', error);
             res.status(500).json({
