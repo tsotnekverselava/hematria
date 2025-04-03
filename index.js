@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const fetch = require('node-fetch');
+const fetch = require('node-fetch'); // Ensure node-fetch is properly imported
 const app = express();
 const PORT = process.env.PORT || 10000;
 
@@ -34,6 +34,8 @@ async function loadWordList() {
 
     try {
         console.log('ჩაიტვირთება GitHub-იდან wordsChunk_0.txt');
+        
+        // Using node-fetch explicitly
         const response = await fetch('https://raw.githubusercontent.com/tsotnekverselava/hematria/anagram-service/data/wordsChunk_0.txt');
         
         if (!response.ok) {
