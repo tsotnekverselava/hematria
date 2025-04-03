@@ -1105,6 +1105,7 @@ function sortWord(word) {
 }
 
 // გაუმჯობესებული ანაგრამების მოძიების ფუნქცია
+// შეცვლა გვინდა findAnagrams ფუნქციაში
 async function findAnagrams() {
     const input = document.getElementById('word-input').value.trim();
     if (!input) {
@@ -1130,63 +1131,31 @@ async function findAnagrams() {
     anagramTable.style.display = 'none';
     anagramResults.innerHTML = '';
 
-    const inputSorted = sortWord(input);
-    const resultsSet = new Set();
-    
-    // ფაილების ურლები - უმჯობესია მცირე რაოდენობით, გაერთიანებული ფაილები
-    const wordListUrls = [
-        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part1',
-        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part2',
-        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part3'
-    ];
-
     try {
-        // თუ ქეში არ გვაქვს, ჩავტვირთოთ სიტყვები
-        if (!wordListCache) {
-            wordListCache = new Set();
-            
-            for (const url of wordListUrls) {
-                try {
-                    const response = await fetch(url, { cache: 'force-cache' });
-                    if (!response.ok) {
-                        console.warn(`ფაილის ჩატვირთვის პრობლემა ${url}: ${response.status}`);
-                        continue;
-                    }
-                    
-                    const text = await response.text();
-                    text.split('\n')
-                        .map(word => word.trim())
-                        .filter(word => word)
-                        .forEach(word => wordListCache.add(word));
-                    
-                } catch (error) {
-                    console.warn(`ფაილის ჩატვირთვის შეცდომა ${url}:`, error);
-                }
-            }
-            
-            console.log(`ჩაიტვირთა ${wordListCache.size} სიტყვა ლექსიკონიდან`);
-        }
-
-        // ანაგრამების ძიება
-        wordListCache.forEach(word => {
-            if (word !== input && word.length === input.length) {
-                if (sortWord(word) === inputSorted) {
-                    resultsSet.add(JSON.stringify({ 
-                        word: word, 
-                        type: "exact" 
-                    }));
-                }
-            }
+        // API სერვისის ურლი - შეცვალეთ თქვენი Render.com ურლით
+        const apiUrl = 'https://your-anagram-service-name.onrender.com/api/find-anagrams';
+        
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ word: input })
         });
-
-        const results = Array.from(resultsSet).map(item => JSON.parse(item));
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'სერვერის შეცდომა');
+        }
+        
+        const data = await response.json();
         
         // შედეგების ჩვენება
         anagramLoader.style.display = 'none';
-        displayFoundAnagrams(results, anagramResults);
+        displayFoundAnagrams(data.anagrams, anagramResults);
         anagramTable.style.display = 'table';
         
-        if (results.length > 0) {
+        if (data.anagrams.length > 0) {
             anagramMessage.textContent = 'ანაგრამები ნაპოვნია!';
             anagramMessage.classList.add('success');
         } else {
@@ -1198,7 +1167,7 @@ async function findAnagrams() {
     } catch (error) {
         console.error('ანაგრამების ძიებისას დაფიქსირდა შეცდომა:', error);
         anagramLoader.style.display = 'none';
-        anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა ანაგრამების ძიებისას</td></tr>';
+        anagramResults.innerHTML = `<tr><td colspan="2">დაფიქსირდა შეცდომა: ${error.message}</td></tr>`;
         anagramTable.style.display = 'table';
         anagramMessage.textContent = 'შეცდომა ანაგრამების ძიებისას';
         anagramMessage.classList.remove('success');
