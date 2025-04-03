@@ -36,7 +36,7 @@ async function loadWordList() {
         console.log('ჩაიტვირთება GitHub-იდან wordsChunk_0.txt');
         
         // Using node-fetch explicitly
-        const response = await fetch('https://raw.githubusercontent.com/tsotnekverselava/hematria/anagram-service/data/wordsChunk_0.txt');
+        const response = await fetch('https://github.com/tsotnekverselava/hematria/raw/refs/heads/anagram-service/data/wordsChunk_0.txt.txt');
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
