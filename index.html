@@ -1106,6 +1106,7 @@ function sortWord(word) {
 
 // გაუმჯობესებული ანაგრამების მოძიების ფუნქცია
 // შეცვლა გვინდა findAnagrams ფუნქციაში
+// განახლებული findAnagrams ფუნქცია
 async function findAnagrams() {
     const input = document.getElementById('word-input').value.trim();
     if (!input) {
@@ -1132,19 +1133,20 @@ async function findAnagrams() {
     anagramResults.innerHTML = '';
 
     try {
-        // API სერვისის ურლი - შეცვალეთ თქვენი Render.com ურლით
-        const apiUrl = 'https://your-anagram-service-name.onrender.com/api/find-anagrams';
+        // ჩაანაცვლეთ ეს URL თქვენი რეალური Render.com სერვისის URL-ით
+        const apiUrl = 'https://your-real-service-name.onrender.com/api/find-anagrams';
         
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ word: input })
+            body: JSON.stringify({ word: input }),
+            credentials: 'omit'
         });
         
         if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.json().catch(() => ({ error: 'სერვერის შეცდომა' }));
             throw new Error(errorData.error || 'სერვერის შეცდომა');
         }
         
