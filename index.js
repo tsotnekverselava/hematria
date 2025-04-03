@@ -112,11 +112,27 @@ app.route('/api/find-anagrams')
             const results = [];
 
             wordList.forEach(dictWord => {
+                // ზუსტი ანაგრამების შემოწმება
                 if (dictWord !== cleanWord && dictWord.length === cleanWord.length) {
                     if (sortWord(dictWord) === inputSorted) {
                         results.push({
                             word: dictWord,
                             type: "exact"
+                        });
+                    }
+                }
+                // ანაგრამა დასაწყისში
+                else if (dictWord !== cleanWord && dictWord.length > cleanWord.length) {
+                    // მოვძებნოთ სიტყვის დასაწყისი, რომელიც შეყვანილი სიტყვის სიგრძისაა
+                    const prefix = dictWord.substring(0, cleanWord.length);
+                    
+                    // შევამოწმოთ, არის თუ არა პრეფიქსი ჩვენი სიტყვის ანაგრამა
+                    if (sortWord(prefix) === inputSorted) {
+                        const suffix = dictWord.substring(cleanWord.length);
+                        results.push({
+                            word: dictWord,
+                            match: `${prefix}-${suffix}`,
+                            type: "prefix"
                         });
                     }
                 }
@@ -154,6 +170,7 @@ app.route('/api/find-anagrams')
             const results = [];
 
             wordList.forEach(dictWord => {
+                // ზუსტი ანაგრამების შემოწმება
                 if (dictWord !== word && dictWord.length === word.length) {
                     if (sortWord(dictWord) === inputSorted) {
                         results.push({
@@ -162,8 +179,35 @@ app.route('/api/find-anagrams')
                         });
                     }
                 }
+                // ანაგრამა დასაწყისში
+                else if (dictWord !== word && dictWord.length > word.length) {
+                    // მოვძებნოთ სიტყვის დასაწყისი, რომელიც შეყვანილი სიტყვის სიგრძისაა
+                    const prefix = dictWord.substring(0, word.length);
+                    
+                    // შევამოწმოთ, არის თუ არა პრეფიქსი ჩვენი სიტყვის ანაგრამა
+                    if (sortWord(prefix) === inputSorted) {
+                        const suffix = dictWord.substring(word.length);
+                        results.push({
+                            word: dictWord,
+                            match: `${prefix}-${suffix}`,
+                            type: "prefix"
+                        });
+                    }
+                }
             });
 
+            res.json({
+                original: word,
+                anagrams: results
+            });
+
+        } catch (error) {
+            console.error('შეცდომა ანაგრამების ძიებისას:', error);
+            res.status(500).json({
+                error: 'შეცდომა ანაგრამების ძიებისას'
+            });
+        }
+    });
             res.json({
                 original: word,
                 anagrams: results
