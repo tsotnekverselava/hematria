@@ -1,20 +1,16 @@
-// index.js - შექმენით ახალი ფაილი ან გადაარქვით server.js ფაილს index.js
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-
+const fetch = require('node-fetch');
 const app = express();
-const PORT = process.env.PORT || 10000; // Render-ზე ნაგულისხმევი პორტი
+const PORT = process.env.PORT || 10000;
 
-// CORS მოწყობა - გავაფართოვეთ დაშვებული დომენები
+// CORS მოწყობა
 app.use(cors({
-  origin: ['https://hematria.nextgen.ge', 'http://localhost:5500', 'http://127.0.0.1:5500', 'https://anagram-service.onrender.com'],
-  methods: ['GET', 'POST', 'OPTIONS'],
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 204
+    origin: ['https://hematria.nextgen.ge', 'http://localhost:5500', 'http://127.0.0.1:5500', 'https://anagram-service.onrender.com'],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 204
 }));
 
 app.use(express.json());
@@ -32,51 +28,42 @@ function sortWord(word) {
 // ბაზის ჩატვირთვის ფუნქცია
 async function loadWordList() {
     if (isLoadingWordList) return;
-    
+
     isLoadingWordList = true;
     console.log('დაიწყო სიტყვების ბაზის ჩატვირთვა...');
-    
+
     try {
-        // შევამოწმოთ არსებობს თუ არა სიტყვების ფაილი
-        const localFilePath = path.join(__dirname, 'wordsChunk_0.txt');
+        console.log('ჩაიტვირთება GitHub-იდან wordsChunk_0.txt');
+        const response = await fetch('https://raw.githubusercontent.com/tsotnekverselava/hematria/anagram-service/data/wordsChunk_0.txt');
         
-        if (fs.existsSync(localFilePath)) {
-            console.log('გამოიყენება ლოკალური wordsChunk_0.txt ფაილი');
-            const data = fs.readFileSync(localFilePath, 'utf8');
-            
-            // გადავამუშავოთ ფაილის შიგთავსი
-            const words = data.split('\n')
-                .map(word => word.trim())
-                .filter(word => word && word.length > 1); // დავტოვოთ მხოლოდ ვალიდური სიტყვები
-                
-            words.forEach(word => wordList.add(word));
-            
-            console.log(`ჩაიტვირთა ${wordList.size} სიტყვა ლოკალური ფაილიდან`);
-            wordListLoaded = true;
-        } else {
-            // თუ ფაილი არ არსებობს, შევქმნათ მინიმალური სატესტო ლექსიკონი
-            console.log('ლოკალური ფაილი ვერ მოიძებნა, იქმნება მინიმალური ლექსიკონი');
-            
-            // ამ სიტყვების სიას გამოვიყენებთ საილუსტრაციოდ
-            const sampleWords = [
-                'სახლი', 'ხლისა', 'ლისახ',
-                'კარი', 'რაკი', 'რიკანა',
-                'წყალი', 'ლიწყა', 'ყალიწ',
-                'მთვარე', 'რემთვა', 'თვარემ',
-                'მზე', 'ზემ',
-                'ქართული', 'თულიქარ', 'ლიქართუ'
-            ];
-            
-            sampleWords.forEach(word => wordList.add(word));
-            
-            // შევინახოთ ეს სიტყვები ფაილშიც
-            fs.writeFileSync(localFilePath, sampleWords.join('\n'), 'utf8');
-            
-            console.log(`შეიქმნა მინიმალური ლექსიკონი ${wordList.size} სიტყვით`);
-            wordListLoaded = true;
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const data = await response.text();
+        const words = data.split('\n')
+            .map(word => word.trim())
+            .filter(word => word && word.length > 1); // დავტოვოთ მხოლოდ ვალიდური სიტყვები
+
+        words.forEach(word => wordList.add(word));
+
+        console.log(`ჩაიტვირთა ${wordList.size} სიტყვა GitHub-იდან`);
+        wordListLoaded = true;
     } catch (error) {
         console.error('შეცდომა სიტყვების ბაზის ჩატვირთვისას:', error);
+        // თუ GitHub-იდან ჩატვირთვა ვერ მოხერხდა, გამოვიყენოთ მინიმალური ლექსიკონი
+        const sampleWords = [
+            'სახლი', 'ხლისა', 'ლისახ',
+            'კარი', 'რაკი', 'რიკა',
+            'წყალი', 'ლიწყა', 'ყალიწ',
+            'მთვარე', 'რემთვა', 'თვარემ',
+            'მზე', 'ზემ',
+            'ქართული', 'თულიქარ', 'ლიქართუ'
+        ];
+
+        sampleWords.forEach(word => wordList.add(word));
+        console.log(`შეიქმნა მინიმალური ლექსიკონი ${wordList.size} სიტყვით`);
+        wordListLoaded = true;
     } finally {
         isLoadingWordList = false;
     }
@@ -94,7 +81,7 @@ app.get('/api/status', (req, res) => {
     });
 });
 
-// ანაგრამების მოძიების ენდპოინტი - დავამატეთ GET მეთოდიც ტესტირებისთვის
+// ანაგრამების მოძიების ენდპოინტი
 app.route('/api/find-anagrams')
     .post((req, res) => {
         if (!wordListLoaded) {
@@ -102,27 +89,26 @@ app.route('/api/find-anagrams')
                 error: 'სერვისი ჯერ მზად არ არის. სიტყვების ბაზა იტვირთება.'
             });
         }
-        
+
         const { word } = req.body;
-        
+
         if (!word || typeof word !== 'string') {
             return res.status(400).json({
                 error: 'არასწორი მოთხოვნა. გთხოვთ მიუთითოთ სიტყვა.'
             });
         }
-        
+
         const cleanWord = word.trim();
         if (cleanWord.length === 0) {
             return res.status(400).json({
                 error: 'გთხოვთ შეიყვანოთ სიტყვა ანაგრამების მოსაძებნად.'
             });
         }
-        
+
         try {
             const inputSorted = sortWord(cleanWord);
             const results = [];
-            
-            // ანაგრამების ძიება
+
             wordList.forEach(dictWord => {
                 if (dictWord !== cleanWord && dictWord.length === cleanWord.length) {
                     if (sortWord(dictWord) === inputSorted) {
@@ -133,12 +119,12 @@ app.route('/api/find-anagrams')
                     }
                 }
             });
-            
+
             res.json({
                 original: cleanWord,
                 anagrams: results
             });
-            
+
         } catch (error) {
             console.error('შეცდომა ანაგრამების ძიებისას:', error);
             res.status(500).json({
@@ -147,25 +133,24 @@ app.route('/api/find-anagrams')
         }
     })
     .get((req, res) => {
-        // მარტივი GET მეთოდი ტესტირებისთვის
         const word = req.query.word;
-        
+
         if (!word) {
             return res.status(400).json({
                 error: 'გთხოვთ მიუთითოთ word პარამეტრი'
             });
         }
-        
+
         if (!wordListLoaded) {
             return res.status(503).json({
                 error: 'სერვისი ჯერ მზად არ არის. სიტყვების ბაზა იტვირთება.'
             });
         }
-        
+
         try {
             const inputSorted = sortWord(word);
             const results = [];
-            
+
             wordList.forEach(dictWord => {
                 if (dictWord !== word && dictWord.length === word.length) {
                     if (sortWord(dictWord) === inputSorted) {
@@ -176,12 +161,12 @@ app.route('/api/find-anagrams')
                     }
                 }
             });
-            
+
             res.json({
                 original: word,
                 anagrams: results
             });
-            
+
         } catch (error) {
             console.error('შეცდომა ანაგრამების ძიებისას:', error);
             res.status(500).json({
