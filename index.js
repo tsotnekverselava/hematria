@@ -25,7 +25,7 @@ function sortWord(word) {
     return word.split('').sort().join('');
 }
 
-// ბაზის ჩატვირთვის ფუნქცია
+// ბაზის ჩატვირთვის ფუნქცია JSON-ისთვის
 async function loadWordList() {
     if (isLoadingWordList) return;
 
@@ -33,8 +33,8 @@ async function loadWordList() {
     console.log('დაიწყო სიტყვების ბაზის ჩატვირთვა...');
 
     try {
-        // GitHub-ის raw URL-ის გამოსწორება
-        const url = 'https://raw.githubusercontent.com/tsotnekverselava/hematria/refs/heads/anagram-service/data/wordsChunk_0.txt.txt';
+        // JSON ფაილის URL GitHub-იდან
+        const url = 'https://raw.githubusercontent.com/tsotnekverselava/hematria/refs/heads/anagram-service/data/new.json';
         console.log('ჩაიტვირთება GitHub-იდან:', url);
 
         const response = await fetch(url);
@@ -43,8 +43,9 @@ async function loadWordList() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.text();
-        const words = data.split('\n')
+        // JSON-ის წაკითხვა
+        const data = await response.json();
+        const words = data
             .map(word => word.trim())
             .filter(word => word && word.length > 1); // მხოლოდ ვალიდური სიტყვები
 
@@ -62,7 +63,7 @@ async function loadWordList() {
             'მთვარე', 'რემთვა', 'თვარემ',
             'მზე', 'ზემ',
             'ქართული', 'თულიქარ', 'ლიქართუ',
-            'კილა', 'ლიკა', 'კილანა' // დავამატე ტესტირებისთვის
+            'ბა-ტონო', 'ბატონობ', 'ბატონობა', 'ბატონობდა' // დავამატე თქვენი JSON-ის მაგალითები
         ];
 
         sampleWords.forEach(word => wordList.add(word));
@@ -176,7 +177,9 @@ app.route('/api/find-anagrams')
                     }
                 }
                 // დასაწყისში ანაგრამა
-                else if (dictWord.length > word.length) {
+                else if (dictWord.length
+
+ > word.length) {
                     const prefix = dictWord.slice(0, word.length);
                     if (sortWord(prefix) === inputSorted) {
                         results.push({
@@ -227,7 +230,7 @@ app.get('/', (req, res) => {
                     <li>GET <code>/api/find-anagrams?word=სიტყვა</code> - ანაგრამების ძიება GET მეთოდით</li>
                 </ul>
                 <h2>ტესტი</h2>
-                <p>მაგალითი: <a href="/api/find-anagrams?word=სახლი" target="_blank">იპოვე "სახლი"-ს ანაგრამები</a></p>
+                <p>მაგალითი: <a href="/api/find-anagrams?word=ბატონო" target="_blank">იპოვე "ბატონო"-ს ანაგრამები</a></p>
             </body>
         </html>
     `);
