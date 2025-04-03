@@ -1091,7 +1091,7 @@ function resetAll() {
     hideAnagramSection();
 }
 
-function findAnagrams() {
+async function findAnagrams() {
     const input = document.getElementById('word-input').value.trim();
     if (!input) {
         alert('გთხოვთ შეიყვანოთ სიტყვა ანაგრამების მოსაძებნად.');
@@ -1110,28 +1110,56 @@ function findAnagrams() {
     anagramTable.style.display = 'none';
     anagramResults.innerHTML = '';
 
-    fetch(`https://sparkling-truth-24bb.tsotne-kverselava.workers.dev?word=${encodeURIComponent(input)}`)
-        .then(response => {
+    const inputSorted = sortWord(input);
+    const resultsSet = new Set();
+    const parts = [
+        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part1',
+        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part2',
+        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part3',
+        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part4',
+        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part5',
+        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part6',
+        'https://raw.githubusercontent.com/tsotnekverselava/hematria/main/wordsChunk_0.txt.part7'
+    ];
+
+    try {
+        for (const part of parts) {
+            const response = await fetch(part);
             if (!response.ok) {
-                throw new Error('Worker returned an error: ' + response.status);
+                console.error(`Failed to fetch ${part}: ${response.status}`);
+                continue;
             }
-            return response.json();
-        })
-        .then(results => {
-            anagramLoader.style.display = 'none';
-            displayFoundAnagrams(results, anagramResults);
-            anagramTable.style.display = 'table';
-            anagramMessage.textContent = 'ანაგრამები ნაპოვნია!';
-            anagramMessage.classList.add('success');
-            setTimeout(() => filterAnagrams('all'), 100);
-        })
-        .catch(error => {
-            console.error('Error fetching anagrams:', error);
-            anagramLoader.style.display = 'none';
-            anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა ანაგრამების ძიებისას</td></tr>';
-            anagramTable.style.display = 'table';
-            anagramMessage.textContent = 'შეცდომა ანაგრამების ძიებისას';
-        });
+
+            const text = await response.text();
+            const wordList = text.split('\n').map(word => word.trim()).filter(word => word);
+
+            for (const word of wordList) {
+                if (word !== input && word.length === input.length) {
+                    if (sortWord(word) === inputSorted) {
+                        resultsSet.add(JSON.stringify({ word, type: "exact" }));
+                    }
+                }
+            }
+        }
+
+        const results = Array.from(resultsSet).map(item => JSON.parse(item));
+        anagramLoader.style.display = 'none';
+        displayFoundAnagrams(results, anagramResults);
+        anagramTable.style.display = 'table';
+        anagramMessage.textContent = 'ანაგრამები ნაპოვნია!';
+        anagramMessage.classList.add('success');
+        setTimeout(() => filterAnagrams('all'), 100);
+    } catch (error) {
+        console.error('Error fetching anagrams:', error);
+        anagramLoader.style.display = 'none';
+        anagramResults.innerHTML = '<tr><td colspan="2">დაფიქსირდა შეცდომა ანაგრამების ძიებისას</td></tr>';
+        anagramTable.style.display = 'table';
+        anagramMessage.textContent = 'შეცდომა ანაგრამების ძიებისას';
+    }
+}
+
+function sortWord(word) {
+    return word.split('').sort().join('');
 }
 
 async function findAnagramsAsync(inputWord, anagramResults, anagramLoader, anagramTable) {
