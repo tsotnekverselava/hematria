@@ -8,16 +8,19 @@ const PORT = process.env.PORT || 10000;
 const DEEPSEEK_API_KEY = 'sk-c3b81abe117e43c398abc72bf358ef96';
 const DEEPSEEK_BASE_URL = 'https://api.deepseek.com';
 
-// CORS მოწყობა
-app.use(cors({
-    origin: ['https://your-cloudflare-domain.com', 'http://localhost:5500'], // შეცვალეთ თქვენი Cloudflare დომენით
+// CORS-ის კონფიგურაცია - დავუშვათ მხოლოდ hematria.nextgen.ge
+const corsOptions = {
+    origin: 'https://hematria.nextgen.ge',
     methods: ['GET', 'POST', 'OPTIONS'],
-    credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     optionsSuccessStatus: 204
-}));
+};
 
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Preflight მოთხოვნების ხელით მართვა (დამატებითი უზრუნველყოფა)
+app.options('*', cors(corsOptions));
 
 // DeepSeek-თან მოთხოვნის გაგზავნის ფუნქცია
 async function callDeepSeek(prompt) {
@@ -95,6 +98,11 @@ app.post('/api/crypto-analysis', async (req, res) => {
 // სტატუსის ენდპოინტი
 app.get('/api/status', (req, res) => {
     res.json({ status: 'running', deepSeekIntegration: true });
+});
+
+// ძირითადი გვერდი (დიაგნოსტიკისთვის)
+app.get('/', (req, res) => {
+    res.send('API is running. Use /api/find-anagrams or /api/crypto-analysis');
 });
 
 app.listen(PORT, () => {
