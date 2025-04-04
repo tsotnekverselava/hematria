@@ -561,348 +561,206 @@ const georgianAlphabet = [
     { letter: 'ჵ(Ⴥ)', ordinal: 37, value: 10000 }
 ];
 
-// ასოების სწრაფი ძიებისთვის lookup ობიექტი
-const letterLookup = {};
-georgianAlphabet.forEach(item => {
-    letterLookup[item.letter] = item;
-});
+const georgianAlphabet = [
+    { letter: 'ა', ordinal: 1, value: 1 }, { letter: 'ბ', ordinal: 2, value: 2 },
+    { letter: 'გ', ordinal: 3, value: 3 }, { letter: 'დ', ordinal: 4, value: 4 },
+    { letter: 'ე', ordinal: 5, value: 5 }, { letter: 'ვ', ordinal: 6, value: 6 },
+    { letter: 'ზ', ordinal: 7, value: 7 }, { letter: 'ჱ', ordinal: 8, value: 8 },
+    { letter: 'თ', ordinal: 9, value: 9 }, { letter: 'ი', ordinal: 10, value: 10 },
+    { letter: 'კ', ordinal: 11, value: 20 }, { letter: 'ლ', ordinal: 12, value: 30 },
+    { letter: 'მ', ordinal: 13, value: 40 }, { letter: 'ნ', ordinal: 14, value: 50 },
+    { letter: 'ჲ', ordinal: 15, value: 60 }, { letter: 'ო', ordinal: 16, value: 70 },
+    { letter: 'პ', ordinal: 17, value: 80 }, { letter: 'ჟ', ordinal: 18, value: 90 },
+    { letter: 'რ', ordinal: 19, value: 100 }, { letter: 'ს', ordinal: 20, value: 200 },
+    { letter: 'ტ', ordinal: 21, value: 300 }, { letter: 'ჳ', ordinal: 22, value: 400 },
+    { letter: 'უ', ordinal: 23, value: 400 }, { letter: 'ფ', ordinal: 24, value: 500 },
+    { letter: 'ქ', ordinal: 25, value: 600 }, { letter: 'ღ', ordinal: 26, value: 700 },
+    { letter: 'ყ', ordinal: 27, value: 800 }, { letter: 'შ', ordinal: 28, value: 900 },
+    { letter: 'ჩ', ordinal: 29, value: 1000 }, { letter: 'ც', ordinal: 30, value: 2000 },
+    { letter: 'ძ', ordinal: 31, value: 3000 }, { letter: 'წ', ordinal: 32, value: 4000 },
+    { letter: 'ჭ', ordinal: 33, value: 5000 }, { letter: 'ხ', ordinal: 34, value: 6000 },
+    { letter: 'ჴ', ordinal: 35, value: 7000 }, { letter: 'ჯ', ordinal: 36, value: 8000 },
+    { letter: 'ჰ', ordinal: 37, value: 9000 }, { letter: 'ჵ', ordinal: 38, value: 10000 }
+];
 
-// დოკუმენტის ჩატვირთვისას
-document.addEventListener('DOMContentLoaded', function () {
+const letterLookup = {};
+georgianAlphabet.forEach(item => letterLookup[item.letter] = item);
+
+document.addEventListener('DOMContentLoaded', () => {
     generateAlphabetDisplay();
 
-    // ივენთ ლისენერები
     document.getElementById('word-input').addEventListener('input', debounce(calculateGematria, 300));
     document.getElementById('find-anagrams-btn').addEventListener('click', findAnagrams);
+    document.getElementById('crypto-analysis-btn').addEventListener('click', performCryptoAnalysis);
     document.getElementById('clear-btn').addEventListener('click', resetAll);
-
-    // ფილტრის ღილაკების მართვა
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            const filterType = this.getAttribute('data-filter');
-            filterAnagrams(filterType);
-        });
-    });
-
-    // ნავიგაციის აქტიური ლინკის გამოყოფა
-    highlightActiveNavLink();
 });
 
-function highlightActiveNavLink() {
-    const navLinks = document.querySelectorAll('.nav-menu a');
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        const href = link.getAttribute('href');
-        if (href === currentPath) {
-            link.classList.add('active');
-        }
-    });
-}
-
 function generateAlphabetDisplay() {
-    const alphabetGrid = document.getElementById('alphabet-grid');
-    if (!alphabetGrid) return;
-
-    const fragment = document.createDocumentFragment();
-
-    for (let i = 0; i < georgianAlphabet.length; i++) {
-        const letterBox = document.createElement('div');
-        letterBox.className = 'letter-box';
-
-        const ordinalElem = document.createElement('div');
-        ordinalElem.className = 'letter-ordinal';
-        ordinalElem.textContent = georgianAlphabet[i].ordinal;
-
-        const letterElem = document.createElement('div');
-        letterElem.className = 'letter';
-        letterElem.textContent = georgianAlphabet[i].letter;
-
-        const valueElem = document.createElement('div');
-        valueElem.className = 'letter-value';
-        valueElem.textContent = georgianAlphabet[i].value;
-
-        letterBox.appendChild(ordinalElem);
-        letterBox.appendChild(letterElem);
-        letterBox.appendChild(valueElem);
-        fragment.appendChild(letterBox);
-    }
-
-    alphabetGrid.appendChild(fragment);
+    const grid = document.getElementById('alphabet-grid');
+    georgianAlphabet.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'letter-box';
+        box.innerHTML = `
+            <div class="letter-ordinal">${item.ordinal}</div>
+            <div class="letter">${item.letter}</div>
+            <div class="letter-value">${item.value}</div>
+        `;
+        grid.appendChild(box);
+    });
 }
 
 function calculateGematria() {
-    const input = document.getElementById('word-input').value;
-    if (input.trim() === '') {
-        resetResults();
-        return;
-    }
+    const input = document.getElementById('word-input').value.trim();
+    if (!input) return resetResults();
 
-    let ordinalSum = 0;
-    let numericalSum = 0;
-    let hiddenSum = 0;
+    let ordinalSum = 0, numericalSum = 0, hiddenSum = 0;
+    const ordinalValues = [], numericalValues = [], hiddenValues = [];
 
-    const ordinalValues = [];
-    const numericalValues = [];
-    const hiddenValues = [];
-
-    for (let i = 0; i < input.length; i++) {
-        const char = input[i];
-        const letterInfo = letterLookup[char];
-
-        if (letterInfo) {
-            const ordinal = letterInfo.ordinal;
-            const numerical = letterInfo.value;
-            const triangularValue = (ordinal * (ordinal + 1)) / 2;
+    for (let char of input) {
+        const info = letterLookup[char];
+        if (info) {
+            const ordinal = info.ordinal;
+            const numerical = info.value;
+            const triangular = (ordinal * (ordinal + 1)) / 2;
 
             ordinalSum += ordinal;
             numericalSum += numerical;
-            hiddenSum += triangularValue;
+            hiddenSum += triangular;
 
             ordinalValues.push(ordinal);
             numericalValues.push(numerical);
-            hiddenValues.push(triangularValue);
+            hiddenValues.push(triangular);
         }
     }
 
     updateGematriaDisplay(
-        input,
-        ordinalSum,
-        numericalSum,
-        hiddenSum,
-        reduceToSingleDigit(ordinalSum),
-        reduceToSingleDigit(numericalSum),
-        reduceToSingleDigit(hiddenSum),
-        ordinalValues,
-        numericalValues,
-        hiddenValues
+        input, ordinalSum, numericalSum, hiddenSum,
+        reduceToSingleDigit(ordinalSum), reduceToSingleDigit(numericalSum), reduceToSingleDigit(hiddenSum),
+        ordinalValues, numericalValues, hiddenValues
     );
 }
 
-function updateGematriaDisplay(
-    word,
-    ordinalSum,
-    numericalSum,
-    hiddenSum,
-    ordinalReduction,
-    numericalReduction,
-    hiddenReduction,
-    ordinalValues,
-    numericalValues,
-    hiddenValues
-) {
-    const updateElement = (id, value) => {
-        const element = document.getElementById(id);
-        if (element) element.textContent = value;
-    };
+function updateGematriaDisplay(word, ordinalSum, numericalSum, hiddenSum, ordinalReduction, numericalReduction, hiddenReduction, ordinalValues, numericalValues, hiddenValues) {
+    document.getElementById('ordinal-value').textContent = ordinalSum;
+    document.getElementById('reduction-value').textContent = ordinalReduction;
+    document.getElementById('reverse-value').textContent = numericalSum;
+    document.getElementById('reverse-reduction-value').textContent = numericalReduction;
+    document.getElementById('hidden-value').textContent = hiddenSum;
+    document.getElementById('hidden-reduction-value').textContent = hiddenReduction;
 
-    updateElement('ordinal-value', ordinalSum);
-    updateElement('reduction-value', ordinalReduction);
-    updateElement('reverse-value', numericalSum);
-    updateElement('reverse-reduction-value', numericalReduction);
-    updateElement('hidden-value', hiddenSum);
-    updateElement('hidden-reduction-value', hiddenReduction);
+    document.getElementById('ordinal-calculation').textContent = `${ordinalValues.join(' + ')} = ${ordinalSum}`;
+    document.getElementById('numeric-calculation').textContent = `${numericalValues.join(' + ')} = ${numericalSum}`;
+    document.getElementById('hidden-calculation').textContent = `${hiddenValues.join(' + ')} = ${hiddenSum}`;
+    document.getElementById('ordinal-reduction').textContent = ordinalReduction;
+    document.getElementById('numeric-reduction').textContent = numericalReduction;
+    document.getElementById('hidden-reduction').textContent = hiddenReduction;
 
-    updateElement('ordinal-calculation', ordinalValues.join(' + ') + ' = ' + ordinalSum);
-    updateElement('numeric-calculation', numericalValues.join(' + ') + ' = ' + numericalSum);
-    updateElement('hidden-calculation', hiddenValues.join(' + ') + ' = ' + hiddenSum);
-    updateElement('ordinal-reduction', ordinalReduction);
-    updateElement('numeric-reduction', numericalReduction);
-    updateElement('hidden-reduction', hiddenReduction);
-
-    updateElement('input-word', word);
-    updateElement('ordinal-breakdown', ordinalValues.join(' '));
+    document.getElementById('input-word').textContent = word;
+    document.getElementById('ordinal-breakdown').textContent = ordinalValues.join(' ');
 }
 
 function reduceToSingleDigit(num) {
-    if (num < 10) return num;
-    return 1 + ((num - 1) % 9);
+    return num < 10 ? num : 1 + ((num - 1) % 9);
 }
 
 function resetResults() {
-    const elementsToReset = [
-        'ordinal-value', 'reduction-value', 'reverse-value', 'reverse-reduction-value',
-        'hidden-value', 'hidden-reduction-value', 'input-word', 'ordinal-breakdown',
-        'ordinal-calculation', 'numeric-calculation', 'hidden-calculation',
-        'ordinal-reduction', 'numeric-reduction', 'hidden-reduction'
-    ];
-
-    elementsToReset.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.textContent = id.includes('word') ? '' : '0';
-        }
-    });
+    ['ordinal-value', 'reduction-value', 'reverse-value', 'reverse-reduction-value', 'hidden-value', 'hidden-reduction-value',
+     'ordinal-calculation', 'numeric-calculation', 'hidden-calculation', 'ordinal-reduction', 'numeric-reduction', 'hidden-reduction']
+        .forEach(id => document.getElementById(id).textContent = '0');
+    document.getElementById('input-word').textContent = '';
+    document.getElementById('ordinal-breakdown').textContent = '';
 }
 
 function resetAll() {
-    const inputElement = document.getElementById('word-input');
-    if (inputElement) inputElement.value = '';
+    document.getElementById('word-input').value = '';
     resetResults();
-    hideAnagramSection();
-}
-
-function sortWord(word) {
-    return word.split('').sort().join('');
+    document.getElementById('anagram-section').style.display = 'none';
+    document.getElementById('crypto-section').style.display = 'none';
 }
 
 async function findAnagrams() {
     const input = document.getElementById('word-input').value.trim();
-    if (!input) {
-        alert('გთხოვთ შეიყვანოთ სიტყვა ანაგრამების მოსაძებნად.');
-        return;
-    }
+    if (!input) return alert('შეიყვანეთ სიტყვა ანაგრამებისთვის.');
 
-    const anagramSection = document.getElementById('anagram-section');
-    const anagramLoader = document.getElementById('anagram-loader');
-    const anagramMessage = document.getElementById('anagram-message');
-    const anagramTable = document.getElementById('anagram-table');
-    const anagramResults = document.getElementById('anagram-results');
+    const section = document.getElementById('anagram-section');
+    const loader = document.getElementById('anagram-loader');
+    const message = document.getElementById('anagram-message');
+    const table = document.getElementById('anagram-table');
+    const results = document.getElementById('anagram-results');
 
-    if (!anagramSection || !anagramLoader || !anagramMessage || !anagramTable || !anagramResults) {
-        console.error('ანაგრამების ელემენტები ვერ მოიძებნა');
-        return;
-    }
-
-    anagramSection.style.display = 'block';
-    anagramLoader.style.display = 'block';
-    anagramMessage.textContent = 'ანაგრამების ძიება...';
-    anagramMessage.classList.remove('success');
-    anagramTable.style.display = 'none';
-    anagramResults.innerHTML = '';
+    section.style.display = 'block';
+    loader.style.display = 'block';
+    message.textContent = 'ანაგრამების ძიება...';
+    table.style.display = 'none';
+    results.innerHTML = '';
 
     try {
-        const apiUrl = 'https://anagram-service.onrender.com/api/find-anagrams';
-        console.log('მოთხოვნა იგზავნება:', apiUrl, 'სიტყვა:', input);
-
-        const response = await fetch(apiUrl, {
+        const response = await fetch('https://anagram-service.onrender.com/api/find-anagrams', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ word: input }),
-            mode: 'cors'
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ word: input })
         });
 
-        console.log('მიღებულია პასუხი, სტატუსი:', response.status);
-
-        if (!response.ok) {
-            let errorText;
-            try {
-                const errorData = await response.json();
-                errorText = errorData.error || 'სერვერის შეცდომა';
-            } catch (e) {
-                errorText = `სერვერის შეცდომა (${response.status})`;
-            }
-            throw new Error(errorText);
-        }
-
+        if (!response.ok) throw new Error('სერვერის შეცდომა');
         const data = await response.json();
-        console.log('მიღებული მონაცემები:', data);
 
-        anagramLoader.style.display = 'none';
-
+        loader.style.display = 'none';
         if (data.anagrams && data.anagrams.length > 0) {
-            displayFoundAnagrams(data.anagrams, anagramResults);
-            anagramTable.style.display = 'table';
-            anagramMessage.textContent = 'ანაგრამები ნაპოვნია!';
-            anagramMessage.classList.add('success');
+            data.anagrams.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.word}</td>`;
+                results.appendChild(row);
+            });
+            table.style.display = 'table';
+            message.textContent = 'ანაგრამები ნაპოვნია!';
         } else {
-            anagramTable.style.display = 'table';
-            anagramResults.innerHTML = '<tr><td colspan="2">ანაგრამები არ მოიძებნა</td></tr>';
-            anagramMessage.textContent = 'ანაგრამები არ მოიძებნა';
-            anagramMessage.classList.remove('success');
+            results.innerHTML = '<tr><td>ანაგრამები არ მოიძებნა</td></tr>';
+            table.style.display = 'table';
+            message.textContent = 'ანაგრამები არ მოიძებნა';
         }
-
-        setTimeout(() => filterAnagrams('all'), 100);
     } catch (error) {
-        console.error('ანაგრამების ძიებისას დაფიქსირდა შეცდომა:', error);
-        anagramLoader.style.display = 'none';
-        anagramResults.innerHTML = `<tr><td colspan="2">დაფიქსირდა შეცდომა: ${error.message}</td></tr>`;
-        anagramTable.style.display = 'table';
-        anagramMessage.textContent = 'შეცდომა ანაგრამების ძიებისას';
-        anagramMessage.classList.remove('success');
+        loader.style.display = 'none';
+        results.innerHTML = `<tr><td>შეცდომა: ${error.message}</td></tr>`;
+        table.style.display = 'table';
+        message.textContent = 'შეცდომა ანაგრამების ძიებისას';
     }
 }
 
-function displayFoundAnagrams(results, anagramResults) {
-    if (!anagramResults) return;
+async function performCryptoAnalysis() {
+    const input = document.getElementById('word-input').value.trim();
+    if (!input) return alert('შეიყვანეთ ტექსტი ანალიზისთვის.');
 
-    if (results.length === 0) {
-        const row = document.createElement('tr');
-        const cell = document.createElement('td');
-        cell.colSpan = 2;
-        cell.textContent = 'ანაგრამები არ მოიძებნა';
-        row.appendChild(cell);
-        anagramResults.appendChild(row);
-        return;
+    const section = document.getElementById('crypto-section');
+    const loader = document.getElementById('crypto-loader');
+    const result = document.getElementById('crypto-result');
+
+    section.style.display = 'block';
+    loader.style.display = 'block';
+    result.textContent = 'მიმდინარეობს ანალიზი...';
+
+    try {
+        const response = await fetch('https://anagram-service.onrender.com/api/crypto-analysis', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: input })
+        });
+
+        if (!response.ok) throw new Error('სერვერის შეცდომა');
+        const data = await response.json();
+
+        loader.style.display = 'none';
+        result.textContent = data.analysis;
+    } catch (error) {
+        loader.style.display = 'none';
+        result.textContent = `შეცდომა: ${error.message}`;
     }
-
-    const fragment = document.createDocumentFragment();
-
-    results.forEach(result => {
-        const row = document.createElement('tr');
-        row.dataset.type = result.type;
-
-        const wordCell = document.createElement('td');
-        wordCell.textContent = result.word;
-
-        const typeCell = document.createElement('td');
-        typeCell.textContent = result.type === 'exact'
-            ? 'შეყვანილი სიტყვის ზუსტი ანაგრამა'
-            : 'სიტყვის დასაწყისი ემთხვევა ანაგრამას';
-
-        row.appendChild(wordCell);
-        row.appendChild(typeCell);
-        fragment.appendChild(row);
-    });
-
-    anagramResults.appendChild(fragment);
-}
-
-function filterAnagrams(filterType) {
-    const rows = document.querySelectorAll('#anagram-results tr');
-    let visibleCount = 0;
-
-    rows.forEach(row => {
-        const rowType = row.dataset.type;
-        if (filterType === 'all' || filterType === rowType) {
-            row.classList.remove('hidden');
-            visibleCount++;
-        } else {
-            row.classList.add('hidden');
-        }
-    });
-
-    const message = document.getElementById('anagram-message');
-    if (!message) return;
-
-    if (visibleCount === 0) {
-        message.textContent = 'არჩეული ფილტრით ანაგრამები არ მოიძებნა';
-        message.classList.remove('success');
-    } else {
-        message.textContent = 'ანაგრამები ნაპოვნია!';
-        message.classList.add('success');
-    }
-}
-
-function hideAnagramSection() {
-    const anagramSection = document.getElementById('anagram-section');
-    if (anagramSection) anagramSection.style.display = 'none';
 }
 
 function debounce(func, wait) {
     let timeout;
-    return function() {
-        const context = this;
-        const args = arguments;
+    return function (...args) {
         clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            func.apply(context, args);
-        }, wait);
+        timeout = setTimeout(() => func.apply(this, args), wait);
     };
 }
     </script>
