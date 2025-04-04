@@ -16,744 +16,381 @@
 
 
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #121212, #1f1f1f);
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        .test-mode-banner {
-            background: #ffcc00;
-            color: #121212;
-            text-align: center;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        header {
-            background: #1a1a1a;
-            padding: 20px;
-            border-bottom: 2px solid #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .logo {
-            font-size: 26px;
-            font-weight: bold;
-            color: #4a90e2;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .header-image {
-            max-width: 100px;
-            height: auto;
-            border-radius: 8px;
-            transition: transform 0.3s;
-        }
-
-        .header-image:hover {
-            transform: scale(1.05);
-        }
-
-        .header-text {
-            font-size: 16px;
-            color: #ff4d4d;
-            text-align: center;
-            flex-grow: 1;
-            padding: 0 20px;
-            font-style: italic;
-        }
-
-        .nav-container {
-            background: #2a2a2a;
-            border-bottom: 1px solid #444;
-            padding: 10px 0;
-        }
-
-        .nav-menu {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            padding: 0;
-            list-style: none;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .nav-menu li {
-            position: relative;
-        }
-
-        .nav-menu a {
-            color: #ffffff;
-            text-decoration: none;
-            padding: 15px 25px;
-            display: block;
-            transition: all 0.3s ease;
-            font-size: 16px;
-        }
-
-        .nav-menu a:hover {
-            background: #3a3a3a;
-            border-radius: 5px;
-        }
-
-        .nav-menu a.active {
-            background: #4a90e2;
-            color: #ffffff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 204, 204, 0.5);
-        }
-
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background: #2a2a2a;
-            min-width: 180px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            z-index: 1;
-            top: 100%;
-            left: 0;
-            border-radius: 5px;
-        }
-
-        .dropdown-content a {
-            color: #ffffff;
-            padding: 12px 20px;
-            text-decoration: none;
-            display: block;
-            transition: background 0.3s;
-        }
-
-        .dropdown-content a:hover {
-            background: #3a3a3a;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        .title {
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .title h2 {
-            color: #4a90e2;
-            font-size: 28px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
-        }
-
-        .input-area {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        #word-input {
-            width: 90%;
-            max-width: 450px;
-            padding: 12px;
-            font-size: 18px;
-            background: #2a2a2a;
-            color: #ffffff;
-            border: 1px solid #444;
-            border-radius: 8px;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .action-buttons {
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .action-btn {
-            background: linear-gradient(135deg, #4a90e2, #357abd);
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 20px;
-            margin: 0 10px 10px 10px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
-            flex-grow: 1;
-            max-width: 200px;
-        }
-
-        .action-btn:hover {
-            background: linear-gradient(135deg, #3a7bc8, #2a639e);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.6);
-        }
-
-        .results-box {
-            display: inline-block;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            width: 90%;
-            max-width: 600px;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 15px;
-            text-align: center;
-        }
-
-        .result-label {
-            font-size: 14px;
-            margin-bottom: 8px;
-            color: #aaaaaa;
-        }
-
-        .value {
-            font-size: 36px;
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .ordinal-value { color: #4dff4d; }
-        .reduction-value { color: #4a90e2; }
-        .reverse-value { color: #4dff4d; }
-        .reverse-reduction-value { color: #00cccc; }
-        .hidden-value { color: #ff9900; }
-        .hidden-reduction-value { color: #ff6600; }
-
-        .word-breakdown {
-            margin: 20px auto;
-            text-align: center;
-            max-width: 600px;
-        }
-
-        .breakdown-word {
-            letter-spacing: 12px;
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-
-        .breakdown-numbers {
-            letter-spacing: 12px;
-            font-size: 18px;
-            color: #4dff4d;
-        }
-
-        .calculation-details {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            margin-bottom: 30px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .calculation-column {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            text-align: center;
-        }
-
-        .calculation-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: #4dff4d;
-            text-transform: uppercase;
-        }
-
-        .calculation-subtitle {
-            font-size: 16px;
-            margin-bottom: 8px;
-            color: #4a90e2;
-        }
-
-        .calculation-value {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        .anagram-section {
-            margin: 30px auto;
-            padding: 25px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            max-width: 900px;
-        }
-
-        .anagram-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            color: #4a90e2;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-        }
-
-        .anagram-loader {
-            display: none;
-            margin: 20px auto;
-            border: 4px solid #1a1a1a;
-            border-top: 4px solid #4a90e2;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .anagram-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .anagram-table th, .anagram-table td {
-            border: 1px solid #444;
-            padding: 12px;
-            font-size: 16px;
-            background: #252525;
-        }
-
-        .anagram-table th {
-            background: #333;
-            color: #4a90e2;
-            text-transform: uppercase;
-        }
-
-        .anagram-message {
-            margin: 20px 0;
-            font-style: italic;
-            color: #aaaaaa;
-            text-align: center;
-        }
-
-        .warning-message {
-            background: #332200;
-            color: #ffcc00;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: left;
-            border: 1px solid #ffcc00;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .alphabet-section {
-            margin-top: 40px;
-            text-align: center;
-        }
-
-        .alphabet-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            color: #4a90e2;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .alphabet-container {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .alphabet-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 12px;
-            text-align: center;
-        }
-
-        .letter-box {
-            padding: 10px;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .letter-box:hover {
-            background: #333;
-            transform: scale(1.05);
-        }
-
-        .letter-ordinal {
-            font-size: 12px;
-            color: #4dff4d;
-            margin-bottom: 5px;
-        }
-
-        .letter {
-            font-size: 20px;
-        }
-
-        .letter-value {
-            font-size: 12px;
-            color: #888;
-            margin-top: 5px;
-        }
-
-        footer {
-            background: linear-gradient(135deg, #1a1a1a, #252525);
-            padding: 30px 0;
-            text-align: center;
-            border-top: 2px solid #333;
-            margin-top: 40px;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .footer-text {
-            font-size: 16px;
-            color: #aaaaaa;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .footer-contact {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 16px;
-            color: #ffffff;
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover {
-            color: #4a90e2;
-            transform: translateY(-2px);
-        }
-
-        .contact-icon {
-            width: 20px;
-            height: 20px;
-            fill: #4a90e2;
-        }
-
-        /* Anagram Filter Styles */
-.anagram-filter {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #121212, #1f1f1f);
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.test-mode-banner {
+    background: #ffcc00;
+    color: #121212;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+}
+
+header {
+    background: #1a1a1a;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #4a90e2;
+}
+
+.header-image {
+    max-width: 100px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.header-text {
+    font-size: 16px;
+    color: #ff4d4d;
+    text-align: center;
+    flex-grow: 1;
+    padding: 0 20px;
+}
+
+.nav-container {
+    background: #2a2a2a;
+    padding: 10px 0;
+}
+
+.nav-menu {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    list-style: none;
+    justify-content: center;
+}
+
+.nav-menu a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 15px 25px;
+    display: block;
+    font-size: 16px;
+}
+
+.nav-menu a:hover, .nav-menu a.active {
+    background: #4a90e2;
+    border-radius: 5px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: #2a2a2a;
+    min-width: 180px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    padding: 12px 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.title h2 {
+    color: #4a90e2;
+    font-size: 28px;
+    text-transform: uppercase;
+}
+
+.input-area {
+    margin-bottom: 30px;
+}
+
+#word-input {
+    width: 90%;
+    max-width: 450px;
+    padding: 12px;
+    font-size: 18px;
+    background: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #444;
+    border-radius: 8px;
+}
+
+.action-buttons {
     margin: 20px 0;
     display: flex;
     justify-content: center;
-    gap: 15px;
     flex-wrap: wrap;
 }
 
-.filter-btn {
+.action-btn {
     background: linear-gradient(135deg, #4a90e2, #357abd);
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    padding: 10px 20px;
+    padding: 12px 20px;
+    margin: 0 10px 10px;
     cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+    font-size: 16px;
 }
 
-.filter-btn:hover {
+.action-btn:hover {
     background: linear-gradient(135deg, #3a7bc8, #2a639e);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.5);
 }
 
-.filter-btn.active {
-    background: linear-gradient(135deg, #00cccc, #009999);
-    box-shadow: 0 0 15px rgba(0, 204, 204, 0.5);
+.results-box {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    width: 90%;
+    max-width: 600px;
+    display: inline-block;
 }
 
-/* Anagram Table Animation */
-.anagram-table tr {
-    transition: all 0.3s ease;
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
 }
 
-.anagram-table tr.hidden {
-    display: none;
+.result-label {
+    font-size: 14px;
+    color: #aaaaaa;
 }
 
-/* Success Message Style */
-.anagram-message.success {
-    color: #4dff4d;
+.value {
+    font-size: 36px;
     font-weight: bold;
-    animation: fadeIn 0.5s ease-in;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.ordinal-value { color: #4dff4d; }
+.reduction-value { color: #4a90e2; }
+.reverse-value { color: #4dff4d; }
+.reverse-reduction-value { color: #00cccc; }
+.hidden-value { color: #ff9900; }
+.hidden-reduction-value { color: #ff6600; }
+
+.word-breakdown {
+    margin: 20px auto;
+    max-width: 600px;
 }
 
-        /* Mobile Optimizations */
-        @media (max-width: 1024px) {
-            .results-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+.breakdown-word {
+    letter-spacing: 12px;
+    font-size: 20px;
+}
 
-            .calculation-details {
-                grid-template-columns: repeat(2, 1fr);
-            }
+.breakdown-numbers {
+    letter-spacing: 12px;
+    font-size: 18px;
+    color: #4dff4d;
+}
 
-            .alphabet-grid {
-                grid-template-columns: repeat(6, 1fr);
-            }
-        }
+.calculation-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto 30px;
+}
 
-        @media (max-width: 768px) {
-            .test-mode-banner {
-                font-size: 14px;
-                padding: 8px;
-            }
+.calculation-column {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+}
 
-            header {
-                flex-direction: column;
-                padding: 15px;
-                text-align: center;
-            }
+.calculation-title {
+    font-size: 18px;
+    color: #4dff4d;
+    text-transform: uppercase;
+}
 
-            .logo {
-                font-size: 22px;
-                margin-bottom: 10px;
-                text-align: center;
-            }
+.calculation-subtitle {
+    font-size: 16px;
+    color: #4a90e2;
+}
 
-            .header-text {
-                font-size: 12px;
-                padding: 0 10px;
-                margin-bottom: 10px;
-                text-align: center;
-            }
+.calculation-value {
+    font-size: 28px;
+    font-weight: bold;
+}
 
-            .header-image {
-                max-width: 80px;
-                margin: 0 auto;
-            }
+.anagram-section, .crypto-section {
+    margin: 30px auto;
+    padding: 25px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    max-width: 900px;
+}
 
-            .nav-menu {
-                flex-direction: column;
-                align-items: center;
-            }
+.anagram-title {
+    font-size: 22px;
+    color: #4a90e2;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
 
-            .nav-menu a {
-                padding: 12px 20px;
-                width: 100%;
-                text-align: center;
-            }
+.anagram-loader {
+    display: none;
+    margin: 20px auto;
+    border: 4px solid #1a1a1a;
+    border-top: 4px solid #4a90e2;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    animation: spin 1s linear infinite;
+}
 
-            .dropdown-content {
-                position: static;
-                width: 100%;
-                box-shadow: none;
-            }
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
-            .container {
-                padding: 0 15px;
-                text-align: center;
-            }
+.anagram-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
-            #word-input {
-                width: 100%;
-                font-size: 16px;
-            }
+.anagram-table th, .anagram-table td {
+    border: 1px solid #444;
+    padding: 12px;
+    font-size: 16px;
+    background: #252525;
+}
 
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
+.anagram-table th {
+    background: #333;
+    color: #4a90e2;
+}
 
-            .action-btn {
-                padding: 10px 15px;
-                margin: 5px auto;
-                width: 80%;
-                max-width: none;
-            }
+.anagram-message {
+    margin: 20px 0;
+    font-style: italic;
+    color: #aaaaaa;
+}
 
-            .results-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
+.alphabet-section {
+    margin-top: 40px;
+}
 
-            .value {
-                font-size: 28px;
-            }
+.alphabet-title {
+    font-size: 22px;
+    color: #4a90e2;
+    text-transform: uppercase;
+}
 
-            .result-label {
-                font-size: 12px;
-            }
+.alphabet-container {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+}
 
-            .calculation-details {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
+.alphabet-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 12px;
+}
 
-            .calculation-value {
-                font-size: 24px;
-            }
+.letter-box {
+    padding: 10px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 8px;
+}
 
-            .anagram-table th, .anagram-table td {
-                padding: 8px;
-                font-size: 14px;
-            }
+.letter-ordinal { font-size: 12px; color: #4dff4d; }
+.letter { font-size: 20px; }
+.letter-value { font-size: 12px; color: #888; }
 
-            .alphabet-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 10px;
-            }
+footer {
+    background: linear-gradient(135deg, #1a1a1a, #252525);
+    padding: 30px 0;
+    text-align: center;
+    margin-top: 40px;
+}
 
-            .letter {
-                font-size: 18px;
-            }
+.footer-text {
+    font-size: 16px;
+    color: #aaaaaa;
+}
 
-            .footer-contact {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-            }
+.footer-contact {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
 
-            .contact-item {
-                justify-content: center;
-            }
-        }
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    color: #ffffff;
+}
 
-        @media (max-width: 480px) {
-            .logo {
-                font-size: 18px;
-            }
+.contact-icon {
+    width: 20px;
+    height: 20px;
+    fill: #4a90e2;
+}
 
-            .header-text {
-                font-size: 10px;
-            }
+@media (max-width: 1024px) {
+    .results-grid { grid-template-columns: repeat(3, 1fr); }
+    .calculation-details { grid-template-columns: repeat(2, 1fr); }
+    .alphabet-grid { grid-template-columns: repeat(6, 1fr); }
+}
 
-            .header-image {
-                max-width: 60px;
-            }
-
-            .nav-menu a {
-                font-size: 14px;
-            }
-
-            .title h2 {
-                font-size: 22px;
-            }
-
-            #word-input {
-                font-size: 14px;
-            }
-
-            .results-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .value {
-                font-size: 24px;
-            }
-
-            .calculation-value {
-                font-size: 20px;
-            }
-
-            .anagram-title {
-                font-size: 18px;
-            }
-
-            .anagram-table th, .anagram-table td {
-                font-size: 12px;
-                padding: 6px;
-            }
-
-            .alphabet-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .letter {
-                font-size: 16px;
-            }
-
-            .footer-text {
-                font-size: 14px;
-            }
-
-            .contact-item {
-                font-size: 14px;
-            }
-        }
+@media (max-width: 768px) {
+    header { flex-direction: column; }
+    .nav-menu { flex-direction: column; }
+    .results-grid { grid-template-columns: 1fr 1fr; }
+    .calculation-details { grid-template-columns: 1fr; }
+    .action-buttons { flex-direction: column; }
+    .action-btn { width: 80%; margin: 5px auto; }
+}
     </style>
 </head>
 <body>
     <div class="test-mode-banner">საიტი მუშაობს სატესტო რეჟიმში</div>
 
     <header>
-        <div class="logo">✠ ქართული ჰემატრია</div>
-        <div class="header-text">✠"დამარხულ არც ენაი ქართული დღედმდე მეორედ მოსვლისა მესიისა საწამებლად, რაითა ყოველსა ენასა ღმერთმან ამხილოს ამით ენითა"✠</div>
+       <div class="logo">✠ ქართული ჰემატრია</div>
+        <div class="header-text">✠"დამარხულ არც ენაი ქართული დღედმდე მეორედ მოსვლისა მესიისა საწამებლად..."✠</div>
         <img src="https://bolnisi.gov.ge/files/uploads/Flag_of_Bolnisi_Municipality.svg.png" alt="Orthodox Symbol" class="header-image">
     </header>
 
     <div class="nav-container">
         <ul class="nav-menu">
-            <li><a href="index.html" class="active">კალკულატორი</a></li>
+            <li><a href="#" class="active">კალკულატორი</a></li>
             <li class="dropdown">
                 <a href="#" class="dropbtn">ხელსაწყოები</a>
                 <div class="dropdown-content">
-                    <a href="ricxviti-tvisebebi.html">რიცხვითი თვისებები</a>
-                    <a href="text-frequency-analysis.html">ტექსტის სიხშირული ანალიზი</a>
+                    <a href="#">რიცხვითი თვისებები</a>
+                    <a href="#">ტექსტის სიხშირული ანალიზი</a>
                 </div>
             </li>
         </ul>
@@ -765,9 +402,10 @@
         </div>
 
         <div class="input-area">
-            <input type="text" id="word-input" placeholder="შეიყვანეთ სიტყვა..." oninput="calculateGematria()">
+            <input type="text" id="word-input" placeholder="შეიყვანეთ სიტყვა...">
             <div class="action-buttons">
                 <button id="find-anagrams-btn" class="action-btn">ანაგრამების ძიება</button>
+                <button id="crypto-analysis-btn" class="action-btn">კრიპტოგრაფიული ანალიზი</button>
                 <button id="clear-btn" class="action-btn">გასუფთავება</button>
             </div>
         </div>
@@ -829,26 +467,22 @@
 
         <div class="anagram-section" id="anagram-section" style="display: none;">
             <div class="anagram-title">ანაგრამები</div>
-            <div id="anagram-warning" class="warning-message">
-                <strong>ყურადღება:</strong> აქ ნაჩვენებია ყველა შესაძლო ანაგრამა - ასოების ყველა შესაძლო კომბინაცია. 
-                მიბმულია ქართული სიტყვების ბაზა, რომელშიც ამოწმებს ანაგრამის სიტყვებს, ამიტომ ზოგიერთი სიტყვა შეიძლება არ იყოს დახვეწილი. მიმდინარეობს ბაზაზე მუშაობა. თუ ვინმეს აქვს უკეთესი ვარიანტი, შეგიძლიათ შემეხმიანოთ.
-            </div>
             <div id="anagram-loader" class="anagram-loader"></div>
             <div id="anagram-message" class="anagram-message"></div>
-            <div class="anagram-filter">
-                <button class="filter-btn active" data-filter="all">ყველა</button>
-                <button class="filter-btn" data-filter="exact">ზუსტი ანაგრამები</button>
-                <button class="filter-btn" data-filter="partial">დასაწყისში ანაგრამა</button>
-            </div>
             <table id="anagram-table" class="anagram-table" style="display: none;">
                 <thead>
                     <tr>
                         <th>ანაგრამა</th>
-                        <th>ტიპი</th>
                     </tr>
                 </thead>
                 <tbody id="anagram-results"></tbody>
             </table>
+        </div>
+
+        <div class="crypto-section" id="crypto-section" style="display: none;">
+            <div class="anagram-title">კრიპტოგრაფიული ანალიზი</div>
+            <div id="crypto-loader" class="anagram-loader"></div>
+            <div id="crypto-result" class="anagram-message"></div>
         </div>
 
         <div class="alphabet-section">
