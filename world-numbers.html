@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>რიცხვები მსოფლიო ენებზე</title>
     <style>
+        @font-face {
+            font-family: 'Untitled1';
+            src: url('Untitled1.woff2') format('woff2'),
+                 url('Untitled1.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #121212, #1f1f1f);
@@ -14,13 +23,27 @@
             overflow-x: hidden;
         }
 
+        .test-mode-banner {
+            background: #ffcc00;
+            color: #121212;
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
         header {
             background: #1a1a1a;
             padding: 20px;
             border-bottom: 2px solid #333;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            position: relative;
         }
 
         .logo {
@@ -31,19 +54,24 @@
             letter-spacing: 1px;
         }
 
-        .header-text {
-            font-size: 14px;
-            color: #ff6666;
-            margin-top: 10px;
-            font-style: italic;
+        .header-image {
+            max-width: 100px;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s;
         }
 
-        .header-image {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
+        .header-image:hover {
+            transform: scale(1.05);
+        }
+
+        .header-text {
+            font-size: 16px;
+            color: #ff4d4d;
+            text-align: center;
+            flex-grow: 1;
+            padding: 0 20px;
+            font-style: italic;
         }
 
         .nav-container {
@@ -58,10 +86,15 @@
             display: flex;
             padding: 0;
             list-style: none;
+            flex-wrap: wrap;
             justify-content: center;
         }
 
-        .nav-menu li a {
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
             color: #ffffff;
             text-decoration: none;
             padding: 15px 25px;
@@ -77,7 +110,9 @@
 
         .nav-menu a.active {
             background: #4a90e2;
+            color: #ffffff;
             border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 204, 204, 0.5);
         }
 
         .dropdown {
@@ -88,20 +123,20 @@
             display: none;
             position: absolute;
             background: #2a2a2a;
-            min-width: 200px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            min-width: 180px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
             z-index: 1;
-            border-radius: 5px;
             top: 100%;
             left: 0;
+            border-radius: 5px;
         }
 
         .dropdown-content a {
             color: #ffffff;
-            padding: 12px 16px;
+            padding: 12px 20px;
             text-decoration: none;
             display: block;
-            font-size: 14px;
+            transition: background 0.3s;
         }
 
         .dropdown-content a:hover {
@@ -110,11 +145,6 @@
 
         .dropdown:hover .dropdown-content {
             display: block;
-        }
-
-        .dropbtn {
-            padding: 15px 25px;
-            cursor: pointer;
         }
 
         .container {
@@ -248,21 +278,105 @@
             text-align: center;
             border-top: 2px solid #333;
             margin-top: 40px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .footer-text {
             font-size: 16px;
             color: #aaaaaa;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .footer-contact {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: #4a90e2;
+            transform: translateY(-2px);
+        }
+
+        .contact-icon {
+            width: 20px;
+            height: 20px;
+            fill: #4a90e2;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 1024px) {
+            /* Add any specific styles for tablets if needed */
         }
 
         @media (max-width: 768px) {
+            .test-mode-banner {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            header {
+                flex-direction: column;
+                padding: 15px;
+                text-align: center;
+            }
+
+            .logo {
+                font-size: 22px;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .header-text {
+                font-size: 12px;
+                padding: 0 10px;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .header-image {
+                max-width: 80px;
+                margin: 0 auto;
+            }
+
             .nav-menu {
                 flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-menu a {
+                padding: 12px 20px;
+                width: 100%;
+                text-align: center;
             }
 
             .dropdown-content {
                 position: static;
+                width: 100%;
                 box-shadow: none;
+            }
+
+            .container {
+                padding: 0 15px;
+                text-align: center;
             }
 
             .tab-container {
@@ -284,20 +398,60 @@
                 margin-right: auto;
             }
 
+            .footer-contact {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .contact-item {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 18px;
+            }
+
+            .header-text {
+                font-size: 10px;
+            }
+
             .header-image {
-                width: 40px;
-                height: 40px;
-                top: 10px;
-                right: 10px;
+                max-width: 60px;
+            }
+
+            .nav-menu a {
+                font-size: 14px;
+            }
+
+            .title {
+                font-size: 22px;
+            }
+
+            .number-table th, .number-table td {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            .footer-text {
+                font-size: 14px;
+            }
+
+            .contact-item {
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="test-mode-banner">საიტი მუშაობს სატესტო რეჟიმში</div>
+
     <header>
         <div class="logo">✠ ქართული ჰემატრია</div>
-        <div class="header-text">"დამარხულ არც ენაი ქართული დღედმდე მეორედ მოსვლისა მესიისა საწამებლად, რაითა ყოველსა ენასა ღმერთმან ამხილოს ამით ენითა"</div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Georgian_Cross_%28red%29.svg/1200px-Georgian_Cross_%28red%29.svg.png" alt="Georgian Cross" class="header-image">
+        <div class="header-text">✠"დამარხულ არც ენაი ქართული დღედმდე მეორედ მოსვლისა მესიისა საწამებლად, რაითა ყოველსა ენასა ღმერთმან ამხილოს ამით ენითა"✠</div>
+        <img src="https://bolnisi.gov.ge/files/uploads/Flag_of_Bolnisi_Municipality.svg.png" alt="Orthodox Symbol" class="header-image">
     </header>
 
     <div class="nav-container">
@@ -393,7 +547,23 @@
     </div>
 
     <footer>
-        <div class="footer-text">© 2025 ქართული ჰემატრიის კალკულატორი</div>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 ქართული ჰემატრიის კალკულატორი</p>
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2l-8 5-8-5V6l8 5 8-5z"/>
+                    </svg>
+                    <span>info@nextgen.ge</span>
+                </div>
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/>
+                    </svg>
+                    <span>+995 599 09 82 79</span>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -413,7 +583,22 @@
                     document.getElementById(tabId).classList.add('active');
                 });
             });
+
+            // Highlight active navigation link
+            highlightActiveNavLink();
         });
+
+        function highlightActiveNavLink() {
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                if (href === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        }
     </script>
 </body>
 </html>
