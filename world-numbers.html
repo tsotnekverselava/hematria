@@ -20,6 +20,7 @@
             border-bottom: 2px solid #333;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
 
         .logo {
@@ -28,6 +29,21 @@
             color: #4a90e2;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        .header-text {
+            font-size: 14px;
+            color: #ff6666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .header-image {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
         }
 
         .nav-container {
@@ -64,6 +80,43 @@
             border-radius: 5px;
         }
 
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: #2a2a2a;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            border-radius: 5px;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-content a {
+            color: #ffffff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+        }
+
+        .dropdown-content a:hover {
+            background: #3a3a3a;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropbtn {
+            padding: 15px 25px;
+            cursor: pointer;
+        }
+
         .container {
             max-width: 1200px;
             margin: 30px auto;
@@ -82,16 +135,17 @@
 
         /* Warning Message */
         .warning-message {
-            background: #ffcc00;
+            background: linear-gradient(135deg, #ffcc00, #ff9900);
             color: #121212;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
-            text-align: left;
+            text-align: center;
             border: 1px solid #ffcc00;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             max-width: 600px;
-            margin-left: 0;
+            margin: 0 auto;
+            font-weight: bold;
         }
 
         /* Tab Container */
@@ -206,6 +260,11 @@
                 flex-direction: column;
             }
 
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+            }
+
             .tab-container {
                 justify-content: center;
             }
@@ -224,19 +283,33 @@
                 margin-left: auto;
                 margin-right: auto;
             }
+
+            .header-image {
+                width: 40px;
+                height: 40px;
+                top: 10px;
+                right: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="logo">✠ ქართული ჰემატრია</div>
+        <div class="header-text">"დამარხულ არც ენაი ქართული დღედმდე მეორედ მოსვლისა მესიისა საწამებლად, რაითა ყოველსა ენასა ღმერთმან ამხილოს ამით ენითა"</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Georgian_Cross_%28red%29.svg/1200px-Georgian_Cross_%28red%29.svg.png" alt="Georgian Cross" class="header-image">
     </header>
 
     <div class="nav-container">
         <ul class="nav-menu">
             <li><a href="index.html">კალკულატორი</a></li>
-            <li><a href="ricxviti-tvisebebi.html">რიცხვითი თვისებები</a></li>
-            <li><a href="text-frequency-analysis.html">ტექსტის სიხშირული ანალიზი</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">ხელსაწყოები</a>
+                <div class="dropdown-content">
+                    <a href="ricxviti-tvisebebi.html">რიცხვითი თვისებები</a>
+                    <a href="text-frequency-analysis.html">ტექსტის სიხშირული ანალიზი</a>
+                </div>
+            </li>
             <li><a href="world-numbers.html" class="active">რიცხვები მსოფლიო ენებზე</a></li>
         </ul>
     </div>
