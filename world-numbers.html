@@ -80,62 +80,98 @@
             margin-bottom: 30px;
         }
 
-        .language-section {
+        /* Tabs Styles */
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
+        }
+
+        .tab-btn:hover {
+            background: linear-gradient(135deg, #3a7bc8, #2a639e);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #00cccc, #009999);
+            box-shadow: 0 0 15px rgba(0, 204, 204, 0.5);
+        }
+
+        /* Table Styles */
+        .number-table {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
             background: #1a1a1a;
             border: 1px solid #333;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease;
         }
 
-        .language-section:hover {
-            transform: translateY(-5px);
+        .number-table table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .language-title {
-            font-size: 22px;
-            color: #4dff4d;
-            margin-bottom: 15px;
+        .number-table th, .number-table td {
+            padding: 15px;
+            border: 1px solid #444;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .number-table th {
+            background: #333;
+            color: #4a90e2;
+            font-size: 18px;
             text-transform: uppercase;
         }
 
-        .number-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+        .number-table td {
+            background: #252525;
+            font-size: 16px;
         }
 
-        .number-card {
-            background: #2a2a2a;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .number-card:hover {
-            background: #333;
-            transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+        .number-table tr:hover td {
+            background: #3a3a3a;
         }
 
         .number {
-            font-size: 18px;
             color: #ff9900;
             font-weight: bold;
         }
 
         .word {
-            font-size: 16px;
             color: #ffffff;
         }
 
         .transliteration {
-            font-size: 14px;
             color: #aaaaaa;
             font-style: italic;
+            font-size: 14px;
+        }
+
+        /* Hidden class for tab content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         footer {
@@ -156,8 +192,19 @@
                 flex-direction: column;
             }
 
-            .number-grid {
-                grid-template-columns: 1fr;
+            .tab-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tab-btn {
+                width: 80%;
+                margin: 5px 0;
+            }
+
+            .number-table th, .number-table td {
+                font-size: 14px;
+                padding: 10px;
             }
         }
     </style>
@@ -179,71 +226,98 @@
     <div class="container">
         <h1 class="title">რიცხვები მსოფლიო ენებზე</h1>
 
-        <!-- English Section -->
-        <div class="language-section">
-            <h2 class="language-title">ინგლისური</h2>
-            <div class="number-grid">
-                <div class="number-card"><span class="number">1</span><br><span class="word">One</span><br><span class="transliteration">ვ(უა)ან</span></div>
-                <div class="number-card"><span class="number">2</span><br><span class="word">Two</span><br><span class="transliteration">თუ</span></div>
-                <div class="number-card"><span class="number">3</span><br><span class="word">Three</span><br><span class="transliteration">სრი</span></div>
-                <div class="number-card"><span class="number">4</span><br><span class="word">Four</span><br><span class="transliteration">ფორ</span></div>
-                <div class="number-card"><span class="number">5</span><br><span class="word">Five</span><br><span class="transliteration">ფაივ</span></div>
-                <div class="number-card"><span class="number">6</span><br><span class="word">Six</span><br><span class="transliteration">სიქს</span></div>
-                <div class="number-card"><span class="number">7</span><br><span class="word">Seven</span><br><span class="transliteration">სევენ</span></div>
-                <div class="number-card"><span class="number">8</span><br><span class="word">Eight</span><br><span class="transliteration">ეით</span></div>
-                <div class="number-card"><span class="number">9</span><br><span class="word">Nine</span><br><span class="transliteration">ნაინ</span></div>
-                <div class="number-card"><span class="number">10</span><br><span class="word">Ten</span><br><span class="transliteration">თენ</span></div>
-                <div class="number-card"><span class="number">11</span><br><span class="word">Eleven</span><br><span class="transliteration">ილევენ</span></div>
-                <div class="number-card"><span class="number">12</span><br><span class="word">Twelve</span><br><span class="transliteration">თველვ</span></div>
-                <div class="number-card"><span class="number">20</span><br><span class="word">Twenty</span><br><span class="transliteration">თვენთი</span></div>
-                <div class="number-card"><span class="number">30</span><br><span class="word">Thirty</span><br><span class="transliteration">სეთი</span></div>
-                <div class="number-card"><span class="number">40</span><br><span class="word">Forty</span><br><span class="transliteration">ფორთი</span></div>
-                <div class="number-card"><span class="number">50</span><br><span class="word">Fifty</span><br><span class="transliteration">ფიფთი</span></div>
-                <div class="number-card"><span class="number">60</span><br><span class="word">Sixty</span><br><span class="transliteration">სისქსთ</span></div>
-                <div class="number-card"><span class="number">70</span><br><span class="word">Seventy</span><br><span class="transliteration">სევენთი</span></div>
-                <div class="number-card"><span class="number">80</span><br><span class="word">Eighty</span><br><span class="transliteration">ეითი</span></div>
-                <div class="number-card"><span class="number">90</span><br><span class="word">Ninety</span><br><span class="transliteration">ნაინთი</span></div>
-                <div class="number-card"><span class="number">100</span><br><span class="word">One Hundred</span><br><span class="transliteration">ვან ჰანდრიდ</span></div>
-                <div class="number-card"><span class="number">1000</span><br><span class="word">One Thousand</span><br><span class="transliteration">ვან საუზენდ</span></div>
-                <div class="number-card"><span class="number">1000000</span><br><span class="word">Million</span><br><span class="transliteration">მილიონ</span></div>
-            </div>
+        <!-- Tab Buttons -->
+        <div class="tab-container">
+            <button class="tab-btn active" data-tab="english">ინგლისური</button>
+            <button class="tab-btn" data-tab="french">ფრანგული</button>
         </div>
 
-        <!-- French Section -->
-        <div class="language-section">
-            <h2 class="language-title">ფრანგული</h2>
-            <div class="number-grid">
-                <div class="number-card"><span class="number">1</span><br><span class="word">Un</span><br><span class="transliteration">ა</span></div>
-                <div class="number-card"><span class="number">2</span><br><span class="word">Deux</span><br><span class="transliteration">დუ</span></div>
-                <div class="number-card"><span class="number">3</span><br><span class="word">Trois</span><br><span class="transliteration">თხუა</span></div>
-                <div class="number-card"><span class="number">4</span><br><span class="word">Quatre</span><br><span class="transliteration">ქეთხ</span></div>
-                <div class="number-card"><span class="number">5</span><br><span class="word">Cinq</span><br><span class="transliteration">სინქ</span></div>
-                <div class="number-card"><span class="number">6</span><br><span class="word">Six</span><br><span class="transliteration">სის</span></div>
-                <div class="number-card"><span class="number">7</span><br><span class="word">Sept</span><br><span class="transliteration">სეთ</span></div>
-                <div class="number-card"><span class="number">8</span><br><span class="word">Huit</span><br><span class="transliteration">ით</span></div>
-                <div class="number-card"><span class="number">9</span><br><span class="word">Neuf</span><br><span class="transliteration">ნეფ</span></div>
-                <div class="number-card"><span class="number">10</span><br><span class="word">Dix</span><br><span class="transliteration">დის</span></div>
-                <div class="number-card"><span class="number">11</span><br><span class="word">Onze</span><br><span class="transliteration">ონზ</span></div>
-                <div class="number-card"><span class="number">12</span><br><span class="word">Douze</span><br><span class="transliteration">ონზ</span></div>
-                <div class="number-card"><span class="number">20</span><br><span class="word">Vingt</span><br><span class="transliteration">ვა</span></div>
-                <div class="number-card"><span class="number">30</span><br><span class="word">Trente</span><br><span class="transliteration">თხანთ</span></div>
-                <div class="number-card"><span class="number">40</span><br><span class="word">Quarante</span><br><span class="transliteration">ქაუნთ</span></div>
-                <div class="number-card"><span class="number">50</span><br><span class="word">Cinquante</span><br><span class="transliteration">სექუნთ</span></div>
-                <div class="number-card"><span class="number">60</span><br><span class="word">Soixante</span><br><span class="transliteration">სვისონთ</span></div>
-                <div class="number-card"><span class="number">70</span><br><span class="word">Soixante-dix</span><br><span class="transliteration">სვისონ-დის</span></div>
-                <div class="number-card"><span class="number">80</span><br><span class="word">Quatre-vingts</span><br><span class="transliteration">ქეთხუვა</span></div>
-                <div class="number-card"><span class="number">90</span><br><span class="word">Quatre-vingt-dix</span><br><span class="transliteration">ქეთხუვა დის</span></div>
-                <div class="number-card"><span class="number">100</span><br><span class="word">Cent</span><br><span class="transliteration">სო</span></div>
-                <div class="number-card"><span class="number">1000</span><br><span class="word">Mille</span><br><span class="transliteration">მია</span></div>
-                <div class="number-card"><span class="number">1000000</span><br><span class="word">Un million</span><br><span class="transliteration">ანმილიო</span></div>
-            </div>
+        <!-- Table Container -->
+        <div class="number-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>რიცხვი</th>
+                        <th>დასახელება</th>
+                        <th>ტრანსლიტერაცია</th>
+                    </tr>
+                </thead>
+                <tbody id="english" class="tab-content active">
+                    <tr><td class="number">1</td><td class="word">One</td><td class="transliteration">ვ(უა)ან</td></tr>
+                    <tr><td class="number">2</td><td class="word">Two</td><td class="transliteration">თუ</td></tr>
+                    <tr><td class="number">3</td><td class="word">Three</td><td class="transliteration">სრი</td></tr>
+                    <tr><td class="number">4</td><td class="word">Four</td><td class="transliteration">ფორ</td></tr>
+                    <tr><td class="number">5</td><td class="word">Five</td><td class="transliteration">ფაივ</td></tr>
+                    <tr><td class="number">6</td><td class="word">Six</td><td class="transliteration">სიქს</td></tr>
+                    <tr><td class="number">7</td><td class="word">Seven</td><td class="transliteration">სევენ</td></tr>
+                    <tr><td class="number">8</td><td class="word">Eight</td><td class="transliteration">ეით</td></tr>
+                    <tr><td class="number">9</td><td class="word">Nine</td><td class="transliteration">ნაინ</td></tr>
+                    <tr><td class="number">10</td><td class="word">Ten</td><td class="transliteration">თენ</td></tr>
+                    <tr><td class="number">11</td><td class="word">Eleven</td><td class="transliteration">ილევენ</td></tr>
+                    <tr><td class="number">12</td><td class="word">Twelve</td><td class="transliteration">თველვ</td></tr>
+                    <tr><td class="number">20</td><td class="word">Twenty</td><td class="transliteration">თვენთი</td></tr>
+                    <tr><td class="number">30</td><td class="word">Thirty</td><td class="transliteration">სეთი</td></tr>
+                    <tr><td class="number">40</td><td class="word">Forty</td><td class="transliteration">ფორთი</td></tr>
+                    <tr><td class="number">50</td><td class="word">Fifty</td><td class="transliteration">ფიფთი</td></tr>
+                    <tr><td class="number">60</td><td class="word">Sixty</td><td class="transliteration">სისქსთ</td></tr>
+                    <tr><td class="number">70</td><td class="word">Seventy</td><td class="transliteration">სევენთი</td></tr>
+                    <tr><td class="number">80</td><td class="word">Eighty</td><td class="transliteration">ეითი</td></tr>
+                    <tr><td class="number">90</td><td class="word">Ninety</td><td class="transliteration">ნაინთი</td></tr>
+                    <tr><td class="number">100</td><td class="word">One Hundred</td><td class="transliteration">ვან ჰანდრიდ</td></tr>
+                    <tr><td class="number">1000</td><td class="word">One Thousand</td><td class="transliteration">ვან საუზენდ</td></tr>
+                    <tr><td class="number">1000000</td><td class="word">Million</td><td class="transliteration">მილიონ</td></tr>
+                </tbody>
+                <tbody id="french" class="tab-content">
+                    <tr><td class="number">1</td><td class="word">Un</td><td class="transliteration">ა</td></tr>
+                    <tr><td class="number">2</td><td class="word">Deux</td><td class="transliteration">დუ</td></tr>
+                    <tr><td class="number">3</td><td class="word">Trois</td><td class="transliteration">თხუა</td></tr>
+                    <tr><td class="number">4</td><td class="word">Quatre</td><td class="transliteration">ქეთხ</td></tr>
+                    <tr><td class="number">5</td><td class="word">Cinq</td><td class="transliteration">სინქ</td></tr>
+                    <tr><td class="number">6</td><td class="word">Six</td><td class="transliteration">სის</td></tr>
+                    <tr><td class="number">7</td><td class="word">Sept</td><td class="transliteration">სეთ</td></tr>
+                    <tr><td class="number">8</td><td class="word">Huit</td><td class="transliteration">ით</td></tr>
+                    <tr><td class="number">9</td><td class="word">Neuf</td><td class="transliteration">ნეფ</td></tr>
+                    <tr><td class="number">10</td><td class="word">Dix</td><td class="transliteration">დის</td></tr>
+                    <tr><td class="number">11</td><td class="word">Onze</td><td class="transliteration">ონზ</td></tr>
+                    <tr><td class="number">12</td><td class="word">Douze</td><td class="transliteration">ონზ</td></tr>
+                    <tr><td class="number">20</td><td class="word">Vingt</td><td class="transliteration">ვა</td></tr>
+                    <tr><td class="number">30</td><td class="word">Trente</td><td class="transliteration">თხანთ</td></tr>
+                    <tr><td class="number">40</td><td class="word">Quarante</td><td class="transliteration">ქაუნთ</td></tr>
+                    <tr><td class="number">50</td><td class="word">Cinquante</td><td class="transliteration">სექუნთ</td></tr>
+                    <tr><td class="number">60</td><td class="word">Soixante</td><td class="transliteration">სვისონთ</td></tr>
+                    <tr><td class="number">70</td><td class="word">Soixante-dix</td><td class="transliteration">სვისონ-დის</td></tr>
+                    <tr><td class="number">80</td><td class="word">Quatre-vingts</td><td class="transliteration">ქეთხუვა</td></tr>
+                    <tr><td class="number">90</td><td class="word">Quatre-vingt-dix</td><td class="transliteration">ქეთხუვა დის</td></tr>
+                    <tr><td class="number">100</td><td class="word">Cent</td><td class="transliteration">სო</td></tr Действия
+                    <tr><td class="number">1000</td><td class="word">Mille</td><td class="transliteration">მია</td></tr>
+                    <tr><td class="number">1000000</td><td class="word">Un million</td><td class="transliteration">ანმილიო</td></tr>
+                </tbody>
+            </table>
         </div>
-
-        <!-- სხვა ენებისთვის ადგილი (შეგიძლიათ დამატოთ) -->
     </div>
 
     <footer>
         <div class="footer-text">© 2025 ქართული ჰემატრიის კალკულატორი</div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding content
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
