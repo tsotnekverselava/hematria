@@ -80,10 +80,24 @@
             margin-bottom: 30px;
         }
 
-        /* Tabs Styles */
+        /* Warning Message */
+        .warning-message {
+            background: #ffcc00;
+            color: #121212;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+            border: 1px solid #ffcc00;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin-left: 0;
+        }
+
+        /* Tab Container */
         .tab-container {
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             gap: 10px;
             margin-bottom: 20px;
         }
@@ -113,7 +127,7 @@
         /* Table Styles */
         .number-table {
             width: 100%;
-            max-width: 900px;
+            max-width: 600px;
             margin: 0 auto;
             background: #1a1a1a;
             border: 1px solid #333;
@@ -135,9 +149,9 @@
         }
 
         .number-table th {
-            background: #333;
-            color: #4a90e2;
-            font-size: 18px;
+            background: #2a2a2a;
+            color: #ffffff;
+            font-size: 16px;
             text-transform: uppercase;
         }
 
@@ -171,7 +185,7 @@
         }
 
         .tab-content.active {
-            display: block;
+            display: table-row-group;
         }
 
         footer {
@@ -193,18 +207,22 @@
             }
 
             .tab-container {
-                flex-direction: column;
-                align-items: center;
+                justify-content: center;
             }
 
             .tab-btn {
-                width: 80%;
+                width: 45%;
                 margin: 5px 0;
             }
 
             .number-table th, .number-table td {
                 font-size: 14px;
                 padding: 10px;
+            }
+
+            .warning-message {
+                margin-left: auto;
+                margin-right: auto;
             }
         }
     </style>
@@ -225,6 +243,11 @@
 
     <div class="container">
         <h1 class="title">რიცხვები მსოფლიო ენებზე</h1>
+
+        <!-- Warning Message -->
+        <div class="warning-message">
+            <strong>ყურადღება:</strong> მიმდინარეობს მუშაობა. სხვა ენებზე რიცხვები ეტაპობრივად დაემატება.
+        </div>
 
         <!-- Tab Buttons -->
         <div class="tab-container">
@@ -288,7 +311,7 @@
                     <tr><td class="number">70</td><td class="word">Soixante-dix</td><td class="transliteration">სვისონ-დის</td></tr>
                     <tr><td class="number">80</td><td class="word">Quatre-vingts</td><td class="transliteration">ქეთხუვა</td></tr>
                     <tr><td class="number">90</td><td class="word">Quatre-vingt-dix</td><td class="transliteration">ქეთხუვა დის</td></tr>
-                    <tr><td class="number">100</td><td class="word">Cent</td><td class="transliteration">სო</td></tr Действия
+                    <tr><td class="number">100</td><td class="word">Cent</td><td class="transliteration">სო</td></tr>
                     <tr><td class="number">1000</td><td class="word">Mille</td><td class="transliteration">მია</td></tr>
                     <tr><td class="number">1000000</td><td class="word">Un million</td><td class="transliteration">ანმილიო</td></tr>
                 </tbody>
