@@ -17,7 +17,6 @@
             padding: 0;
             overflow-x: hidden;
         }
-
         .test-mode-banner {
             background: linear-gradient(90deg, #ffcc00, #ff9900);
             color: #121212;
@@ -33,12 +32,10 @@
             z-index: 1000;
             animation: fadeIn 1s ease-in-out;
         }
-
         @keyframes fadeIn {
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
-
         header {
             background: #1a1a1a;
             padding: 20px;
@@ -49,7 +46,6 @@
             flex-wrap: wrap;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
-
         .logo {
             font-size: 26px;
             font-weight: bold;
@@ -57,18 +53,15 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .header-image {
             max-width: 100px;
             height: auto;
             border-radius: 8px;
             transition: transform 0.3s;
         }
-
         .header-image:hover {
             transform: scale(1.05);
         }
-
         .header-text {
             font-size: 16px;
             color: #ff4d4d;
@@ -77,13 +70,11 @@
             padding: 0 20px;
             font-style: italic;
         }
-
         .nav-container {
             background: #2a2a2a;
             border-bottom: 1px solid #444;
             padding: 10px 0;
         }
-
         .nav-menu {
             max-width: 1200px;
             margin: 0 auto;
@@ -93,11 +84,9 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-
         .nav-menu li {
             position: relative;
         }
-
         .nav-menu a {
             color: #ffffff;
             text-decoration: none;
@@ -106,23 +95,19 @@
             transition: all 0.3s ease;
             font-size: 16px;
         }
-
         .nav-menu a:hover {
             background: #3a3a3a;
             border-radius: 5px;
         }
-
         .nav-menu a.active {
             background: #4a90e2;
             color: #ffffff;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 204, 204, 0.5);
         }
-
         .dropdown {
             position: relative;
         }
-
         .dropdown-content {
             display: none;
             position: absolute;
@@ -134,7 +119,6 @@
             left: 0;
             border-radius: 5px;
         }
-
         .dropdown-content a {
             color: #ffffff;
             padding: 12px 20px;
@@ -142,21 +126,17 @@
             display: block;
             transition: background 0.3s;
         }
-
         .dropdown-content a:hover {
             background: #3a3a3a;
         }
-
         .dropdown:hover .dropdown-content {
             display: block;
         }
-
         .container {
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
         }
-
         h1 {
             color: #4a90e2;
             text-align: center;
@@ -166,7 +146,6 @@
             letter-spacing: 2px;
             text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
         }
-
         .input-section {
             background: #1a1a1a;
             padding: 20px;
@@ -176,7 +155,6 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             text-align: center;
         }
-
         #file-input {
             display: block;
             margin: 15px auto;
@@ -188,7 +166,6 @@
             border-radius: 5px;
             color: #ffffff;
         }
-
         #text-input {
             width: 100%;
             max-width: 600px;
@@ -204,7 +181,6 @@
             resize: vertical;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
         .warning {
             color: #ffcc00;
             font-size: 14px;
@@ -215,7 +191,6 @@
             border: 1px solid #ffcc00;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
-
         .analyze-btn {
             background: linear-gradient(135deg, #4a90e2, #357abd);
             color: #ffffff;
@@ -227,20 +202,17 @@
             font-size: 16px;
             box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
         }
-
         .analyze-btn:hover {
             background: linear-gradient(135deg, #3a7bc8, #2a639e);
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(74, 144, 226, 0.6);
         }
-
         .results-section {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             margin-bottom: 30px;
         }
-
         .analysis-box {
             background: #1a1a1a;
             padding: 20px;
@@ -249,12 +221,10 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             transition: transform 0.3s;
         }
-
         .analysis-box:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
         }
-
         .analysis-box h2 {
             color: #4dff4d;
             margin-top: 0;
@@ -263,14 +233,12 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .chart-container {
             position: relative;
             height: 280px;
             width: 100%;
             margin-top: 20px;
         }
-
         .alphabet-grid {
             display: grid;
             grid-template-columns: repeat(11, 1fr);
@@ -282,7 +250,6 @@
             border: 1px solid #444;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
         .letter-box {
             background: #333;
             border: 1px solid #555;
@@ -294,19 +261,16 @@
             font-size: 18px;
             color: #ffffff;
         }
-
         .letter-box:hover {
             background: #444;
             transform: scale(1.1);
         }
-
         .letter-box.selected {
             background: #4dff4d;
             color: #121212;
             border-color: #3acc3a;
             box-shadow: 0 0 10px rgba(77, 255, 77, 0.7);
         }
-
         .filter-btn {
             background: linear-gradient(135deg, #ff4d4d, #cc4040);
             color: #ffffff;
@@ -319,13 +283,11 @@
             font-size: 16px;
             box-shadow: 0 4px 10px rgba(255, 77, 77, 0.4);
         }
-
         .filter-btn:hover {
             background: linear-gradient(135deg, #cc4040, #a33333);
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(255, 77, 77, 0.6);
         }
-
         .filter-input {
             width: 100%;
             max-width: 300px;
@@ -338,7 +300,6 @@
             font-size: 16px;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
         .cipher-result {
             margin-top: 20px;
             padding: 15px;
@@ -348,7 +309,6 @@
             border: 1px solid #444;
             color: #cccccc;
         }
-
         .stats-section {
             background: #1a1a1a;
             padding: 20px;
@@ -357,7 +317,6 @@
             margin-bottom: 30px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
-
         .stats-section h2 {
             color: #4dff4d;
             text-align: center;
@@ -366,12 +325,10 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .stats-options {
             text-align: center;
             margin-bottom: 20px;
         }
-
         .stats-options select {
             padding: 10px;
             background: #2a2a2a;
@@ -382,7 +339,6 @@
             font-size: 16px;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
         .stats-btn {
             background: linear-gradient(135deg, #ff4d4d, #cc4040);
             color: #ffffff;
@@ -394,19 +350,16 @@
             font-size: 16px;
             box-shadow: 0 4px 10px rgba(255, 77, 77, 0.4);
         }
-
         .stats-btn:hover {
             background: linear-gradient(135deg, #cc4040, #a33333);
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(255, 77, 77, 0.6);
         }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
         }
-
         .stat-item {
             text-align: center;
             padding: 15px;
@@ -414,20 +367,17 @@
             border-radius: 8px;
             border: 1px solid #444;
         }
-
         .stat-label {
             color: #4a90e2;
             font-size: 14px;
             text-transform: uppercase;
         }
-
         .stat-value {
             font-size: 18px;
             font-weight: bold;
             margin-top: 8px;
             color: #ffffff;
         }
-
         .loader {
             display: none;
             border: 4px solid #1a1a1a;
@@ -438,12 +388,10 @@
             animation: spin 1s linear infinite;
             margin: 20px auto;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .correlation-section {
             background: #1a1a1a;
             padding: 20px;
@@ -452,7 +400,6 @@
             margin-bottom: 30px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
-
         .correlation-section h2 {
             color: #4dff4d;
             text-align: center;
@@ -461,7 +408,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .correlation-table {
             width: 100%;
             border-collapse: collapse;
@@ -470,7 +416,6 @@
             border-radius: 8px;
             overflow: hidden;
         }
-
         .correlation-table th,
         .correlation-table td {
             padding: 12px;
@@ -478,21 +423,17 @@
             border: 1px solid #444;
             font-size: 14px;
         }
-
         .correlation-table th {
             background: #333;
             color: #4a90e2;
             text-transform: uppercase;
         }
-
         .correlation-table td {
             color: #ffffff;
         }
-
         .correlation-table tr:nth-child(even) {
             background: #252525;
         }
-
         .network-container {
             height: 400px;
             width: 100%;
@@ -501,7 +442,6 @@
             border-radius: 8px;
             background: #2a2a2a;
         }
-
         footer {
             background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
             padding: 40px 0;
@@ -512,7 +452,6 @@
             position: relative;
             overflow: hidden;
         }
-
         footer::before {
             content: '';
             position: absolute;
@@ -523,14 +462,12 @@
             background: radial-gradient(circle, rgba(74, 144, 226, 0.1), transparent);
             z-index: 0;
         }
-
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
-
         .footer-text {
             font-size: 18px;
             color: #cccccc;
@@ -538,14 +475,12 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .footer-contact {
             display: flex;
             justify-content: center;
             gap: 50px;
             flex-wrap: wrap;
         }
-
         .contact-item {
             display: flex;
             align-items: center;
@@ -558,152 +493,148 @@
             transition: all 0.3s ease;
             text-decoration: none;
         }
-
         .contact-item:hover {
             background: rgba(74, 144, 226, 0.2);
             color: #4a90e2;
             transform: translateY(-3px);
             box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
         }
-
         .contact-icon {
             width: 24px;
             height: 24px;
             fill: #4a90e2;
             transition: fill 0.3s ease;
         }
-
         .contact-item:hover .contact-icon {
             fill: #ffffff;
         }
-
+        .progress-container {
+            margin: 20px 0;
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 10px;
+            display: none;
+        }
+        .progress-bar {
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4a90e2, #357abd);
+            width: 0%;
+            transition: width 0.3s ease;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            font-size: 12px;
+        }
+        .status-message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #4dff4d;
+        }
         @media (max-width: 768px) {
             .test-mode-banner {
                 font-size: 14px;
                 padding: 10px;
             }
-
             header {
                 flex-direction: column;
                 padding: 15px;
             }
-
             .logo {
                 font-size: 22px;
                 margin-bottom: 10px;
             }
-
             .header-text {
                 font-size: 12px;
                 padding: 0 10px;
                 margin-bottom: 10px;
             }
-
             .header-image {
                 max-width: 80px;
             }
-
             .nav-menu {
                 flex-direction: column;
                 align-items: center;
             }
-
             .nav-menu a {
                 padding: 12px 20px;
                 width: 100%;
             }
-
             .dropdown-content {
                 position: static;
                 width: 100%;
                 box-shadow: none;
             }
-
             .results-section {
                 grid-template-columns: 1fr;
             }
-
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-
             .chart-container {
                 height: 220px;
             }
-
             .alphabet-grid {
                 grid-template-columns: repeat(6, 1fr);
             }
-
             .correlation-table {
                 font-size: 12px;
             }
-
             .network-container {
                 height: 300px;
             }
-
             h1 {
                 font-size: 24px;
             }
-
             .analysis-box h2, .stats-section h2, .correlation-section h2 {
                 font-size: 18px;
             }
-
             .footer-contact {
                 flex-direction: column;
                 gap: 25px;
             }
         }
-
         @media (max-width: 480px) {
             .logo {
                 font-size: 18px;
             }
-
             .header-text {
                 font-size: 10px;
             }
-
             .header-image {
                 max-width: 60px;
             }
-
             .input-section, .analysis-box, .stats-section, .correlation-section {
                 padding: 15px;
             }
-
             #text-input {
                 height: 100px;
                 font-size: 14px;
             }
-
             .analyze-btn, .filter-btn, .stats-btn {
                 padding: 8px 15px;
                 font-size: 14px;
             }
-
             .stat-value {
                 font-size: 16px;
             }
-
             .alphabet-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
-
             .correlation-table {
                 font-size: 10px;
             }
-
             .network-container {
                 height: 250px;
             }
-
             .footer-text {
                 font-size: 16px;
             }
-
             .contact-item {
                 font-size: 16px;
                 padding: 8px 15px;
@@ -713,13 +644,11 @@
 </head>
 <body>
     <div class="test-mode-banner">საიტი მუშაობს სატესტო რეჟიმში</div>
-
     <header>
         <div class="logo">ქართული ჰემატრია</div>
         <div class="header-text">"დამარხულ არც ენაი ქართული დღედმდე მეორედ მოსვლისა მესიისა საწამებლად, რაითა ყოველსა ენასა ღმერთმან ამხილოს ამით ენითა"</div>
         <img src="https://bolnisi.gov.ge/files/uploads/Flag_of_Bolnisi_Municipality.svg.png" alt="Orthodox Symbol" class="header-image">
     </header>
-
     <div class="nav-container">
         <ul class="nav-menu">
             <li><a href="index.html">კალკულატორი</a></li>
@@ -732,18 +661,21 @@
             </li>
         </ul>
     </div>
-
     <div class="container">
         <h1>ტექსტის სიხშირული ანალიზი</h1>
-
         <div class="input-section">
-            <input type="file" id="file-input" accept=".pdf,.docx">
+            <input type="file" id="file-input" accept=".pdf,.docx,.txt">
             <textarea id="text-input" placeholder="ან ჩაწერეთ ტექსტი აქ..."></textarea>
             <div class="warning"><h3>გაფრთხილება!!!</h3> უმჯობესია პატარა-პატარა დოკუმენტებად ატვირთოთ, ან თავებად, რომ ანალიზი სწრაფად მოხდეს. დიდი დოკუმენტის ატვირთვისას შესაძლოა შეცდომები დაუშვას პროგრამულმა კოდმა</div>
             <button class="analyze-btn" onclick="analyzeText()">ანალიზის დაწყება</button>
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill">0%</div>
+                </div>
+                <div class="status-message" id="status-message">მონაცემების დამუშავება...</div>
+            </div>
             <div id="loader" class="loader"></div>
         </div>
-
         <div class="results-section">
             <div class="analysis-box">
                 <h2>ასოების სიხშირე</h2>
@@ -753,7 +685,6 @@
                 <div id="letter-grid" class="alphabet-grid"></div>
                 <button class="filter-btn" onclick="filterLetters()">ფილტრი</button>
             </div>
-
             <div class="analysis-box">
                 <h2>სიტყვების სიხშირე</h2>
                 <div class="chart-container">
@@ -762,7 +693,6 @@
                 <input type="text" id="word-filter" class="filter-input" placeholder="ჩაწერეთ სიტყვა">
                 <button class="filter-btn" onclick="filterWords()">ფილტრი</button>
             </div>
-
             <div class="analysis-box">
                 <h2>N-გრამები (2-3 ასო)</h2>
                 <div class="chart-container">
@@ -771,7 +701,6 @@
                 <div id="cipher-result" class="cipher-result"></div>
             </div>
         </div>
-
         <div class="stats-section">
             <h2>სტატისტიკური მაჩვენებლები</h2>
             <div class="stats-options">
@@ -797,7 +726,6 @@
                 </div>
             </div>
         </div>
-
         <div class="correlation-section">
             <h2>სიტყვათა კორელაცია</h2>
             <table id="correlation-table" class="correlation-table">
@@ -813,7 +741,6 @@
             <div id="network-container" class="network-container"></div>
         </div>
     </div>
-
     <footer>
         <div class="footer-content">
             <p class="footer-text">© 2025 ქართული ჰემატრიის კალკულატორი</p>
@@ -822,7 +749,7 @@
                     <svg class="contact-icon" viewBox="0 0 24 24">
                         <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2l-8 5-8-5V6l8 5 8-5z"/>
                     </svg>
-                    <span>info@nextgen</span>
+                    <span>info@nextgen.ge</span>
                 </a>
                 <a href="tel:+995555123456" class="contact-item">
                     <svg class="contact-icon" viewBox="0 0 24 24">
@@ -833,7 +760,6 @@
             </div>
         </div>
     </footer>
-
     <script>
         let letterChart, wordChart, ngramChart;
         let currentLetterFreq = new Map();
@@ -843,7 +769,7 @@
         const georgianAlphabet = 'აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ';
         const vowels = 'აეიოუ';
         const caseEndings = ['მა', 'ს', 'ის', 'ით', 'ში', 'ად', 'ზე', 'თვის'];
-
+        
         document.addEventListener('DOMContentLoaded', function() {
             populateLetterGrid();
             const navLinks = document.querySelectorAll('.nav-menu a');
@@ -856,9 +782,10 @@
                 }
             });
         });
-
+        
         function populateLetterGrid() {
             const grid = document.getElementById('letter-grid');
+            grid.innerHTML = '';
             georgianAlphabet.split('').forEach(letter => {
                 const letterBox = document.createElement('div');
                 letterBox.className = 'letter-box';
@@ -870,63 +797,114 @@
                 grid.appendChild(letterBox);
             });
         }
-
+        
         async function analyzeText() {
             const fileInput = document.getElementById('file-input');
             const textInput = document.getElementById('text-input');
             const loader = document.getElementById('loader');
+            const progressContainer = document.getElementById('progress-container');
+            const progressFill = document.getElementById('progress-fill');
+            const statusMessage = document.getElementById('status-message');
             
             loader.style.display = 'block';
+            progressContainer.style.display = 'block';
+            
             let text = '';
-
-            if (textInput.value.trim()) {
-                text = textInput.value;
-            } else if (fileInput.files.length) {
-                const file = fileInput.files[0];
-                const fileType = file.name.split('.').pop().toLowerCase();
-                const arrayBuffer = await file.arrayBuffer();
-
-                if (fileType === 'pdf') {
-                    text = await extractTextFromPDF(arrayBuffer);
-                } else if (fileType === 'docx') {
-                    text = await extractTextFromDocx(arrayBuffer);
+            
+            try {
+                if (textInput.value.trim()) {
+                    text = textInput.value;
+                    statusMessage.textContent = "ტექსტის დამუშავება...";
+                } else if (fileInput.files.length) {
+                    const file = fileInput.files[0];
+                    const fileType = file.name.split('.').pop().toLowerCase();
+                    const arrayBuffer = await file.arrayBuffer();
+                    
+                    progressFill.style.width = '20%';
+                    statusMessage.textContent = "ფაილის დამუშავება...";
+                    
+                    if (fileType === 'pdf') {
+                        text = await extractTextFromPDF(arrayBuffer);
+                    } else if (fileType === 'docx') {
+                        text = await extractTextFromDocx(arrayBuffer);
+                    } else if (fileType === 'txt') {
+                        text = new TextDecoder('utf-8').decode(arrayBuffer);
+                    } else {
+                        alert('გთხოვთ აირჩიოთ PDF, DOCX ან TXT ფაილი');
+                        loader.style.display = 'none';
+                        progressContainer.style.display = 'none';
+                        return;
+                    }
                 } else {
-                    alert('გთხოვთ აირჩიოთ PDF ან DOCX ფაილი');
+                    alert('გთხოვთ აირჩიოთ ფაილი ან შეიყვანოთ ტექსტი');
                     loader.style.display = 'none';
+                    progressContainer.style.display = 'none';
                     return;
                 }
-            } else {
-                alert('გთხოვთ აირჩიოთ ფაილი ან შეიყვანოთ ტექსტი');
+                
+                progressFill.style.width = '40%';
+                statusMessage.textContent = "ტექსტის დამუშავება...";
+                await processTextInChunks(text);
+                
+                progressFill.style.width = '100%';
+                statusMessage.textContent = "ანალიზი დასრულებულია!";
+                
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    progressContainer.style.display = 'none';
+                }, 1000);
+                
+            } catch (error) {
+                console.error("შეცდომა ანალიზისას:", error);
+                alert('მოხდა შეცდომა ანალიზის დროს: ' + error.message);
                 loader.style.display = 'none';
-                return;
+                progressContainer.style.display = 'none';
             }
-
-            await processTextInChunks(text);
-            loader.style.display = 'none';
         }
-
+        
         async function extractTextFromPDF(arrayBuffer) {
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            let fullText = '';
-            for (let i = 1; i <= Math.min(pdf.numPages, 10); i++) {
-                const page = await pdf.getPage(i);
-                const textContent = await page.getTextContent();
-                fullText += textContent.items.map(item => item.str).join(' ') + ' ';
+            try {
+                // Initialize PDF.js worker
+                if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
+                    pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+                }
+                
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                let fullText = '';
+                const totalPages = Math.min(pdf.numPages, 50); // Limit to 50 pages for performance
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    fullText += textContent.items.map(item => item.str).join(' ') + ' ';
+                }
+                return fullText;
+            } catch (error) {
+                console.error("PDF-ის დამუშავების შეცდომა:", error);
+                throw new Error("ვერ მოხერხდა PDF ფაილის დამუშავება");
             }
-            return fullText;
         }
-
+        
         async function extractTextFromDocx(arrayBuffer) {
-            const result = await mammoth.extractRawText({ arrayBuffer });
-            return result.value;
+            try {
+                const result = await mammoth.extractRawText({ arrayBuffer });
+                return result.value;
+            } catch (error) {
+                console.error("DOCX-ის დამუშავების შეცდომა:", error);
+                throw new Error("ვერ მოხერხდა DOCX ფაილის დამუშავება");
+            }
         }
-
+        
         function getBaseForm(word) {
+            if (!word || word.length === 0) return '';
             let base = word.toLowerCase();
+            
+            // Remove common Georgian case endings
             for (let ending of caseEndings) {
-                if (base.endsWith(ending)) {
+                if (base.endsWith(ending) && base.length > ending.length) {
                     base = base.slice(0, -ending.length);
-                    if (!vowels.includes(base[base.length - 1])) {
+                    // Add 'ი' if the last letter is a consonant
+                    if (base.length > 0 && !vowels.includes(base[base.length - 1])) {
                         base += 'ი';
                     }
                     return base;
@@ -934,89 +912,116 @@
             }
             return base;
         }
-
+        
         async function processTextInChunks(text) {
-            const chunkSize = 10000;
+            const chunkSize = 5000; // Smaller chunks for better performance
             currentLetterFreq = new Map();
             currentWordFreq = new Map();
             currentWordForms = new Map();
             wordCoOccurrences = new Map();
             const ngramFreq = new Map();
-
-            text = text.toLowerCase().replace(/[^ა-ჰ\s]/g, '');
-            const words = text.split(/\s+/).filter(word => word.length > 0);
-            const cleanText = text.replace(/\s+/g, '');
-
-            for (let i = 0; i < text.length; i += chunkSize) {
-                const chunk = text.slice(i, i + chunkSize);
+            
+            // Clean text - keep only Georgian letters and spaces
+            let cleanText = text.toLowerCase().replace(/[^ა-ჰ\s]/g, ' ');
+            // Normalize spaces
+            cleanText = cleanText.replace(/\s+/g, ' ').trim();
+            
+            // Process letters
+            for (let i = 0; i < cleanText.length; i += chunkSize) {
+                const chunk = cleanText.slice(i, i + chunkSize);
                 for (let char of chunk) {
-                    if (char !== ' ') {
+                    if (char !== ' ' && georgianAlphabet.includes(char)) {
                         currentLetterFreq.set(char, (currentLetterFreq.get(char) || 0) + 1);
                     }
                 }
             }
-
-            for (let i = 0; i < words.length; i += 100) {
-                const wordChunk = words.slice(i, i + 100);
-                for (let j = 0; j < wordChunk.length; j++) {
-                    const word = wordChunk[j];
-                    const baseForm = getBaseForm(word);
+            
+            // Split into words
+            const words = cleanText.split(' ').filter(word => word.length > 0);
+            
+            // Process words and co-occurrences
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i];
+                const baseForm = getBaseForm(word);
+                
+                if (baseForm.length > 0) {
                     currentWordFreq.set(baseForm, (currentWordFreq.get(baseForm) || 0) + 1);
+                    
                     if (!currentWordForms.has(baseForm)) {
                         currentWordForms.set(baseForm, new Set());
                     }
                     currentWordForms.get(baseForm).add(word);
-
+                    
                     // Calculate co-occurrences within a window of 5 words
-                    for (let k = j + 1; k < Math.min(j + 6, wordChunk.length); k++) {
-                        const otherWord = wordChunk[k];
+                    for (let j = i + 1; j < Math.min(i + 6, words.length); j++) {
+                        const otherWord = words[j];
                         const otherBaseForm = getBaseForm(otherWord);
-                        if (baseForm !== otherBaseForm) {
+                        
+                        if (otherBaseForm.length > 0 && baseForm !== otherBaseForm) {
                             const pair = [baseForm, otherBaseForm].sort().join('|');
                             wordCoOccurrences.set(pair, (wordCoOccurrences.get(pair) || 0) + 1);
                         }
                     }
                 }
             }
-
-            for (let i = 0; i < cleanText.length - 2; i += chunkSize) {
-                const ngramChunk = cleanText.slice(i, i + chunkSize);
-                for (let j = 0; j < ngramChunk.length - 1; j++) {
-                    const bigram = ngramChunk.slice(j, j + 2);
-                    ngramFreq.set(bigram, (ngramFreq.get(bigram) || 0) + 1);
-                    if (j < ngramChunk.length - 2) {
-                        const trigram = ngramChunk.slice(j, j + 3);
+            
+            // Process n-grams (bigrams and trigrams)
+            const textForNgrams = cleanText.replace(/\s/g, '');
+            for (let i = 0; i < textForNgrams.length - 1; i++) {
+                // Bigrams
+                if (i < textForNgrams.length - 1) {
+                    const bigram = textForNgrams.slice(i, i + 2);
+                    if (bigram.split('').every(char => georgianAlphabet.includes(char))) {
+                        ngramFreq.set(bigram, (ngramFreq.get(bigram) || 0) + 1);
+                    }
+                }
+                
+                // Trigrams
+                if (i < textForNgrams.length - 2) {
+                    const trigram = textForNgrams.slice(i, i + 3);
+                    if (trigram.split('').every(char => georgianAlphabet.includes(char))) {
                         ngramFreq.set(trigram, (ngramFreq.get(trigram) || 0) + 1);
                     }
                 }
             }
-
+            
+            // Create charts
             const letterObj = Object.fromEntries(currentLetterFreq);
             const wordObj = Object.fromEntries(currentWordFreq);
             const ngramObj = Object.fromEntries(ngramFreq);
-
-            createChart('letterChart', 'ასოები', letterObj, '#4dff4d');
-            createChart('wordChart', 'სიტყვები', wordObj, '#4a90e2');
-            createChart('ngramChart', 'N-გრამები', ngramObj, '#ff4d4d');
+            
+            createChart('letterChart', 'ასოების სიხშირე', letterObj, '#4dff4d');
+            createChart('wordChart', 'სიტყვების სიხშირე', wordObj, '#4a90e2');
+            createChart('ngramChart', 'N-გრამების სიხშირე', ngramObj, '#ff4d4d');
+            
+            // Calculate correlations and create network
             calculateWordCorrelations();
             createWordNetwork();
-
-            checkCaesarCipher(text, currentLetterFreq);
+            
+            // Check for Caesar cipher
+            checkCaesarCipher(cleanText, currentLetterFreq);
+            
+            // Update statistics
+            calculateSelectedStats();
         }
-
+        
         function createChart(canvasId, label, dataObj, color) {
             const ctx = document.getElementById(canvasId).getContext('2d');
+            
+            // Sort and get top 10
             const sortedData = Object.entries(dataObj)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 10);
-
+            
             const labels = sortedData.map(item => item[0]);
             const values = sortedData.map(item => item[1]);
-
+            
+            // Destroy existing chart if it exists
             if (canvasId === 'letterChart' && letterChart) letterChart.destroy();
             if (canvasId === 'wordChart' && wordChart) wordChart.destroy();
             if (canvasId === 'ngramChart' && ngramChart) ngramChart.destroy();
-
+            
+            // Create new chart
             const chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -1031,101 +1036,156 @@
                 },
                 options: {
                     scales: {
-                        y: { beginAtZero: true, ticks: { color: '#ffffff' }, grid: { color: '#333' } },
-                        x: { ticks: { color: '#ffffff' }, grid: { display: false } }
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { color: '#ffffff' }, 
+                            grid: { color: '#333' } 
+                        },
+                        x: { 
+                            ticks: { color: '#ffffff' }, 
+                            grid: { display: false } 
+                        }
                     },
-                    plugins: { legend: { labels: { color: '#ffffff' } } },
+                    plugins: { 
+                        legend: { 
+                            labels: { color: '#ffffff' },
+                            position: 'top'
+                        },
+                        tooltip: {
+                            backgroundColor: '#333',
+                            titleColor: '#fff',
+                            bodyColor: '#fff'
+                        }
+                    },
                     responsive: true,
                     maintainAspectRatio: false
                 }
             });
-
+            
+            // Store chart reference
             if (canvasId === 'letterChart') letterChart = chart;
             if (canvasId === 'wordChart') wordChart = chart;
             if (canvasId === 'ngramChart') ngramChart = chart;
         }
-
+        
         function filterLetters() {
             const selectedLetters = Array.from(document.querySelectorAll('.letter-box.selected')).map(box => box.dataset.letter);
-
+            
             if (selectedLetters.length === 0) {
-                createChart('letterChart', 'ასოები', Object.fromEntries(currentLetterFreq), '#4dff4d');
+                createChart('letterChart', 'ასოების სიხშირე', Object.fromEntries(currentLetterFreq), '#4dff4d');
                 return;
             }
-
+            
             const filteredFreq = new Map();
             selectedLetters.forEach(letter => {
                 if (currentLetterFreq.has(letter)) {
                     filteredFreq.set(letter, currentLetterFreq.get(letter));
                 }
             });
-
+            
             if (filteredFreq.size === 0) {
                 alert('არჩეული ასო(ები) ტექსტში არ მოიძებნა');
                 return;
             }
-
+            
             createChart('letterChart', 'არჩეული ასოების სიხშირე', Object.fromEntries(filteredFreq), '#4dff4d');
         }
-
+        
         function filterWords() {
             const filterInput = document.getElementById('word-filter').value.trim();
+            
             if (!filterInput) {
-                createChart('wordChart', 'სიტყვები', Object.fromEntries(currentWordFreq), '#4a90e2');
+                createChart('wordChart', 'სიტყვების სიხშირე', Object.fromEntries(currentWordFreq), '#4a90e2');
                 return;
             }
-
+            
             const baseForm = getBaseForm(filterInput);
             const filteredFreq = new Map();
+            
             if (currentWordFreq.has(baseForm)) {
                 filteredFreq.set(baseForm, currentWordFreq.get(baseForm));
             }
-
+            
             if (filteredFreq.size === 0) {
                 alert('არჩეული სიტყვა ტექსტში არ მოიძებნა');
                 return;
             }
-
+            
             createChart('wordChart', `სიტყვა: ${baseForm}`, Object.fromEntries(filteredFreq), '#4a90e2');
         }
-
+        
         function checkCaesarCipher(text, letterFreq) {
             const cipherResult = document.getElementById('cipher-result');
-            const totalLetters = Array.from(letterFreq.values()).reduce((a, b) => a + b, 0);
             
-            const expectedFreq = { 'ა': 0.12, 'ე': 0.10, 'ი': 0.09, 'ო': 0.07, 'ს': 0.06 };
+            // Check if we have enough letters for analysis
+            const totalLetters = Array.from(letterFreq.values()).reduce((a, b) => a + b, 0);
+            if (totalLetters < 50) {
+                cipherResult.textContent = 'ცეზარის შიფრის ანალიზისთვის საკმარისი რაოდენობის ასოები არ არის.';
+                return;
+            }
+            
+            // More comprehensive expected frequency distribution for Georgian
+            const expectedFreq = {
+                'ა': 0.120, 'ე': 0.098, 'ი': 0.089, 'ო': 0.072, 'ს': 0.061,
+                'რ': 0.054, 'დ': 0.047, 'ლ': 0.045, 'ტ': 0.043, 'უ': 0.041,
+                'ბ': 0.039, 'გ': 0.037, 'მ': 0.035, 'ქ': 0.033, 'ნ': 0.031,
+                'ვ': 0.029, 'თ': 0.027, 'კ': 0.025, 'ჟ': 0.023, 'ფ': 0.021,
+                'ჰ': 0.019, 'წ': 0.017, 'ჭ': 0.015, 'შ': 0.013, 'ჩ': 0.011,
+                'ც': 0.009, 'ძ': 0.007, 'ზ': 0.005, 'ღ': 0.004, 'ყ': 0.003,
+                'ხ': 0.002, 'ჯ': 0.001
+            };
+            
             const actualFreq = {};
             for (let [letter, count] of letterFreq) {
                 actualFreq[letter] = count / totalLetters;
             }
-
+            
             let bestShift = 0;
             let minDifference = Infinity;
-
+            
+            // Try all possible shifts
             for (let shift = 0; shift < georgianAlphabet.length; shift++) {
                 let totalDiff = 0;
+                let validLetters = 0;
+                
                 for (let letter in expectedFreq) {
                     const shiftedIndex = (georgianAlphabet.indexOf(letter) + shift) % georgianAlphabet.length;
                     const shiftedLetter = georgianAlphabet[shiftedIndex];
                     const actual = actualFreq[shiftedLetter] || 0;
-                    totalDiff += Math.abs(expectedFreq[letter] - actual);
+                    const expected = expectedFreq[letter];
+                    
+                    totalDiff += Math.abs(expected - actual);
+                    validLetters++;
                 }
-                if (totalDiff < minDifference) {
-                    minDifference = totalDiff;
+                
+                const avgDiff = totalDiff / validLetters;
+                
+                if (avgDiff < minDifference) {
+                    minDifference = avgDiff;
                     bestShift = shift;
                 }
             }
-
+            
+            // Decrypt with the best shift
             const decrypted = decryptCaesar(text, bestShift);
+            
+            // Check if the decrypted text looks like real Georgian
             const isGibberish = checkGibberish(decrypted);
-
-            if (minDifference < 0.2 && !isGibberish) {
-                cipherResult.innerHTML = `შესაძლოა ცეზარის შიფრი (ძვრა: ${bestShift}).<br>გაშიფრული ნაწილი: ${decrypted.slice(0, 100)}...`;
+            
+            if (minDifference < 0.15 && !isGibberish) {
+                // Show only a sample of the decrypted text
+                const sample = decrypted.replace(/\s+/g, ' ').substring(0, 200);
+                cipherResult.innerHTML = `
+                    <strong>შესაძლოა ცეზარის შიფრი!</strong><br>
+                    ძვრა: ${bestShift}<br>
+                    სიხშირის განსხვავება: ${(minDifference * 100).toFixed(2)}%<br>
+                    გაშიფრული ნაწილი: "${sample}..."
+                `;
             } else {
-                cipherResult.textContent = 'ცეზარის შიფრი არ აღმოჩნდა.';
+                cipherResult.textContent = 'ცეზარის შიფრი არ აღმოჩნდა ან ტექსტი არ არის შიფრული.';
             }
         }
-
+        
         function decryptCaesar(text, shift) {
             return text.split('').map(char => {
                 const index = georgianAlphabet.indexOf(char);
@@ -1134,32 +1194,65 @@
                 return georgianAlphabet[newIndex];
             }).join('');
         }
-
+        
         function checkGibberish(text) {
+            if (!text || text.length === 0) return true;
+            
             const vowels = 'აეიოუ';
             let vowelCount = 0;
+            let consonantCount = 0;
             let totalLetters = 0;
             
             for (let char of text) {
                 if (georgianAlphabet.includes(char)) {
                     totalLetters++;
-                    if (vowels.includes(char)) vowelCount++;
+                    if (vowels.includes(char)) {
+                        vowelCount++;
+                    } else {
+                        consonantCount++;
+                    }
                 }
             }
             
+            if (totalLetters === 0) return true;
+            
             const vowelRatio = vowelCount / totalLetters;
-            return vowelRatio < 0.2 || vowelRatio > 0.8;
+            
+            // Check for reasonable vowel-to-consonant ratio
+            if (vowelRatio < 0.25 || vowelRatio > 0.65) {
+                return true;
+            }
+            
+            // Check for sequences of too many consonants
+            let maxConsonantSequence = 0;
+            let currentConsonantSequence = 0;
+            
+            for (let char of text) {
+                if (georgianAlphabet.includes(char) && !vowels.includes(char)) {
+                    currentConsonantSequence++;
+                    maxConsonantSequence = Math.max(maxConsonantSequence, currentConsonantSequence);
+                } else {
+                    currentConsonantSequence = 0;
+                }
+            }
+            
+            // If we have more than 4 consonants in a row, it's likely gibberish
+            if (maxConsonantSequence > 4) {
+                return true;
+            }
+            
+            return false;
         }
-
+        
         function calculateSelectedStats() {
             if (currentLetterFreq.size === 0) {
                 alert('ჯერ გააკეთეთ სიხშირული ანალიზი!');
                 return;
             }
-
+            
             const statsType = document.getElementById('stats-type').value;
             let selectedLetters;
-
+            
             if (statsType === 'all') {
                 selectedLetters = georgianAlphabet.split('');
             } else if (statsType === 'vowels') {
@@ -1167,128 +1260,221 @@
             } else {
                 selectedLetters = georgianAlphabet.split('').filter(letter => !vowels.includes(letter));
             }
-
+            
+            // Get frequencies, use 0 for letters not found
             const values = selectedLetters.map(letter => currentLetterFreq.get(letter) || 0);
             const n = values.length;
+            
             if (n === 0) return;
-
-            const mean = values.reduce((a, b) => a + b, 0) / n;
+            
+            // Calculate mean
+            const sum = values.reduce((a, b) => a + b, 0);
+            const mean = sum / n;
+            
+            // Calculate variance
             const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / n;
+            
+            // Calculate standard deviation
             const stdDev = Math.sqrt(variance);
+            
+            // Calculate three sigma range
             const threeSigmaLower = mean - 3 * stdDev;
             const threeSigmaUpper = mean + 3 * stdDev;
-
+            
+            // Update UI
             document.getElementById('variance').textContent = variance.toFixed(2);
             document.getElementById('std-dev').textContent = stdDev.toFixed(2);
-            document.getElementById('three-sigma').textContent = `${threeSigmaLower.toFixed(2)} - ${threeSigmaUpper.toFixed(2)}`;
+            document.getElementById('three-sigma').textContent = `${Math.max(0, threeSigmaLower.toFixed(2))} - ${threeSigmaUpper.toFixed(2)}`;
         }
-
+        
         function calculateWordCorrelations() {
             const tableBody = document.querySelector('#correlation-table tbody');
             tableBody.innerHTML = '';
-
+            
+            // Get top 15 most frequent words
             const sortedWords = Array.from(currentWordFreq.entries())
                 .sort((a, b) => b[1] - a[1])
-                .slice(0, 10)
+                .slice(0, 15)
                 .map(entry => entry[0]);
-
-            const coOccMatrix = {};
-            sortedWords.forEach(word => {
-                coOccMatrix[word] = {};
-                sortedWords.forEach(otherWord => {
-                    const pair = [word, otherWord].sort().join('|');
-                    coOccMatrix[word][otherWord] = wordCoOccurrences.get(pair) || 0;
-                });
-            });
-
+            
+            if (sortedWords.length < 2) {
+                tableBody.innerHTML = '<tr><td colspan="3">საკმარისი სიტყვები კორელაციის გამოსათვლელად არ არის.</td></tr>';
+                return;
+            }
+            
+            // Calculate correlations
             const correlations = [];
+            
             for (let i = 0; i < sortedWords.length; i++) {
                 for (let j = i + 1; j < sortedWords.length; j++) {
                     const word1 = sortedWords[i];
                     const word2 = sortedWords[j];
-                    const freq1 = currentWordFreq.get(word1);
-                    const freq2 = currentWordFreq.get(word2);
-                    const coOcc = coOccMatrix[word1][word2];
-
-                    // Simplified correlation based on co-occurrence
-                    const correlation = coOcc / Math.sqrt(freq1 * freq2);
-                    if (correlation > 0) {
-                        correlations.push({ word1, word2, correlation });
+                    const freq1 = currentWordFreq.get(word1) || 0;
+                    const freq2 = currentWordFreq.get(word2) || 0;
+                    
+                    // Get co-occurrence count
+                    const pair1 = [word1, word2].sort().join('|');
+                    const coOcc = wordCoOccurrences.get(pair1) || 0;
+                    
+                    if (coOcc > 0 && freq1 > 0 && freq2 > 0) {
+                        // Calculate Jaccard similarity as correlation measure
+                        const jaccard = coOcc / (freq1 + freq2 - coOcc);
+                        correlations.push({ word1, word2, correlation: jaccard, coOcc });
                     }
                 }
             }
-
+            
+            // Sort by correlation strength
             correlations.sort((a, b) => b.correlation - a.correlation);
-            correlations.slice(0, 10).forEach(({ word1, word2, correlation }) => {
+            
+            // Display top 10 correlations
+            correlations.slice(0, 10).forEach(({ word1, word2, correlation, coOcc }) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${word1}</td>
                     <td>${word2}</td>
-                    <td>${correlation.toFixed(3)}</td>
+                    <td title="თანხვედრები: ${coOcc}">${correlation.toFixed(3)}</td>
                 `;
                 tableBody.appendChild(row);
             });
+            
+            if (correlations.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="3">სიტყვებს შორის კორელაცია არ აღმოჩნდა.</td></tr>';
+            }
         }
-
+        
         function createWordNetwork() {
             const container = document.getElementById('network-container');
-            const nodes = new vis.DataSet();
-            const edges = new vis.DataSet();
-
+            
+            // Clear previous network
+            container.innerHTML = '';
+            
+            // Get top 25 most frequent words
             const sortedWords = Array.from(currentWordFreq.entries())
                 .sort((a, b) => b[1] - a[1])
-                .slice(0, 20)
+                .slice(0, 25)
                 .map(entry => entry[0]);
-
+            
+            if (sortedWords.length === 0) {
+                container.innerHTML = '<div style="color: #ff4d4d; padding: 20px; text-align: center;">სიტყვების ქსელის შესაქმნელად საკმარისი მონაცემები არ არის.</div>';
+                return;
+            }
+            
+            // Create nodes and edges
+            const nodes = new vis.DataSet();
+            const edges = new vis.DataSet();
+            
+            // Add nodes
             sortedWords.forEach((word, index) => {
+                const frequency = currentWordFreq.get(word) || 0;
                 nodes.add({
                     id: index,
                     label: word,
-                    title: `სიხშირე: ${currentWordFreq.get(word)}`,
-                    size: Math.sqrt(currentWordFreq.get(word)) * 5
+                    title: `სიხშირე: ${frequency}`,
+                    size: Math.max(10, Math.sqrt(frequency) * 3),
+                    font: { size: Math.max(12, Math.min(20, frequency / 5)) }
                 });
             });
-
+            
+            // Add edges for co-occurrences
+            let edgeCount = 0;
             for (let i = 0; i < sortedWords.length; i++) {
                 for (let j = i + 1; j < sortedWords.length; j++) {
                     const word1 = sortedWords[i];
                     const word2 = sortedWords[j];
                     const pair = [word1, word2].sort().join('|');
                     const coOcc = wordCoOccurrences.get(pair) || 0;
-                    if (coOcc > 0) {
+                    
+                    if (coOcc > 0 && edgeCount < 50) { // Limit edges for performance
                         edges.add({
                             from: sortedWords.indexOf(word1),
                             to: sortedWords.indexOf(word2),
-                            value: coOcc,
-                            title: `თანხვედრა: ${coOcc}`
+                            value: Math.min(coOcc, 20), // Cap value for visualization
+                            title: `თანხვედრა: ${coOcc}`,
+                            width: Math.min(5, coOcc / 2)
                         });
+                        edgeCount++;
                     }
                 }
             }
-
+            
+            // Create network
             const data = { nodes, edges };
             const options = {
                 nodes: {
                     shape: 'dot',
-                    font: { size: 14, color: '#ffffff' },
-                    color: { background: '#4a90e2', border: '#ffffff' }
+                    font: { 
+                        size: 14, 
+                        color: '#ffffff',
+                        face: 'Arial'
+                    },
+                    color: { 
+                        background: '#4a90e2', 
+                        border: '#ffffff',
+                        highlight: {
+                            background: '#ff4d4d',
+                            border: '#ffffff'
+                        }
+                    },
+                    borderWidth: 2,
+                    shadow: {
+                        enabled: true,
+                        color: 'rgba(0,0,0,0.5)',
+                        size: 10,
+                        x: 5,
+                        y: 5
+                    }
                 },
                 edges: {
-                    color: { color: '#cccccc', highlight: '#ff4d4d' },
-                    smooth: false
+                    color: { 
+                        color: '#cccccc', 
+                        highlight: '#ff4d4d',
+                        opacity: 0.8
+                    },
+                    smooth: {
+                        type: 'continuous'
+                    },
+                    shadow: {
+                        enabled: true,
+                        color: 'rgba(0,0,0,0.3)',
+                        size: 5
+                    },
+                    arrows: {
+                        to: { enabled: false }
+                    }
                 },
                 physics: {
+                    enabled: true,
+                    stabilization: {
+                        enabled: true,
+                        iterations: 100
+                    },
                     forceAtlas2Based: {
-                        gravitationalConstant: -50,
-                        centralGravity: 0.01,
-                        springLength: 100
+                        gravitationalConstant: -100,
+                        centralGravity: 0.05,
+                        springLength: 150,
+                        springConstant: 0.08,
+                        avoidOverlap: 0.5
                     },
                     maxVelocity: 50,
+                    minVelocity: 0.1,
                     solver: 'forceAtlas2Based'
+                },
+                interaction: {
+                    hover: true,
+                    tooltipDelay: 300,
+                    hideEdgesOnDrag: false,
+                    hideEdgesOnZoom: false
                 }
             };
-
-            new vis.Network(container, data, options);
+            
+            // Initialize network
+            try {
+                new vis.Network(container, data, options);
+            } catch (error) {
+                console.error("Network creation error:", error);
+                container.innerHTML = '<div style="color: #ff4d4d; padding: 20px; text-align: center;">ვიზუალიზაციის შეცდომა: ' + error.message + '</div>';
+            }
         }
     </script>
 </body>
