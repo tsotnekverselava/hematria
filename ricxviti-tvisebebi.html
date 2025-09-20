@@ -676,10 +676,10 @@
                     <div id="duodecimal-prev"></div>
                     <div>ჰექსადეცინალური</div>
                     <div id="hex"></div>
-                    <div id="binary"></div>
+                    <div id="hex-prev"></div>
                     <div>ბინარული</div>
-                    <div></div>
-                    <div></div>
+                    <div id="binary"></div>
+                    <div id="binary-prev"></div>
                 </div>
             </div>
         </div>
@@ -769,20 +769,51 @@
                 updateNumberConversions(number);
                 updateSequenceInformation(number);
 
+                // შედგენილი რიცხვების დათვლა უფრო სწორად
                 let compositeCount = 0;
-                for (let i = 1; i <= number; i++) {
-                    if (!isPrime(i)) compositeCount++;
+                let compositeIndex = 0;
+                for (let i = 4; i <= number; i++) {
+                    if (!isPrime(i)) {
+                        compositeCount++;
+                        if (i === number) {
+                            compositeIndex = compositeCount;
+                        }
+                    }
                 }
-                document.getElementById('number-type').textContent = `${compositeCount}-ე შედგენილი #`;
+                
+                let primeIndex = 0;
+                let primeCount = 0;
+                for (let i = 2; i <= number; i++) {
+                    if (isPrime(i)) {
+                        primeCount++;
+                        if (i === number) {
+                            primeIndex = primeCount;
+                        }
+                    }
+                }
+                
+                if (primeIndex > 0) {
+                    document.getElementById('number-type').textContent = `${primeIndex}-ე მარტივი რიცხვი`;
+                } else if (compositeIndex > 0) {
+                    document.getElementById('number-type').textContent = `${compositeIndex}-ე შედგენილი რიცხვი`;
+                } else if (number === 1) {
+                    document.getElementById('number-type').textContent = "1 არ არის არც მარტივი არც შედგენილი";
+                }
             }
 
             function findFactors(number) {
                 const factors = [];
-                for (let i = 1; i <= number; i++) {
+                // უფრო ეფექტური ალგორითმი - მხოლოდ კვადრატულ ფესვამდე გადის
+                for (let i = 1; i <= Math.sqrt(number); i++) {
                     if (number % i === 0) {
                         factors.push(i);
+                        if (i !== number / i) {
+                            factors.push(number / i);
+                        }
                     }
                 }
+                // დალაგება
+                factors.sort((a, b) => a - b);
                 return factors;
             }
 
@@ -790,13 +821,21 @@
                 if (number === 1) return [1];
                 const factorization = [];
                 let n = number;
-                for (let i = 2; i <= n;) {
-                    if (n % i === 0) {
+                // 2-ის გამყოფების მოძებნა
+                while (n % 2 === 0) {
+                    factorization.push(2);
+                    n = n / 2;
+                }
+                // კენტი გამყოფების მოძებნა
+                for (let i = 3; i <= Math.sqrt(n); i += 2) {
+                    while (n % i === 0) {
                         factorization.push(i);
-                        n /= i;
-                    } else {
-                        i++;
+                        n = n / i;
                     }
+                }
+                // თუ დარჩა მარტივი რიცხვი 2-ზე მეტი
+                if (n > 2) {
+                    factorization.push(n);
                 }
                 return factorization;
             }
@@ -823,26 +862,84 @@
                     prop.style.display = 'none';
                 });
 
+                let propertyIndex = 0;
+                
+                // კვადრატული რიცხვი
+                if (isPerfectSquare(number)) {
+                    const root = Math.sqrt(number);
+                    properties[propertyIndex].textContent = `${number} არის კვადრატული რიცხვი (${root}²)`;
+                    properties[propertyIndex].style.display = 'block';
+                    propertyIndex++;
+                }
+
+                // კუბური რიცხვი
+                if (isPerfectCube(number)) {
+                    const root = Math.round(Math.cbrt(number));
+                    if (root * root * root === number) {
+                        properties[propertyIndex].textContent = `${number} არის კუბური რიცხვი (${root}³)`;
+                        properties[propertyIndex].style.display = 'block';
+                        propertyIndex++;
+                    }
+                }
+
+                // სრულყოფილი რიცხვი
+                if (isPerfectNumber(number)) {
+                    properties[propertyIndex].textContent = `${number} არის სრულყოფილი რიცხვი`;
+                    properties[propertyIndex].style.display = 'block';
+                    propertyIndex++;
+                }
+
+                // ფიბონაჩის რიცხვი
                 if (isFibonacciNumber(number)) {
                     const index = getFibonacciIndex(number);
-                    properties[0].textContent = `მე-${index} ფიბონაჩი!`;
-                    properties[0].style.display = 'block';
+                    properties[propertyIndex].textContent = `${number} არის მე-${index} ფიბონაჩის რიცხვი`;
+                    properties[propertyIndex].style.display = 'block';
+                    propertyIndex++;
                 }
 
+                // ტრიანგულარული რიცხვი
                 if (isTriangularNumber(number)) {
                     const index = getTriangularIndex(number);
-                    properties[1].textContent = `მე-${index} ტრიანგულარი!`;
-                    properties[1].style.display = 'block';
+                    properties[propertyIndex].textContent = `${number} არის მე-${index} ტრიანგულარული რიცხვი`;
+                    properties[propertyIndex].style.display = 'block';
+                    propertyIndex++;
                 }
 
+                // კვადრატული პირამიდული რიცხვი
                 if (isSquarePyramidalNumber(number)) {
                     const index = getSquarePyramidalIndex(number);
-                    properties[2].textContent = `მე-${index} კვადრატული პირამიდალი!`;
-                    properties[2].style.display = 'block';
+                    properties[propertyIndex].textContent = `${number} არის მე-${index} კვადრატული პირამიდული რიცხვი`;
+                    properties[propertyIndex].style.display = 'block';
+                    propertyIndex++;
                 }
             }
 
+            function isPerfectSquare(number) {
+                const root = Math.sqrt(number);
+                return Number.isInteger(root);
+            }
+
+            function isPerfectCube(number) {
+                const root = Math.cbrt(number);
+                return Math.abs(root - Math.round(root)) < 1e-10;
+            }
+
+            function isPerfectNumber(number) {
+                if (number <= 1) return false;
+                let sum = 1; // 1 ყოველთვის გამყოფია
+                for (let i = 2; i <= Math.sqrt(number); i++) {
+                    if (number % i === 0) {
+                        sum += i;
+                        if (i !== number / i) {
+                            sum += number / i;
+                        }
+                    }
+                }
+                return sum === number;
+            }
+
             function isFibonacciNumber(number) {
+                if (number === 0 || number === 1) return true;
                 const test1 = 5 * number * number + 4;
                 const test2 = 5 * number * number - 4;
                 const root1 = Math.sqrt(test1);
@@ -852,7 +949,7 @@
 
             function getFibonacciIndex(number) {
                 if (number === 0) return 0;
-                if (number === 1) return 1;
+                if (number === 1) return 1; // ფიბონაჩის მიმდევრობაში 1 გვხვდება ორჯერ, მაგრამ პირველი ადგილი ავიღოთ
                 let a = 0, b = 1, c, index = 1;
                 while (b < number) {
                     c = a + b;
@@ -874,19 +971,38 @@
             }
 
             function isSquarePyramidalNumber(number) {
-                for (let i = 1; i <= 100; i++) {
-                    const pyramidal = (i * (i + 1) * (2 * i + 1)) / 6;
-                    if (pyramidal === number) return true;
-                    if (pyramidal > number) break;
+                // უფრო ეფექტური მეთოდი - ბინარული ძებნა
+                let low = 1, high = Math.ceil(Math.cbrt(number * 6)); // დაახლოებითი ზედა ზღვარი
+                
+                while (low <= high) {
+                    const mid = Math.floor((low + high) / 2);
+                    const pyramidal = (mid * (mid + 1) * (2 * mid + 1)) / 6;
+                    
+                    if (pyramidal === number) {
+                        return true;
+                    } else if (pyramidal < number) {
+                        low = mid + 1;
+                    } else {
+                        high = mid - 1;
+                    }
                 }
                 return false;
             }
 
             function getSquarePyramidalIndex(number) {
-                for (let i = 1; i <= 100; i++) {
-                    const pyramidal = (i * (i + 1) * (2 * i + 1)) / 6;
-                    if (pyramidal === number) return i;
-                    if (pyramidal > number) break;
+                let low = 1, high = Math.ceil(Math.cbrt(number * 6));
+                
+                while (low <= high) {
+                    const mid = Math.floor((low + high) / 2);
+                    const pyramidal = (mid * (mid + 1) * (2 * mid + 1)) / 6;
+                    
+                    if (pyramidal === number) {
+                        return mid;
+                    } else if (pyramidal < number) {
+                        low = mid + 1;
+                    } else {
+                        high = mid - 1;
+                    }
                 }
                 return 0;
             }
@@ -902,38 +1018,48 @@
                 document.getElementById('octal').textContent = octal;
                 document.getElementById('octal-prev').textContent = (number - 8).toString(8);
                 document.getElementById('duodecimal').textContent = duodecimal;
-                document.getElementById('duodecimal-prev').textContent = (number - 18).toString(16).toUpperCase();
+                document.getElementById('duodecimal-prev').textContent = convertToBase(Math.max(number - 18, 1), 12);
                 document.getElementById('hex').textContent = hex;
+                document.getElementById('hex-prev').textContent = (number - 16).toString(16).toUpperCase();
                 document.getElementById('binary').textContent = binary;
+                document.getElementById('binary-prev').textContent = (number - 2).toString(2);
             }
 
             function convertToBase(number, base) {
-                const digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                if (number === 0) return '0';
+                const digits = '0123456789AB';
                 let result = '';
-                while (number > 0) {
-                    result = digits[number % base] + result;
-                    number = Math.floor(number / base);
+                let n = number;
+                while (n > 0) {
+                    result = digits[n % base] + result;
+                    n = Math.floor(n / base);
                 }
-                return result || '0';
+                return result;
             }
 
             function updateSequenceInformation(number) {
+                // მე-n მარტივი რიცხვი
                 let primeCount = 0;
                 let nthPrime = 0;
-                for (let i = 2; primeCount < number; i++) {
+                let i = 2;
+                while (primeCount < number) {
                     if (isPrime(i)) {
                         primeCount++;
                         nthPrime = i;
                     }
+                    i++;
                 }
 
+                // მე-n შედგენილი რიცხვი
                 let compositeCount = 0;
                 let nthComposite = 0;
-                for (let i = 4; compositeCount < number; i++) {
+                i = 4; // პირველი შედგენილი რიცხვი
+                while (compositeCount < number) {
                     if (!isPrime(i)) {
                         compositeCount++;
                         nthComposite = i;
                     }
+                    i++;
                 }
 
                 document.getElementById('sequence-title').textContent = `${number}-ე...`;
